@@ -1,7 +1,6 @@
 # ICELLNET: A transcriptome-based framework to dissect intercellular communication
 ---
-author: Lucile Massenet-Regad and Floriane Noël
-date: "27/02/2020"
+Lucile Massenet-Regad and Floriane Noël
 ---
 
 
