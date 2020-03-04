@@ -1,22 +1,7 @@
-# ICELLNET
+# ICELLNET: A transcriptome-based framework to dissect intercellular communication
 ---
-title: 'ICELLNET: A transcriptome-based framework to dissect intercellular communication'
-author: "Lucile Massenet-Regad and Floriane Noël"
+author: Lucile Massenet-Regad and Floriane Noël
 date: "27/02/2020"
-output: 
-#   html_document: 
-
-# 
-# editor_options: 
-# chunk_output_type: console
-# 
-# ```{r setup, include=FALSE}
-# knitr::opts_chunk$set(echo = T)
-# ```
-  rmdformats::material:
-    highlight: kate
-    #toc: true #Table of content true
-    #toc_depth: 4 
 ---
 
 
