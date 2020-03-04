@@ -1,9 +1,18 @@
 # ICELLNET
 ---
-#ICELLNET: A transcriptome-based framework to dissect intercellular communication
+title: 'ICELLNET: A transcriptome-based framework to dissect intercellular communication'
 author: "Lucile Massenet-Regad and Floriane Noël"
 date: "27/02/2020"
 output: 
+#   html_document: 
+
+# 
+# editor_options: 
+# chunk_output_type: console
+# 
+# ```{r setup, include=FALSE}
+# knitr::opts_chunk$set(echo = T)
+# ```
   rmdformats::material:
     highlight: kate
     #toc: true #Table of content true
@@ -11,46 +20,7 @@ output:
 ---
 
 
-```{r knitr_init, echo=FALSE, cache=FALSE}
-library(knitr)
-library(rmdformats)
-
-## Global options
-options(max.print="75")
-opts_chunk$set(echo=FALSE,
-	             cache=TRUE,
-               prompt=FALSE,
-               tidy=TRUE,
-               comment=NA,
-               message=FALSE,
-               warning=FALSE)
-opts_knit$set(width=90)
-```
-
 This vignette explains the use of the ICELLNET package and demonstrates typical workflows to dissect intercellular communication between multiples cell types, based on transcriptomic profiles.
-
-```{r, warning=FALSE, message=FALSE}
-#install.packages(pkgs="~/Desktop/Labo/ICELLNET/Package/icellnet_0.0.0.9000.tar.gz", type="source", repos=NULL)
-library(BiocGenerics)
-library("org.Hs.eg.db")
-library("hgu133plus2.db")
-library("annotate")
-library(jetset)
-library(readxl)
-library(psych)
-library(GGally)
-library(gplots)
-library(ggplot2)
-library(RColorBrewer)
-library(data.table)
-library(grid)
-library(gridExtra)
-library(ggthemes)
-library(scales)
-library(rlist)
-library(icellnet)
-```
-
 
 # Introduction to ICELLNET package
 
