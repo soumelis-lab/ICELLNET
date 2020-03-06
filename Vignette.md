@@ -11,6 +11,8 @@ Cell-to-cell communication is at the basis of the higher-order organization obse
 
 We have curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Also, all these interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: Growth factors, Cytokines, Chemokines, Checkpoints, Notch signaling, Antigen binding. The cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGF-\beta family and RTK cytokines. 
 
+You can visualise the ICELLNET database and its structure by doing: 
+
 ```{r db, echo=T}
 head(db)
 ```
@@ -304,7 +306,7 @@ network.plot4 = network.create(icn.score =Scores.norm2[4], scale = c(round(min(S
 grid.arrange(network.plot1, network.plot2, network.plot3, network.plot4, nrow=2, ncol=2)
 
 ```
-Here, we observe a general increase of communication by blocking the IL10 communication channel, which suggest that autocrine IL10 secretion controls the communication in LPS-activated DCs.
+Here, we observe a general increase of communication by blocking the IL10 communication channel, which suggests that autocrine IL10 secretion controls the communication in LPS-activated DCs.
 To assess the differences between scores in a quantitative manner, a statistical test can be performed (see "Compute pvalue to compare communication scores" section). 
 To see the use of the other visualisation modes, see case study 2. 
 
@@ -502,5 +504,5 @@ pvalue.cond
 ```
 Here we do not have considered enough biological replicates, this is why the pvalue cannot be significant. 
 
-# Citation 
+
 
