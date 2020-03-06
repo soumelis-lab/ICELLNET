@@ -3,7 +3,7 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 
 ---
 # Table of content
-- [Introduction to ICELLNET package](# Introduction to ICELLNET package)
+- [Introduction to ICELLNET package](#-Introduction-to-ICELLNET-package)
   * [What is ICELLNET for? ](## What is ICELLNET for?)
   * [ICELLNET ligand/receptor interaction database](## ICELLNET ligand/receptor interaction database) 
   
@@ -17,7 +17,7 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 ---
 
 
-# Introduction to ICELLNET package
+##Introduction to ICELLNET package
 
 ## What is ICELLNET for? 
 
