@@ -1,7 +1,11 @@
 
 This vignette explains the use of the ICELLNET package and demonstrates typical workflows to dissect intercellular communication between multiples cell types, based on transcriptomic profiles.
 
-{:toc}
+---
+markdown: kramdown
+* TOC {:toc}
+---
+
 
 # Introduction to ICELLNET package
 
