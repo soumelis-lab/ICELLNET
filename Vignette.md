@@ -124,23 +124,24 @@ It returns the pvalue matrix of statistical tests, that can be visualize as a he
  
 # How to install ICELLNET package?
 
-To install `icellnet` package, the easiest way is to use the `R` package `devtools` and its function `install_github`:
+To install `icellnet` package, the easiest way is to use the `R` package `devtools` and its function `install_github`. If you don't have all the dependancies needed to use ICELLNET package, run the commands below:  
 
-    install.packages(c("devtools", "jetset", "readxl", "psych", "GGally", "gplots", "ggplot2", "RColorBrewer", "data.table", "grid", "gridExtra", "ggthemes", "scales","rlist") ##Installs devtools and the icellnet dependancies
+    install.packages(c("devtools", "jetset", "readxl", "psych", "GGally", "gplots", "ggplot2", "RColorBrewer", "data.table", "grid", "gridExtra", "ggthemes", "scales","rlist")) ##Installs devtools and the icellnet CRAN dependancies
 
-    if (!requireNamespace("BiocManager", quietly = TRUE))
+    if (!requireNamespace("BiocManager", quietly = TRUE)) # Installs Bioconductor dependancies 
     install.packages("BiocManager")
-
-    BiocManager::install("BiocGenerics", "org.Hs.eg.db", "hgu133plus2.db", "annotate")
+    BiocManager::install(c("BiocGenerics", "org.Hs.eg.db", "hgu133plus2.db", "annotate"))
     
+Then you just have to load `devtools` package and run the command below:
+
     library(devtools)
     install_github("soumelis-lab/ICELLNET",ref="master", subdir="icellnet")
+    
 Once all the dependencies are downloaded and loaded, you can load the `icellnet` package.
 
 ```{r, echo=T, message=FALSE}
 library(icellnet)
 ```
-<!-- toc -->
 # How to format your own data to use ICELLNET package? 
 
 ## Data files format
