@@ -56,21 +56,19 @@ summary(as.factor(PC.target.all$Class))
 ```
 
 ### Files format
-**For the central cell:** It can be any transcriptomic profile data of one cell type. For **RNA-seq data**, the dataset should be annotated with gene symbol as rownames, and also in a specific column named SYMBOL. For **microarray data**, the ICELLNET functions are adapted to handle Affymetrix Human Genome U133 Plus 2.0 Array annotation. Nevertherless, if the dataset have been generated with an other Affymetrix technology, you have 2 possibilities to adapt the tool : a) Annotate your data with gene symbol before using ICELLNET and then consider your data as "RNA-Seq" for CC.type argument. b) adapt the R code of the db.hgu133plus2() function to have the right annotation conversion when using ICELLNET. Same as for RNAseq, the annotations should be set as rownames and in a ID column. 
+**For the central cell:** It can be any transcriptomic profile data of one cell type. For **RNA-seq data**, the dataset should be annotated with gene symbol as rownames, and also in a specific column named SYMBOL. For **microarray data**, the ICELLNET functions are adapted to handle Affymetrix Human Genome U133 Plus 2.0 Array annotation. Nevertherless, if the dataset have been generated with an other Affymetrix technology, you have 2 possibilities to adapt the tool : a) Annotate your data with gene symbol before using ICELLNET and then consider your data as "RNA-Seq" for CC.type argument. b) adapt the R code of the `db.hgu133plus2()` function to have the right annotation conversion when using ICELLNET. Same as for RNAseq, the annotations should be set as rownames and in a ID column. 
 
 
-**For the peripheral cell (if you don't want to use BioGPS as peripheral cells): ** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formattted (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
+**For the peripheral cell (if you don't want to use BioGPS as peripheral cells):** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formated (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
 
 
 ## How is the intercellular communication score computed ?
 
-The quantification of intercellular communication consist of scoring the intensity of each ligand/receptor interaction between two cell types with known expression profiles. No filtering threshold is applied on the L/R expression. If the communication molecule (ligand or receptor or both) is not expressed by a cell, the score will be zero. By default, the 378 interactions of the database are considered to compute the score. It is also possible to reduce the number of interactions by manually selecting specific families of molecules in the database or considering DEG to compute the score, depending on the biological question. Whenever needed, we take into account multiple ligand units, or receptor chains, using logical rules.
+The quantification of intercellular communication consist of scoring the intensity of each ligand/receptor interaction between two cell types with known expression profiles. No filtering threshold is applied on the L/R expression. If the communication molecule (ligand or receptor or both) is not expressed by a cell, the score will be zero. By default, the 380 interactions of the database are considered to compute the score. It is also possible to reduce the number of interactions by manually selecting specific families of molecules in the database or considering DEG to compute the score, depending on the biological question. Whenever needed, we take into account multiple ligand units, or receptor chains, using logical rules.
 
 The score of an individual ligand/receptor interaction is computed as the product of their expression levels respectively by the source (central) and by the target (peripheral) cell. These individual scores are then combined into a global metric assessing the overall exchange of information between the cell types of interest
 
-<center>
 ![](ICELLNET_Score_formula.png){width=300px}
-</center>
 
 
 Since cell-to-cell communication is directional, we consider ligand expression from the central cell and receptor expression from the peripheral cells to assess out-flow communication. On the other way, we select receptor expression from the central cell and ligand expression from peripheral cells to assess in-flow communication. This is controlled by the  *direction* argument ("in" or "out") in the `icellnet.score()` function. 
@@ -105,41 +103,25 @@ The balloon plot is the deepest level of representation of the communication, di
 
 ### Pvalue computation to compare communication scores
 
-Two types of pvalue can be computed, to compare either the communication scores obtained from the same central cell to different peripheral cells (between="cells"), or to compare the communication scores obtained from two different central cells corresponding to different biological conditions with the same peripheral cell (between="conditions").If between="cells", the communication score is computed considering the average expression of ligands for the central cell, and each replicates separately for the receptor expression of the peripheral cells. In this way, for one peripheral cell type, we obtain a distribution of n communication scores, n beeing the number of peripheral cells replicates for this particular cell type. If between="conditions", then, the communication score is computed considering each replicates of the central cell separately, and the average gene expression for the peripheral cells. We obtain a distribution of n communication scores, n beeing the number of central cell replicates in one biological condition. Then, a Wilcoxon statistical test is performed to compare the communication scores distributions. The pvalues are ajusted with p.adjust(), with "BH" method as a default. 
+Two types of pvalue can be computed, to compare either the communication scores obtained from the same central cell to different peripheral cells (between="cells"), or to compare the communication scores obtained from two different central cells corresponding to different biological conditions with the same peripheral cell (between="conditions").If between="cells", the communication score is computed considering the average expression of ligands for the central cell, and each replicates separately for the receptor expression of the peripheral cells. In this way, for one peripheral cell type, we obtain a distribution of n communication scores, n beeing the number of peripheral cells replicates for this particular cell type. If between="conditions", then, the communication score is computed considering each replicates of the central cell separately, and the average gene expression for the peripheral cells. We obtain a distribution of n communication scores, n beeing the number of central cell replicates in one biological condition. Then, a Wilcoxon statistical test is performed to compare the communication scores distributions. The pvalues are ajusted with `p.adjust()`, with "BH" method as a default. 
 
 It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the pvalue.plot() function. This allows to interpret the difference of communication score in a quantitative manner.
  
 # How to install ICELLNET package ?
 
-First you have to download the source file of the package.
 
-```{r, echo=T, message=FALSE}
-#install.packages(pkgs="~/Desktop/Work Desktop/Labo/ICELLNET/Package/icellnet_0.0.0.9000.tar.gz", type="source", repos=NULL)
-```
+To install `icellnet` package, the easiest way is to use the `R` package `devtools` and its function `install_github`:
 
-You also have to install and load the following packages (list below). They all can be retrived from Bioconductor or CRAN.
+    install.packages(c("devtools", "jetset", "readxl", "psych", "GGally", "gplots", "ggplot2", "RColorBrewer", "data.table", "grid", "gridExtra", "ggthemes", "scales","rlist") ##Installs devtools and the icellnet dependancies
 
-```{r, echo=T, message=FALSE}
-library(BiocGenerics)
-library("org.Hs.eg.db")
-library("hgu133plus2.db")
-library("annotate")
-library(jetset)
-library(readxl)
-library(psych)
-library(GGally)
-library(gplots)
-library(ggplot2)
-library(RColorBrewer)
-library(data.table)
-library(grid)
-library(gridExtra)
-library(ggthemes)
-library(scales)
-library(rlist)
-```
+    if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 
-Once all the dependencies are downloaded and loaded, you can load the 'icellnet' package.
+    BiocManager::install("BiocGenerics", "org.Hs.eg.db", "hgu133plus2.db", "annotate")
+    
+    library(devtools)
+    install_github("soumelis-lab/ICELLNET",ref="master", subdir="icellnet")
+Once all the dependencies are downloaded and loaded, you can load the `icellnet` package.
 
 ```{r, echo=T, message=FALSE}
 library(icellnet)
@@ -149,7 +131,6 @@ library(icellnet)
 
 ## Data files format
 **For the central cell:** It can be any transcriptomic profile data of one cell type. For **RNA-seq data**, the dataset should be annotated with gene symbol as rownames, and also in a specific column named 'Symbol'. For **microarray data**, the ICELLNET functions are adapted to handle Affymetrix Human Genome U133 Plus 2.0 Array annotation. Nevertherless, if the dataset have been generated with an other Affymetrix technology, you have 2 possibilities to adapt the tool : a) Annotate your data with gene symbol before using ICELLNET and then consider your data as "RNA-Seq" for CC.type argument. b) adapt the R code of the db.hgu133plus2() function to have the right annotation conversion when using ICELLNET. Same as for RNAseq, the annotations should be set as rownames and in a ID column. 
-
 
 **For the peripheral cell (if you don't want to use BioGPS as peripheral cells):** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formattted (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
 
