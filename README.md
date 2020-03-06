@@ -3,7 +3,6 @@
 Lucile Massenet-Regad and Floriane Noël
 ---
 
-
 This vignette explains the use of the ICELLNET package and demonstrates typical workflows to dissect intercellular communication between multiples cell types, based on transcriptomic profiles.
 
 # Introduction to ICELLNET package
@@ -156,7 +155,7 @@ library(icellnet)
 **For the central cell:** It can be any transcriptomic profile data of one cell type. For **RNA-seq data**, the dataset should be annotated with gene symbol as rownames, and also in a specific column named 'Symbol'. For **microarray data**, the ICELLNET functions are adapted to handle Affymetrix Human Genome U133 Plus 2.0 Array annotation. Nevertherless, if the dataset have been generated with an other Affymetrix technology, you have 2 possibilities to adapt the tool : a) Annotate your data with gene symbol before using ICELLNET and then consider your data as "RNA-Seq" for CC.type argument. b) adapt the R code of the db.hgu133plus2() function to have the right annotation conversion when using ICELLNET. Same as for RNAseq, the annotations should be set as rownames and in a ID column. 
 
 
-**For the peripheral cell (if you don't want to use BioGPS as peripheral cells): ** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formattted (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
+**For the peripheral cell (if you don't want to use BioGPS as peripheral cells):** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formattted (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
 
 ## Target files format
 You should define two dataframes as target files, one corresponding to the central cell, and the other one corresponding to the peripheral cells. These dataframe usually describes the different samples. 
@@ -168,7 +167,7 @@ You should define two dataframes as target files, one corresponding to the centr
 
 In this example, we are interested in **studying communication of resting and perturbed immune cells**. To explore the role of autocrine loops, we cultured LPS-activated human monocyte-derived dendritic cells (DCs) in the presence or absence of blocking antibodies (Abs) to the TNF and IL-10 receptors (αTNFR and αIL10R). We want to compare the communication channels that are used by the DCs in the different activation modes.
 
-*Quick experimental information:* Primary cells were extracted from human blood, and the DCs were isolated by negative selection. They were then activated for 8 hours by being cultured either in presence of LPS, LPS+aTNFR, LPS+aIL10. The control condition corresponds to dendritic cells cultured with medium only. Transcriptomic profiles of dendritic cells in each condition were generated using **Affymetrix technology** (hgu133plus2 platform).
+**Quick experimental information:** Primary cells were extracted from human blood, and the DCs were isolated by negative selection. They were then activated for 8 hours by being cultured either in presence of LPS, LPS+aTNFR, LPS+aIL10. The control condition corresponds to dendritic cells cultured with medium only. Transcriptomic profiles of dendritic cells in each condition were generated using **Affymetrix technology** (hgu133plus2 platform).
 
 ### Load database
 
