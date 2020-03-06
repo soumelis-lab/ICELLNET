@@ -2,14 +2,24 @@
 This vignette explains the use of the ICELLNET package and demonstrates typical workflows to dissect intercellular communication between multiples cell types, based on transcriptomic profiles.
 
 ---
-markdown: kramdown
-* TOC {:toc}
+# Table of content
+- [Introduction to ICELLNET package](# Introduction to ICELLNET package)
+  * [What is ICELLNET for? ](## What is ICELLNET for?)
+  * [ICELLNET ligand/receptor interaction database](## ICELLNET ligand/receptor interaction database) 
+  
+    + [Sub-sub-heading](#sub-sub-heading)
+- [Heading](#heading-1)
+  * [Sub-heading](#sub-heading-1)
+    + [Sub-sub-heading](#sub-sub-heading-1)
+- [Heading](#heading-2)
+  * [Sub-heading](#sub-heading-2)
+    + [Sub-sub-heading](#sub-sub-heading-2)
 ---
 
 
 # Introduction to ICELLNET package
 
-## What is ICELLNET for ? 
+## What is ICELLNET for? 
 
 Cell-to-cell communication is at the basis of the higher-order organization observed in tissues, organs, and organisms, at steady state and in response to stress. The availability of large-scale transcriptomics datasets from several cell types has opened the possibility of **reconstructing cell-cell interactions based on co-expression of ligand-receptor pairs**. Important challenges remain, including the global integration of cell-cell communication, biological interpretation, the inference of communication between cell types not necessarily represented in the same dataset. We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell communication in a global manner**. It integrates an original expert-curated **database of ligand-receptor interactions** taking into account multiple subunits expression. Based on transcriptomic profiles (gene expression), ICELLNET package allows to compute **communication scores** between cells and provides **several visualization modes** that can be helpful to dig into cell-cell interaction mechanism and extend biological knowledge. 
 
