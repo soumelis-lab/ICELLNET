@@ -11,6 +11,7 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
   * [Typical workflow](##-Typical-workflow)
   * [Visualization modes](##-Visualization-modes)
 
+<!-- toc -->
 ---
 
 
