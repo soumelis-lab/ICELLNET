@@ -68,7 +68,7 @@ The quantification of intercellular communication consist of scoring the intensi
 
 The score of an individual ligand/receptor interaction is computed as the product of their expression levels respectively by the source (central) and by the target (peripheral) cell. These individual scores are then combined into a global metric assessing the overall exchange of information between the cell types of interest
 
-![](ICELLNET_Score_formula.png){width=300px}
+![](ICELLNET_Score_formula.png| width=100) 
 
 
 Since cell-to-cell communication is directional, we consider ligand expression from the central cell and receptor expression from the peripheral cells to assess out-flow communication. On the other way, we select receptor expression from the central cell and ligand expression from peripheral cells to assess in-flow communication. This is controlled by the  *direction* argument ("in" or "out") in the `icellnet.score()` function. 
