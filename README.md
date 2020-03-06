@@ -7,12 +7,12 @@ This repository hosts the source code corresponding to the method described in [
 
 To install it, the easiest way is to use the `R` package `devtools` and its function `install_github`:
 
-    install.packages(c("devtools", "jetset", "readxl", "psych", "GGally", "gplots", "ggplot2", "RColorBrewer", "data.table", "grid", "gridExtra", "ggthemes", "scales","rlist") ##Installs devtools and the icellnet dependancies
+    install.packages(c("devtools", "jetset", "readxl", "psych", "GGally", "gplots", "ggplot2", "RColorBrewer", "data.table", "grid", "gridExtra", "ggthemes", "scales","rlist")) ##Installs devtools and the icellnet dependancies
 
     if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-    BiocManager::install("BiocGenerics", "org.Hs.eg.db", "hgu133plus2.db", "annotate")
+    BiocManager::install(c("BiocGenerics", "org.Hs.eg.db", "hgu133plus2.db", "annotate"))
     
     library(devtools)
     install_github("soumelis-lab/ICELLNET",ref="master", subdir="icellnet")
