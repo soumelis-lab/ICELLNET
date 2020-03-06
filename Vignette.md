@@ -88,7 +88,7 @@ Here we describe the different stages f the ICELLNET package to compute intercel
 4. Display different visualisation modes to dissect intercelllar communication scores 
 
 <center>
-![](ICELLNET_Figure2_v9.png){width=700px}
+![](https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/ICELLNET_Figure2_v9.png){width=700px}
 </center>
 
 ## Visualisation modes
