@@ -16,13 +16,12 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 - [Case study 1: IL-10 controls an intercellular communication module in LPS-activated dendritic cells](#Case-study-1:-IL-10-controls-an-intercellular-communication-module-in-LPS-activated-dendritic-cells)
 - [Case study 2: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets](#Case-study-2:-dissect-intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets)
 
-
+<!-- toc -->
 ---
 
-<!-- toc -->
+
 # Introduction to ICELLNET package
 
-<!-- toc -->
 ## What is ICELLNET for? 
 
 Cell-to-cell communication is at the basis of the higher-order organization observed in tissues, organs, and organisms, at steady state and in response to stress. The availability of large-scale transcriptomics datasets from several cell types has opened the possibility of **reconstructing cell-cell interactions based on co-expression of ligand-receptor pairs**. Important challenges remain, including the global integration of cell-cell communication, biological interpretation, the inference of communication between cell types not necessarily represented in the same dataset. We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell communication in a global manner**. It integrates an original expert-curated **database of ligand-receptor interactions** taking into account multiple subunits expression. Based on transcriptomic profiles (gene expression), ICELLNET package allows to compute **communication scores** between cells and provides **several visualization modes** that can be helpful to dig into cell-cell interaction mechanism and extend biological knowledge. 
@@ -124,7 +123,6 @@ Two types of pvalue can be computed (`icellnet.score.pvalue()` function), to com
 It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the `pvalue.plot()` function. This allows to interpret the difference of communication score in a quantitative manner.
  
 # How to install ICELLNET package?
-
 
 To install `icellnet` package, the easiest way is to use the `R` package `devtools` and its function `install_github`:
 
