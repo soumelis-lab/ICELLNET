@@ -73,7 +73,7 @@ The score of an individual ligand/receptor interaction is computed as the produc
 </center>
 
 
-Since cell-to-cell communication is directional, we consider ligand expression from the central cell and receptor expression from the peripheral cells to assess out-flow communication. On the other way, we select receptor expression from the central cell and ligand expression from peripheral cells to assess in-flow communication. This is controlled by the  *direction* argument ("in" or "out") in the *icellnet.score()* function. 
+Since cell-to-cell communication is directional, we consider ligand expression from the central cell and receptor expression from the peripheral cells to assess out-flow communication. On the other way, we select receptor expression from the central cell and ligand expression from peripheral cells to assess in-flow communication. This is controlled by the  *direction* argument ("in" or "out") in the `icellnet.score()` function. 
 
 ## Typical workflow 
  
@@ -85,11 +85,9 @@ Here we describe the different stages f the ICELLNET package to compute intercel
 
 3. Compute ICELLNET communication scores
 
-4. Display different visualisation modes to dissect intercelllar communication scores 
+4. Display different visualisation modes to dissect intercellular communication scores 
 
-<center>
-![](soumelis-lab/ICELLNET/master/ICELLNET_Figure2_v9.png)
-</center>
+![](ICELLNET_Figure2_v9.png)
 
 ## Visualisation modes
 
