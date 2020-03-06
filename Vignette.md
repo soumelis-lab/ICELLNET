@@ -9,7 +9,7 @@ Cell-to-cell communication is at the basis of the higher-order organization obse
 
 ## ICELLNET ligand/receptor interaction database 
 
-We have curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Also, all these interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: Growth factors, Cytokines, Chemokines, Checkpoints, Notch signaling, Antigen binding. The cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGF-\beta family and RTK cytokines. 
+We have curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Also, all these interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: Growth factors, Cytokines, Chemokines, Checkpoints, Notch signaling, Antigen binding. The cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines. 
 
 You can visualise the ICELLNET database and its structure by doing: 
 
