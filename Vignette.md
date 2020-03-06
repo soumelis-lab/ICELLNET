@@ -5,25 +5,15 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 # Table of content
 
 - [Introduction to ICELLNET package](#Introduction-to-ICELLNET-package)
-
   * [What is ICELLNET for? ](##What-is-ICELLNET-for?)
-  
   * [ICELLNET ligand/receptor interaction database](##ICELLNET-ligand/receptor-interaction-database) 
-  
   * [Input data](##Input-data)
-  
   * [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?)
-  
   * [Typical workflow](##Typical-workflow)
-  
   * [Visualisation modes](##Visualisation-modes)
-  
 - [How to install ICELLNET package?](#How-to-install-ICELLNET-package?)
-
 - [How to format your own data to use ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?)
-
 - [Case study 1: IL-10 controls an intercellular communication module in LPS-activated dendritic cells](#Case-study-1:-IL-10-controls-an-intercellular-communication-module-in-LPS-activated-dendritic-cells)
-
 - [Case study 2: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets](#Case-study-2:-dissect- intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets)
 
 <!-- toc -->
