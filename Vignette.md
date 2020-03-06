@@ -4,20 +4,17 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 ---
 # Table of content
 - [Introduction to ICELLNET package](#-Introduction-to-ICELLNET-package)
-  * [What is ICELLNET for? ](## What is ICELLNET for?)
-  * [ICELLNET ligand/receptor interaction database](## ICELLNET ligand/receptor interaction database) 
-  
-    + [Sub-sub-heading](#sub-sub-heading)
-- [Heading](#heading-1)
-  * [Sub-heading](#sub-heading-1)
-    + [Sub-sub-heading](#sub-sub-heading-1)
-- [Heading](#heading-2)
-  * [Sub-heading](#sub-heading-2)
-    + [Sub-sub-heading](#sub-sub-heading-2)
+  * [What is ICELLNET for? ](##-What-is-ICELLNET-for?)
+  * [ICELLNET ligand/receptor interaction database](##-ICELLNET-ligand/receptor-interaction-database) 
+  * [Input data](##-Input-data)
+  * [How is the intercellular communication score computed?](##-How-is-the-intercellular-communication-score-computed?)
+  * [Typical workflow](##-Typical-workflow)
+  * [Visualization modes](##-Visualization-modes)
+
 ---
 
 
-##Introduction to ICELLNET package
+# Introduction to ICELLNET package
 
 ## What is ICELLNET for? 
 
@@ -51,7 +48,6 @@ db3 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Classifications),] #if y
 db.name.couple=name.lr.couple(db3, type="Subfamily")
 head(db.name.couple)
 ```
-
 Instead of using the ICELLNET database, it is also possible to use its own database as long as it is correctly formatted with specific columns as below. The Family and Subfamily colums correspond to two independant classifications (per family of molecules, or other) of your choice, but each interaction should fit only in one category of the classification (for example, an interaction cannot be classified in "type 1" and also "type 2" cytokines in the ICELLNET database). In the Classifications category, you should add all the terms used to classify the interaction : the one of Family, Subfamily, but also other words that can be used to select some specific interactions (for example "interleukin" in ICELLNET database).
 
 |  Ligand 1 | Ligand 2  | Receptor 1  | Receptor 2  | Receptor 3  | Family | Subfamily | Classifications |
