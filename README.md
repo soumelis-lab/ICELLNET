@@ -1,6 +1,6 @@
 # ICELLNET: A transcriptome-based framework to dissect intercellular communication
 ---
-Lucile Massenet-Regad and Floriane Noël
+Floriane Noël and Lucile Massenet-Regad 
 ---
 
 This repository hosts the source code corresponding to the method described in [Noël et al, 2020](https://www.biorxiv.org/content/10.1101/2020.03.05.976878v1) to infer intercellular communication networks and dissect intercellular communication between multiples cell types based on their transcriptomic profiles.
