@@ -15,6 +15,7 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 - [How to format your own data to use ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?)
 - [Case study 1: IL-10 controls an intercellular communication module in LPS-activated dendritic cells](#Case-study-1:-IL-10-controls-an-intercellular-communication-module-in-LPS-activated-dendritic-cells)
 - [Case study 2: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets](#Case-study-2:-dissect-intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets)
+- [Software information](#Software-information)
 
 <!-- toc -->
 ---
@@ -498,5 +499,40 @@ pvalue.cond
 ```
 Here we do not have considered enough biological replicates, this is why the pvalue cannot be significant. 
 
+# Software information
 
+```
+session.info()
+```
+R version 3.6.3 (2020-02-29)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS Mojave 10.14.6
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
+
+locale:
+[1] fr_FR.UTF-8/fr_FR.UTF-8/fr_FR.UTF-8/C/fr_FR.UTF-8/fr_FR.UTF-8
+
+attached base packages:
+ [1] grid      stats4    parallel  stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] rlist_0.4.6.1        scales_1.1.0         ggthemes_4.2.0       gridExtra_2.3        data.table_1.12.8   
+ [6] RColorBrewer_1.1-2   gplots_3.0.3         GGally_1.5.0         ggplot2_3.3.0        psych_1.9.12.31     
+[11] readxl_1.3.1         jetset_3.4.0         annotate_1.64.0      XML_3.99-0.3         hgu133plus2.db_3.2.3
+[16] org.Hs.eg.db_3.10.0  AnnotationDbi_1.48.0 IRanges_2.20.2       S4Vectors_0.24.3     Biobase_2.46.0      
+[21] BiocGenerics_0.32.0  icellnet_0.0.0.9000 
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.4         lattice_0.20-40    tidyr_1.0.2        gtools_3.8.2       assertthat_0.2.1   digest_0.6.25     
+ [7] R6_2.4.1           cellranger_1.1.0   plyr_1.8.6         RSQLite_2.2.0      pillar_1.4.3       rlang_0.4.5       
+[13] rstudioapi_0.11    gdata_2.18.0       blob_1.2.1         labeling_0.3       stringr_1.4.0      RCurl_1.98-1.1    
+[19] bit_1.1-15.2       munsell_0.5.0      compiler_3.6.3     pkgconfig_2.0.3    mnormt_1.5-6       tidyselect_1.0.0  
+[25] tibble_3.0.0       reshape_0.8.8      fansi_0.4.1        withr_2.1.2        crayon_1.3.4       dplyr_0.8.5       
+[31] bitops_1.0-6       nlme_3.1-145       xtable_1.8-4       gtable_0.3.0       lifecycle_0.2.0    DBI_1.1.0         
+[37] magrittr_1.5       KernSmooth_2.23-16 cli_2.0.2          stringi_1.4.6      farver_2.0.3       reshape2_1.4.3    
+[43] ellipsis_0.3.0     vctrs_0.2.4        tools_3.6.3        bit64_0.9-7        glue_1.3.2         purrr_0.3.3       
+[49] colorspace_1.4-1   caTools_1.18.0     memoise_1.1.0
 
