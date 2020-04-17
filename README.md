@@ -9,13 +9,34 @@ To install it, the easiest way is to use the `R` package `devtools` and its func
 
     install.packages(c("devtools", "jetset", "readxl", "psych", "GGally", "gplots", "ggplot2", "RColorBrewer", "data.table", "grid", "gridExtra", "ggthemes", "scales","rlist")) ##Installs devtools and the icellnet CRAN dependancies
 
-    if (!requireNamespace("BiocManager", quietly = TRUE)) # Installs Bioconductor dependancies 
-    install.packages("BiocManager")
+    if (!requireNamespace("BiocManager", quietly = TRUE)) # Installs icellnet Bioconductor dependancies 
+        install.packages("BiocManager")
     BiocManager::install(c("BiocGenerics", "org.Hs.eg.db", "hgu133plus2.db", "annotate"))
     
 Then you just have to load `devtools` package and run the command below:
 
     library(devtools)
     install_github("soumelis-lab/ICELLNET",ref="master", subdir="icellnet")
+
+Once all the dependencies are downloaded and loaded, you can load the ‘icellnet’ package.    
+    
+    library(BiocGenerics)
+    library("org.Hs.eg.db")
+    library("hgu133plus2.db")
+    library("annotate")
+    library(jetset)
+    library(readxl)
+    library(psych)
+    library(GGally)
+    library(gplots)
+    library(ggplot2)
+    library(RColorBrewer)
+    library(data.table)
+    library(grid)
+    library(gridExtra)
+    library(ggthemes)
+    library(scales)
+    library(rlist)
+    library(icellnet)
     
 Examples on how to use `icellnet` package functions can be found in the Vignette.
