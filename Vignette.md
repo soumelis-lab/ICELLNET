@@ -65,7 +65,7 @@ Instead of using the ICELLNET database, it is also possible to use its own datab
 ## Input data 
 ### Type of data
 ICELLNET pipeline first considers the transcriptomic profile of the central cell, that can correspond to several biological conditions. ICELLNET will then allow to compare the communication channels used by the central cells in these different conditions with peripheral cells.
-As peripheral cells, we use BioGPS, a public datasets of 746 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. It is possible to select up to 14 different cell types to connect with the central cell (the different options are listed below, in PC.target.all$Class).This number was chosen for clarity purpose. The user can also use other transcriptomic profiles instead of BioGPS.
+As peripheral cells, we use BioGPS, a public datasets of 745 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. It is possible to select up to 14 different cell types to connect with the central cell (the different options are listed below, in PC.target.all$Class).This number was chosen for clarity purpose. The user can also use other transcriptomic profiles instead of BioGPS.
 
 ```{r,echo=T}
 head(PC.data.all[1:5,1:5])
