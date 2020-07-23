@@ -13,10 +13,9 @@
 name.lr.couple <-
   function(db = db,
            type = c("Family", "Subfamily")) {
-    # rendre interne
     db.name.lr.couple = matrix(nrow = dim(db)[1], ncol = 2)
     colnames(db.name.lr.couple) = c("Pair", type)
-    #c("Pair", "Family","Function")
+
     for (mol in seq(1, dim(db)[1])) {
       if (is.na(db$`Ligand 2`[mol])) {
         if (is.na(db$`Receptor 2`[mol]) & is.na(db$`Receptor 3`[mol])) {

@@ -39,7 +39,7 @@ The most recent version of ligand-receptor interaction database can always be do
 In R, you can visualise ICELLNET database and its structure: 
 
 ```{r db, echo=T}
-db=read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE)
+db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
 head(db)
 ```
 
@@ -153,7 +153,7 @@ Once all the dependencies are downloaded and loaded, you can load the `icellnet`
 
 To load the most recent version of the ligand/receptor database, you should run the command below: 
 
-    db=read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE)
+    db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
 
 
 ```{r, echo=T, message=FALSE}
@@ -181,8 +181,7 @@ In this example, we are interested in **studying communication of resting and pe
 ### Load database
 
 ```{r,echo=T}
-db=read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",
-               header = T, check.names=FALSE)
+db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
 db.name.couple=name.lr.couple(db, type="Family")
 head(db.name.couple)
 ```
@@ -331,8 +330,7 @@ To see the use of the other visualisation modes, see case study 2.
 
 ###Load database and restrict the database to the different family of cytokines
 ```{r,echo=T}
-db=read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",
-               header = T, check.names=FALSE)
+db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
                
 my.selection.LR=c("Cytokine")
 db2 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Classifications),] #if you want to use all the database, do instead : db2=db
