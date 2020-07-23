@@ -4,11 +4,19 @@
 \alias{icellnet.ind.score}
 \title{ICELLNET score computation for replicates, to compute the ovalue (not exported)}
 \usage{
-icellnet.ind.score(direction = c("out", "in"), CC.data = CC.data,
-  PC.data = PC.data, PC = PC, PC.target = PC.target, cell = cell,
-  CC.type = c("RNAseq", "Microarray"), PC.type = c("RNAseq",
-  "Microarray"), db = db, family.type = "Family",
-  between = c("cells", "conditions"))
+icellnet.ind.score(
+  direction = c("out", "in"),
+  CC.data = CC.data,
+  PC.data = PC.data,
+  PC = PC,
+  PC.target = PC.target,
+  cell = cell,
+  CC.type = c("RNAseq", "Microarray"),
+  PC.type = c("RNAseq", "Microarray"),
+  db = db,
+  family.type = "Family",
+  between = c("cells", "conditions")
+)
 }
 \arguments{
 \item{direction}{Direction of the communication (either "out" or "in")}

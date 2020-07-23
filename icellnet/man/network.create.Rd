@@ -4,8 +4,12 @@
 \alias{network.create}
 \title{Display the communication network with ICELLNET method}
 \usage{
-network.create(icn.score, scale = c(min(icn.score), max(icn.score)),
-  direction = c("in", "out"), PC.col)
+network.create(
+  icn.score,
+  scale = c(min(icn.score), max(icn.score)),
+  direction = c("in", "out"),
+  PC.col
+)
 }
 \arguments{
 \item{icn.score}{Matrix of global communication scores}

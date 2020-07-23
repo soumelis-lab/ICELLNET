@@ -8,7 +8,7 @@
 #' @param type Can be set to "Family" or "Subfamily", to display the  family/subfamily of molecules which the L/R interaction belongs to.
 #' @export
 #' @examples
-#' name.lr.couple(db = db, type="Family")
+#' \dontrun{name.lr.couple(db = db, type="Family")}
 
 name.lr.couple <-
   function(db = db,

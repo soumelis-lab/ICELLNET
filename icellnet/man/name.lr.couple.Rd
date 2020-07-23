@@ -16,5 +16,5 @@ From the database of ligand/receptors interactions, the function retrieves the c
 It returns a table containing the name of the couple L/R and the family/subfamily of molecules which the interaction belongs to.
 }
 \examples{
-name.lr.couple(db = db, type="Family")
+\dontrun{name.lr.couple(db = db, type="Family")}
 }

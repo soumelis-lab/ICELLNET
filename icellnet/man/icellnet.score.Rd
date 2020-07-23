@@ -4,10 +4,17 @@
 \alias{icellnet.score}
 \title{Communication score computation with ICELLNET method}
 \usage{
-icellnet.score(direction = c("out", "in"), CC.data = CC.data,
-  PC.data = PC.data, PC = PC, PC.target = PC.target,
-  CC.type = c("RNAseq", "Microarray"), PC.type = c("RNAseq",
-  "Microarray"), db = db, family.type = "Family")
+icellnet.score(
+  direction = c("out", "in"),
+  CC.data = CC.data,
+  PC.data = PC.data,
+  PC = PC,
+  PC.target = PC.target,
+  CC.type = c("RNAseq", "Microarray"),
+  PC.type = c("RNAseq", "Microarray"),
+  db = db,
+  family.type = "Family"
+)
 }
 \arguments{
 \item{direction}{Direction of the communication (either "out" or "in")}

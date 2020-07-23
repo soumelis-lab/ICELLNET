@@ -14,22 +14,21 @@ gene.scaling(data = data, n = n, db = db)
 \item{db}{Ligand/receptor database}
 }
 \description{
-This function rescale each gene expression across condition to range from 0 to 10.
+This function rescale each gene expression across condition to range from minimum 0 to maximum 10.
 }
 \details{
 Select genes from transcriptional profiles corresponding to the ligands and/or
 receptors included in the database (db). Then, scale each ligand/receptor
 gene expression among all the conditions ranging from 0 to 10.
 For each gene:
-- the maximum value (10) is defined as the mean expression of the 'n' highest values of expression.
-- the minimum value (0) is defined as the mean expression of the 'n' lowest values of expression.
+- The maximum value (10) is defined as the mean expression of the 'n' highest values of expression.
+- Then, for each sample, gene expression value is divided by the maximum value and multiply by 10.
 Default value of n is 1.
 }
 \examples{
 \dontrun{In this example, our matrix (CC.data) contains 80 transcriptional profiles.
-The n is set to 4 in order to take the mean of the 5\% extreme expression values as the maximum/minimum expression value.
+The n is set to 4 in order to take the mean of the 5\% extreme expression values as the maximum expression value.
 mean(4 highest values) --> 10
-mean(4 lowest values) --> 0
 gene.scaling (data = CC.data, n=4, db = db)
 }
 

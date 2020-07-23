@@ -4,7 +4,8 @@
 \name{PC.target.all}
 \alias{PC.target.all}
 \title{PC.target.all}
-\format{A data frame with 53675 rows corresponding to the gene expression and 746 columns corresponding to the differents samples. All these samples have ben generated
+\format{
+A data frame with 53675 rows corresponding to the gene expression and 746 columns corresponding to the differents samples. All these samples have ben generated
 using Affymetrix Human Genome U133 Plus 2.0 Array technology. dataset already processed considering all the samples.
 
 ' \describe{
@@ -18,7 +19,8 @@ using Affymetrix Human Genome U133 Plus 2.0 Array technology. dataset already pr
   \item{Cell_description}{Cell description}
   \item{Cell_type}{Cell type, first classification}
   \item{Class}{Cell type classification that is used in Icellnet package. you can modify this column by the Cell_type column if you prefer this other classification, less detailed.}
-}}
+}
+}
 \source{
 \url{http://biogps.org/dataset/species/human/}
 }

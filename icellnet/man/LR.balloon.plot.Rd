@@ -4,8 +4,14 @@
 \alias{LR.balloon.plot}
 \title{Plot of individual communication scores of contributing L/R pairs.}
 \usage{
-LR.balloon.plot(lr = lr, PC = PC, thresh = thresh, type = c("raw",
-  "percentage"), db.name.couple = db.name.couple, title = title)
+LR.balloon.plot(
+  lr = lr,
+  PC = PC,
+  thresh = thresh,
+  type = c("raw", "percentage"),
+  db.name.couple = db.name.couple,
+  title = title
+)
 }
 \arguments{
 \item{lr}{Matrix of individual communication scores}

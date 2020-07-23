@@ -4,7 +4,9 @@
 \name{PC.data.all}
 \alias{PC.data.all}
 \title{PC.data.all}
-\format{A data frame with 53675 rows corresponding to the gene expression and 746 columns corresponding to the different samples.}
+\format{
+A data frame with 53675 rows corresponding to the gene expression and 746 columns corresponding to the different samples.
+}
 \source{
 \url{http://biogps.org/dataset/species/human/}
 }

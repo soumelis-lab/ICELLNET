@@ -6,24 +6,22 @@ Authors@R:
     c(person(given = "Lucile",
            family = "Massenet-Regad",
            role = "cre", 
-           email = "lucile.massenet@espci.org"),
+           email = "lucile.massenet@inserm.fr"),
      person(given = "Floriane",
            family = "No<U+00EB>l",
            role ="aut", 
            email = "floriane.noel@inserm.fr"))
-Description: What the package does (one paragraph).
+Maintainer: Lucile Massenet-Regad <lucile.massenet@espci.org>
+Description: ICELLNET is a transcriptomic-based framework to dissect cell communication in a global manner. It integrates an original expert-curated database of ligand-receptor interactions taking into account multiple subunits expression. Based on transcriptomic profiles (gene expression), ICELLNET package allows to compute communication scores between cells and provides several visualization modes that can be helpful to dig into cell-cell interaction mechanism and extend biological knowledge.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
-Imports: ggplot2, gplots, org.Hs.eg.db, hgu133plus2.db, annotate,
-        jetset, readxl, GGally, RColorBrewer, ggthemes, reshape2,
+RoxygenNote: 7.1.0
+Depends: readxl, curl, ggplot2, gplots, org.Hs.eg.db, hgu133plus2.db,
+        annotate, jetset, GGally, RColorBrewer, ggthemes, reshape2,
         tidyr, dplyr, AnnotationDbi, stats, BiocGenerics, data.table,
         psych
-Suggests: knitr, rmarkdown
-VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2020-02-27 17:11:32 UTC; lucilemassenet
+Packaged: 2020-07-23 14:00:08 UTC; Travail
 Author: Lucile Massenet-Regad [cre],
   Floriane No<U+00EB>l [aut]
-Maintainer: Lucile Massenet-Regad <lucile.massenet@espci.org>

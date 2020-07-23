@@ -4,8 +4,11 @@
 \alias{LR.family.score}
 \title{Distribution of class of molecules contribution to the communication scores}
 \usage{
-LR.family.score(lr = lr, my.family = my.family,
-  db.couple = as.data.frame(db.couple))
+LR.family.score(
+  lr = lr,
+  my.family = my.family,
+  db.couple = as.data.frame(db.couple)
+)
 }
 \arguments{
 \item{lr}{Matrix of individual communication scores (sum on each column should be equal to the global communication score)}

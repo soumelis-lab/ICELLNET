@@ -4,12 +4,20 @@
 \alias{icellnet.score.pvalue}
 \title{Comparison of different communication score by computing a pvalue matrix}
 \usage{
-icellnet.score.pvalue(direction = c("out", "in"), CC.data = CC.data,
-  CC.data2 = NULL, PC.data = PC.data, PC = PC,
-  PC.target = PC.target, CC.type = c("RNAseq", "Microarray"),
-  PC.type = c("RNAseq", "Microarray"), db = db,
-  family.type = "Family", between = c("cells", "conditions"),
-  method = "BH")
+icellnet.score.pvalue(
+  direction = c("out", "in"),
+  CC.data = CC.data,
+  CC.data2 = NULL,
+  PC.data = PC.data,
+  PC = PC,
+  PC.target = PC.target,
+  CC.type = c("RNAseq", "Microarray"),
+  PC.type = c("RNAseq", "Microarray"),
+  db = db,
+  family.type = "Family",
+  between = c("cells", "conditions"),
+  method = "BH"
+)
 }
 \arguments{
 \item{direction}{Direction of the communication (either "out" or "in"). "out" represent the communication from the central cell to the peripheral cells, which means that the ligands considered are expressed by the central cell, and the receptors are expressed by the peripheral cells. "in" represents the communication from the peripheral cells to the central cells, which means that the considered ligands are expressed by the peripheral cells and the receptors are expressed by the central cells.}

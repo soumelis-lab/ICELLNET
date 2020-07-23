@@ -4,9 +4,19 @@
 \alias{geom_edges}
 \title{Display the edges in the ICELLNET network.}
 \usage{
-geom_edges(mapping = NULL, data = NULL, position = "identity",
-  arrow = NULL, curvature = 0, angle = 90, ncp = 5,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...)
+geom_edges(
+  mapping = NULL,
+  data = NULL,
+  position = "identity",
+  arrow = NULL,
+  curvature = 0,
+  angle = 90,
+  ncp = 5,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE,
+  ...
+)
 }
 \arguments{
 \item{mapping}{mapping}

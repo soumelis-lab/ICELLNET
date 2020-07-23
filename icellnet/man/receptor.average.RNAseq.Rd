@@ -4,8 +4,7 @@
 \alias{receptor.average.RNAseq}
 \title{receptor.average.RNAseq function}
 \usage{
-receptor.average.RNAseq(db = db, data = data,
-  SYMBOL = rownames(data))
+receptor.average.RNAseq(db = db, data = data, SYMBOL = rownames(data))
 }
 \arguments{
 \item{db}{Ligand/receptor database}

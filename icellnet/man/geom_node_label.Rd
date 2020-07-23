@@ -4,11 +4,21 @@
 \alias{geom_node_label}
 \title{Label the node with the name of the cell type in the ICELLNET network.}
 \usage{
-geom_node_label(mapping = NULL, data = NULL, position = "identity",
-  ..., parse = FALSE, nudge_x = 0, nudge_y = 0,
-  label.padding = unit(0.25, "lines"), label.r = unit(0.15, "lines"),
-  label.size = 0.25, na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+geom_node_label(
+  mapping = NULL,
+  data = NULL,
+  position = "identity",
+  ...,
+  parse = FALSE,
+  nudge_x = 0,
+  nudge_y = 0,
+  label.padding = unit(0.25, "lines"),
+  label.r = unit(0.15, "lines"),
+  label.size = 0.25,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{mapping}

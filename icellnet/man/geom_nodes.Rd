@@ -4,8 +4,15 @@
 \alias{geom_nodes}
 \title{Display the nodes in the ICELLNET network.}
 \usage{
-geom_nodes(mapping = NULL, data = NULL, position = "identity",
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...)
+geom_nodes(
+  mapping = NULL,
+  data = NULL,
+  position = "identity",
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE,
+  ...
+)
 }
 \arguments{
 \item{mapping}{mapping}
