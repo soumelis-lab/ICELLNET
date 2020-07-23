@@ -492,7 +492,7 @@ balloon
 It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the pvalue.plot() function. This allows to interpret the difference of communication score in a quantitative manner.
 
 ```{r, warning=F, message=F, echo=T}
-# Comparison of the communication scores obtained from the CAF-S1 and the different peripheral cells
+# Comparison of the communication scores obtained from the CAF-S1 and the different partner cells
 pvalue1=icellnet.score.pvalue(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,
                               PC.target = PC.target,PC=my.selection, CC.type = "RNAseq",PC.type = "Microarray",
                               db = db2, family.type = "Subfamily", between="cells", method="BH")[[1]]
