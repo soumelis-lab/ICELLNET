@@ -15,8 +15,10 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
   
 - [How to install ICELLNET package?](#How-to-install-ICELLNET-package?)
 - [How to format your own data to use ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?)
-- [Case study 1: IL-10 controls an intercellular communication module in LPS-activated dendritic cells](#Case-study-1:-IL-10-controls-an-intercellular-communication-module-in-LPS-activated-dendritic-cells)
-- [Case study 2: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets](#Case-study-2:-dissect-intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets)
+- [Case study 1: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets](#Case-study-1:-dissect-intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets)
+
+- [Case study 2: IL-10 controls an intercellular communication module in LPS-activated dendritic cells](#Case-study-2:-IL-10-controls-an-intercellular-communication-module-in-LPS-activated-dendritic-cells)
+
 - [Software information](#Software-information)
 
 <!-- toc -->
@@ -35,8 +37,8 @@ We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell co
 
 We have curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch signalling, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: **type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines**. 
 
-The most recent version of ligand-receptor interaction database can always be downloaded [here](https://github.com/soumelis-lab/ICELLNET/master/database.tsv).
-In R, you can visualise ICELLNET database and its structure: 
+The most recent version of ligand-receptor interaction database can always be downloaded [here](https://github.com/soumelis-lab/ICELLNET/blob/master/database.tsv).
+In R, you can visualize ICELLNET database and its structure: 
 
 ```{r db, echo=T}
 db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
@@ -151,14 +153,30 @@ Then you just have to load `devtools` package and run the command below:
     
 Once all the dependencies are downloaded and loaded, you can load the `icellnet` package.
 
+	library(BiocGenerics)
+	library("org.Hs.eg.db")
+	library("hgu133plus2.db")
+	library("annotate")
+	library(jetset)
+	library(readxl)
+	library(psych)
+	library(GGally)
+	library(gplots)
+	library(ggplot2)
+	library(RColorBrewer)
+	library(data.table)
+	library(grid)
+	library(gridExtra)
+	library(ggthemes)
+	library(scales)
+	library(rlist)
+	library(icellnet)
+
 To load the most recent version of the ligand/receptor database, you should run the command below: 
 
     db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
 
 
-```{r, echo=T, message=FALSE}
-library(icellnet)
-```
 # How to format your own data to use ICELLNET package? <a name="How-to-format-your-own-data-to-use-ICELLNET-package?"></a>
 
 ## Data files format
@@ -172,161 +190,11 @@ You should define two dataframes as target files, one corresponding to the centr
 **PC.target** should contains at least an 'ID' column including the name of the samples (usually rownames(PC.target) or colnames(PC.data) ), and a 'Class' column corresponding to a classification of your different samples included in PC.target, such as a cell type classification. The different categories included in the 'Class' column will define the different peripheral cells in the graphs.
 
 
-# Case study 1: IL-10 controls an intercellular communication module in LPS activated dendritic cells <a name="Case-study-1:-IL-10-controls-an-intercellular-communication-module-in-LPS-activated-dendritic-cells"></a>
+# Case study 1: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets <a name="Case-study-1:-dissect-intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets"></a>
 
-In this example, we are interested in **studying communication of resting and perturbed immune cells**. To explore the role of autocrine loops, we cultured LPS-activated human monocyte-derived dendritic cells (DCs) in the presence or absence of blocking antibodies (Abs) to the TNF and IL-10 receptors (αTNFR and αIL10R). We want to compare the communication channels that are used by the DCs in the different activation modes.
+**Cancer-associated fibroblasts** (CAFs) are stromal cells localized in the tumor microenvironment, known to enhance tumor phenotypes, such as cancer cell proliferation and inflammation. Previous studies have shown heterogeneity in CAFs phenotype ( [Kieffer et al.2020](https://cancerdiscovery.aacrjournals.org/content/early/2020/05/20/2159-8290.CD-19-1384) , [Costa et al. 2018](https://www.cell.com/cancer-cell/fulltext/S1535-6108(18)30011-4)). They identified 4 subsets of CAF, including CAF-S1 and CAF-S4 accumulating in Triple Negative Breast Cancer (TNBC). CAF-S1 has been notably associated with an immunosuppressive microenvironment. 
 
-**Quick experimental information:** Primary cells were extracted from human blood, and the DCs were isolated by negative selection. They were then activated for 8 hours by being cultured either in presence of LPS, LPS+aTNFR, LPS+aIL10. The control condition corresponds to dendritic cells cultured with medium only. Transcriptomic profiles of dendritic cells in each condition were generated using **Affymetrix technology** (hgu133plus2 platform).
-
-### Load database
-
-```{r,echo=T}
-db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
-db.name.couple=name.lr.couple(db, type="Family")
-head(db.name.couple)
-```
-
-### Load partner cell types: Human Primary Cell Atlas dataset 
-
-```{r,echo=T}
-my.selection = c("Epith", "Fblast","Endoth","Mono","Macroph","NK","Neutrop","B cell")
-PC.target = PC.target.all[which(PC.target.all$Class%in%my.selection),c("ID","Class","Cell_type")]
-PC.data = PC.data.all[,PC.target$ID]
-```
-
-To use Human Primary Cell Atlas dataset, we have to : 
-
-1. Create a conversion chart between the AffyID and the gene symbol that are used in the database, using the hgu133plus2.db() function. 
-
-2.  Perform the gene.scaling() function, that will a) select genes corresponding to the ligands and/or receptors included in the database (db). b) scale each ligand/receptor gene expression among all the conditions ranging from 0 to 10. For each gene: - the maximum value (10) is defined as the mean expression of the 'n' highest values of expression. - the minimum value (0) is defined as the mean expression of the 'n' lowest values of expression. Default value of n is 1. Outliers are rescaled at either 0 (if below minimum value) or 10 (if above maximum value).
-
-In this example, n is set to 15 in order to take the mean of the 5% extreme expression values as the maximum/minimum.
-
-```{r, warning=F ,echo=T}
-### Convert the gene symbol to affy ID 
-PC.affy.probes = as.data.frame(PC.data[,c(1,2)])
-PC.affy.probes$ID = rownames(PC.affy.probes) # for format purpose
-transform = db.hgu133plus2(db,PC.affy.probes) # creation of a new db2 database with AffyID instead of gene symbol
-
-##Gene scaling of the partner celldataset
-PC.data=gene.scaling(data = PC.data[, 2: dim(PC.data)[2]], n=0.05*dim(PC.data)[2], db = transform) 
-PC.data$ID=rownames(PC.data) # for format purpose
-PC.data$Symbol=rownames(PC.data) # for format purpose
-```
-
-
-### Load central cell: dendritic cell transcriptomic profiles
-```{r,echo=T}
-# Central cell data file (processed gene expression matrix)
-data=read.table("~/Desktop/Work Desktop/Labo/ICELLNET/Projects/Irit/Icellnet_Irith_unique_v2.txt", sep="", header = T)
-CC.data=data[,-dim(data)[2]]
-
-#Target central cell file (description of the different samples)
-CC.target = as.data.frame(read.table("~/Desktop/Work Desktop/Labo/ICELLNET/Projects/Irit/target_Icellnet_Irith.txt",sep = "\t",header=T))
-head(CC.target)
-```
-
-Same as for the PC.data, the gene expression matrix is rescaled ranging from 0 to 10 considering all the CC.data samples. Here, the microarray data for the central cell are already annotated with gene symbol so we can consider them as "RNAseq" data for the next steps. 
-
-```{r,echo=T}
-CC.data= as.data.frame(gene.scaling(data = CC.data[,2:dim(CC.data)[2]], n=round(dim(CC.data)[2]*0.05), db = db)) #to not consider the SYMBOL column
-CC.data$Symbol=rownames(CC.data) #for format purpose
-```
-
-### Selection of the different biological conditions for the central cell
-```{r,echo=T}
-CC.selection.S1 = CC.target[which(CC.target$Condition=="M+IgG_8h"),"Nomenclature"]
-CC.selection.S2 = CC.target[which(CC.target$Condition=="L+IgG_8h"),"Nomenclature"]
-CC.selection.S3 = CC.target[which(CC.target$Condition=="L+a-T_8h"),"Nomenclature"]
-CC.selection.S4 = CC.target[which(CC.target$Condition=="L+ a-10_8h"),"Nomenclature"]
-
-CC.data.selection.S1 = CC.data[,which(colnames(CC.data)%in%CC.selection.S1)]
-CC.data.selection.S2 = CC.data[,which(colnames(CC.data)%in%CC.selection.S2)]
-CC.data.selection.S3 = CC.data[,which(colnames(CC.data)%in%CC.selection.S3)]
-CC.data.selection.S4 = CC.data[,which(colnames(CC.data)%in%CC.selection.S4)]
-```
-
-### Computation of ICELLNET intercellular communication scores
-
-```{r,echo=T}
-score.computation.1 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,  
-                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
-                                    PC.type = "Microarray",  db = db, family.type = "Family")
-score1=as.data.frame(score.computation.1[[1]])
-colnames(score1)="M+IgG_8h"
-lr1=score.computation.1[[2]]
-
-score.computation.2 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S2,  
-                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
-                                    PC.type = "Microarray",  db = db, family.type = "Family")
-score2=as.data.frame(score.computation.2[[1]])
-colnames(score2)="L+IgG_8h"
-lr2=score.computation.2[[2]]
-
-score.computation.3 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S3,  
-                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
-                                    PC.type = "Microarray",  db = db, family.type = "Family")
-score3=as.data.frame(score.computation.3[[1]])
-colnames(score3)="L+a-TNFR"
-lr3=score.computation.3[[2]]
-
-score.computation.4 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S4,  
-                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
-                                    PC.type = "Microarray",  db = db, family.type = "Family")
-score4=as.data.frame(score.computation.4[[1]])
-colnames(score4)="L+ a-IL10"
-lr4=score.computation.4[[2]]
-
-Scores= cbind(score1,score2,score3,score4)
-colnames(Scores)=c("M+IgG","L+IgG","L+a-TNFR","L+ a-IL10")
-Scores
-```
-
-score1, score2, score3 and score4 correspond to global scores, that are just the sum of the individual scores. Matrix of scores (Scores) corresponds to a summary of the global communication scores computed with ICELLNET between all peripheral cells and the central cell. lr1,lr2, lr3, lr4 correspond to individual score matrix, and will be useful for the further visualisation steps.
-
-### Normalisation and rescaling of the global score 
-
-In this example, we want to see the global variation of communication compared to the medium condition, so we are going to divide each communication score of perturbed condition (activated DCs) by the communication score in the medium condition. If you want to study the difference of communication score between different cell types and the central cell, you do not want to normalise (See case study 2). 
-The Scores.norm matrix is then rescaled ranging from 0 to 10 to facilitate the visualisation of the intercellular network after.
-
-```{r, echo=T, warning=FALSE, fig.align='center'}
-#Score normalisation by the medium condition
-Scores.norm=Scores
-for (i in 1:length(my.selection)){
-  Scores.norm[i,]=Scores[i,]/Scores[i,1]
-}
-Scores.norm
-#Score scaling
-Scores.norm2=(Scores.norm-min(Scores.norm))/(max(Scores.norm)-min(Scores.norm))*9+1
-```
-
-
-### Intercellular communication network representation
-
-```{r, echo=T, warning=FALSE, fig.height=10, fig.width=12}
-
-# Color label
-PC.col = c("Epith"="#C37B90", "Muscle_cell"="#c100b9","Fblast_B"="#88b04b", "Fblast"="#88b04b","Endoth"="#88b04b",
-           "Mono"="#ff962c","Macroph"="#ff962c","moDC"="#ff962c","DC1"="#ff962c","DC2"="#ff962c","pDC"="#ff962c","NK"="#ff962c","Neutrop"="#ff962c",
-           "CD4 T cell"="#5EA9C3","CD8 T cell"="#5EA9C3","Treg"="#5EA9C3","B cell"="#5EA9C3")
-
-# Display intercellular communication networks
-network.plot1 = network.create(icn.score = Scores.norm2[1], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out", PC.col)
-network.plot2 = network.create(icn.score =Scores.norm2[2], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out",PC.col)
-network.plot3 = network.create(icn.score = Scores.norm2[3], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out", PC.col)
-network.plot4 = network.create(icn.score =Scores.norm2[4], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out",PC.col)
-grid.arrange(network.plot1, network.plot2, network.plot3, network.plot4, nrow=2, ncol=2)
-
-```
-Here, we observe a general increase of communication by blocking the IL10 communication channel, which suggests that autocrine IL10 secretion controls the communication in LPS-activated DCs.
-To assess the differences between scores in a quantitative manner, a statistical test can be performed (see "Compute pvalue to compare communication scores" section). 
-To see the use of the other visualisation modes, see case study 2. 
-
-
-
-# Case study 2: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets <a name="Case-study-2:-dissect-intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets"></a>
-
-**Cancer-associated fibroblasts** (CAFs) are stromal cells localized in the tumor microenvironment, known to enhance tumor phenotypes, such as cancer cell proliferation and inflammation. Previous studies, [Costa et al. 2018](https://www.cell.com/cancer-cell/fulltext/S1535-6108(18)30011-4) have identified 4 subsets of CAF, including CAF-S1 and CAF-S4 that accumulate in Triple Negative Breast Cancer (TNBC). CAF-S1 has been notably associated with an immunosuppressive microenvironment. In this tutorial, we want to **study the communication of the different CAF subsets in the tumor microenvironment (TME), using available transcriptional profiles of CAF-S1 and CAF-S4 in TNBC**.Transcriptomic profiles of 6 samples of CAF-S1 and 3 samples of CAF-S4 have been generated in Institut Curie from patients with TNBC operated at Institut Curie, with no prior treatment.
+In this tutorial, we want to **study the difference of communication of CAF-S1 and CAF-S4 with the other components of the tumor microenvironment (TME), using available transcriptional profiles of CAF-S1 and CAF-S4 in TNBC** (data from [Costa et al. 2018](https://www.cell.com/cancer-cell/fulltext/S1535-6108(18)30011-4)). You can download the CAF dataset [here](https://github.com/soumelis-lab/ICELLNET/tree/master/data_CAF) to apply ICELLNET framework.
 
 ###Load database and restrict the database to the different family of cytokines
 ```{r,echo=T}
@@ -338,7 +206,7 @@ db.name.couple=name.lr.couple(db2, type="Subfamily")
 head(db.name.couple)
 ```
 
-### Load partner cell partner cell types: Human Primary Cell Atlas dataset 
+### Load partner cell types from Human Primary Cell Atlas dataset 
 
 ```{r,echo=T}
 my.selection=c("Epith", "Fblast_B", "Endoth","Mono", "Macroph", "pDC", "DC2", "DC1", "NK", "Neutrop","CD4 T cell","CD8 T cell", "Treg","B cell")
@@ -352,8 +220,7 @@ To use Human Primary Cell Atlas dataset, we have to :
 
 2.  Perform the gene.scaling() function, that will a) select genes corresponding to the ligands and/or receptors included in the database (db). b) scale each ligand/receptor gene expression among all the conditions ranging from 0 to 10. For each gene, the maximum value is defined as the mean expression of the 'n' highest values of expression. Gene expression are divided by the maximum gene expression and then multiplied by 10, scaling the data expression matrix between 0 and 10 for each gene, independantly.
 Default value of n is 1. 
-partner cell
-In this example, n is set to 18 in order to take the mean of the 5% extreme expression values as the maximum.
+In this example, n is set  in order to take the mean of the 1% extreme expression values as the maximum.
 
 ```{r, warning=F,echo=T}
 ### Convert the gene symbol to affy ID 
@@ -361,7 +228,7 @@ PC.affy.probes = as.data.frame(PC.data[,c(1,2)])
 PC.affy.probes$ID = rownames(PC.affy.probes) # for format purpose
 transform = db.hgu133plus2(db2,PC.affy.probes) # creation of a new db2 database with AffyID instead of gene symbol
 
-##Gene scaling of the partner celldataset
+##Gene scaling of the partner cell dataset
 PC.data=gene.scaling(data = PC.data[,1:(dim(PC.data)[2])], n=18, db = transform) 
 PC.data$ID=rownames(PC.data) # for format purpose
 PC.data$Symbol=rownames(PC.data) # for format purpose
@@ -382,9 +249,10 @@ head(CC.target)
 ```
 
 
-Same as for the PC.data, the gene expression matrix is rescaled ranging from 0 to 10 considering all the CAF samples to the largest distrubution as possible.
+Same as for the PC.data, the gene expression matrix is rescaled ranging from 0 to 10 considering all the CAF samples to the largest distribution as possible.
+
 ```{r,echo=T}
-CC.data= as.data.frame(gene.scaling(data = data[,2:dim(data)[2]], n=round(dim(data)[2]*0.05), db = db2)) #to not consider the SYMBOL column
+CC.data= as.data.frame(gene.scaling(data = data[,2:dim(data)[2]], n=round(dim(data)[2]*0.01), db = db2)) #to not consider the SYMBOL column
 CC.data$Symbol=rownames(CC.data) #for format purpose
 ```
 
@@ -442,8 +310,10 @@ PC.col = c("Epith"="#C37B90", "Muscle_cell"="#c100b9","Fblast_B"="#88b04b", "Fbl
 network.plot1 = network.create(icn.score = Scores.norm[1], scale = c(round(min(Scores.norm)),round(max(Scores.norm))), direction = "out", PC.col)
 network.plot2 = network.create(icn.score =Scores.norm[2], scale = c(round(min(Scores.norm)),round(max(Scores.norm))), direction = "out",PC.col)
 grid.arrange(network.plot1, network.plot2, ncol=2, nrow=1)
-
 ```
+
+![](pictures/ICELLNET_CAF_networks.pdf)
+
 
 To assess the differences between scores in a quantitative manner, a statistical test can be performed (see "Compute pvalue to compare communication scores" section)
 
@@ -473,21 +343,27 @@ barplot1=LR.family.barplot(contrib.family.1, title="S1_TN", ymax =ymax)
 barplot2=LR.family.barplot(contrib.family.2, title="S4_TN", ymax = ymax)
 grid.arrange(barplot1, barplot2, ncol=2, nrow=1)
 ```
+![](pictures/ICELLNET_CAF_barplots.pdf)
+
 
 #### Individual communication scores distribution - ballon plot representation
 
 ```{r, echo=T, warning=F}
 lr_ind=cbind(lr1[,"Fblast_B"],lr2[,"Fblast_B"])
 colnames(lr_ind)=c("S1_Fblast", "S4_Fblast")
-balloon=icellnet::LR.balloon.plot(lr = lr_ind, PC = c("S1_Fblast", "S4_Fblast"), thresh = 25 , type="raw", db.name.couple=db.name.couple, title="Fblast")
+balloon=icellnet::LR.balloon.plot(lr = lr_ind, PC = c("S1_Fblast", "S4_Fblast"), thresh = 20 , type="raw", db.name.couple=db.name.couple, title="Fblast")
 balloon
 ```
+![](pictures/ICELLNET_CAF_balloon.pdf)
 
 
 #### Pvalue computation to compare communication scores
 
 
 It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the pvalue.plot() function. This allows to interpret the difference of communication score in a quantitative manner.
+
+![](pictures/ICELLNET_CAF_pvalueplot.pdf)
+
 
 ```{r, warning=F, message=F, echo=T}
 # Comparison of the communication scores obtained from the CAF-S1 and the different partner cells
@@ -512,7 +388,156 @@ pvalue.cond=icellnet.score.pvalue(direction="out", PC.data=PC.data, CC.data= CC.
                                   db = db2, family.type = "Subfamily", between="conditions", method="BH")[[1]]
 pvalue.cond 
 ```
-Here we do not have considered enough biological replicates, this is why the pvalue cannot be significant. 
+In this case, for all cell types, pvalue= 0.54. We do not have considered enough biological replicates, this is why the pvalue cannot be significant in this particular case study. 
+
+# Case study 2: IL-10 controls an intercellular communication module in LPS activated dendritic cells <a name="Case-study-2:-IL-10-controls-an-intercellular-communication-module-in-LPS-activated-dendritic-cells"></a>
+
+In this example, we are interested in **studying communication of resting and perturbed immune cells**. To explore the role of autocrine loops, we cultured LPS-activated human monocyte-derived dendritic cells (DCs) in the presence or absence of blocking antibodies (Abs) to the TNF and IL-10 receptors (αTNFR and αIL10R). We want to compare the communication channels that are used by the DCs in the different activation modes.
+
+**Quick experimental information:** Primary cells were extracted from human blood, and the DCs were isolated by negative selection. They were then activated for 8 hours by being cultured either in presence of LPS, LPS+aTNFR, LPS+aIL10. The control condition corresponds to dendritic cells cultured with medium only. Transcriptomic profiles of dendritic cells in each condition were generated using **Affymetrix technology** (hgu133plus2 platform).
+
+### Load database
+
+```{r,echo=T}
+db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+db.name.couple=name.lr.couple(db, type="Family")
+head(db.name.couple)
+```
+
+### Load partner cell types: Human Primary Cell Atlas dataset 
+
+```{r,echo=T}
+my.selection = c("Epith", "Fblast","Endoth","Mono","Macroph","NK","Neutrop","B cell")
+PC.target = PC.target.all[which(PC.target.all$Class%in%my.selection),c("ID","Class","Cell_type")]
+PC.data = PC.data.all[,PC.target$ID]
+```
+
+To use Human Primary Cell Atlas dataset, we have to : 
+
+1. Create a conversion chart between the AffyID and the gene symbol that are used in the database, using the hgu133plus2.db() function. 
+
+2.  Perform the gene.scaling() function, that will a) select genes corresponding to the ligands and/or receptors included in the database (db). b) scale each ligand/receptor gene expression among all the conditions ranging from 0 to 10. For each gene: - the maximum value (10) is defined as the mean expression of the 'n' highest values of expression. - the minimum value (0) is defined as the mean expression of the 'n' lowest values of expression. Default value of n is 1. Outliers are rescaled at either 0 (if below minimum value) or 10 (if above maximum value).
+
+In this example, n is set to take the mean of the 1% extreme expression values as the maximum/minimum.
+
+```{r, warning=F ,echo=T}
+### Convert the gene symbol to affy ID 
+PC.affy.probes = as.data.frame(PC.data[,c(1,2)])
+PC.affy.probes$ID = rownames(PC.affy.probes) # for format purpose
+transform = db.hgu133plus2(db,PC.affy.probes) # creation of a new db2 database with AffyID instead of gene symbol
+
+##Gene scaling of the partner celldataset
+PC.data=gene.scaling(data = PC.data[, 2: dim(PC.data)[2]], n=0.01*dim(PC.data)[2], db = transform) 
+PC.data$ID=rownames(PC.data) # for format purpose
+PC.data$Symbol=rownames(PC.data) # for format purpose
+```
+
+
+### Load central cell: dendritic cell transcriptomic profiles
+```{r,echo=T}
+# Central cell data file (processed gene expression matrix)
+data=read.table("data_DC.txt", sep="", header = T)
+CC.data=data[,-dim(data)[2]]
+
+#Target central cell file (description of the different samples)
+CC.target = as.data.frame(read.table("target_DC.txt",sep = "\t",header=T))
+```
+
+Same as for the PC.data, the gene expression matrix is rescaled ranging from 0 to 10 considering all the CC.data samples. Here, the microarray data for the central cell are already annotated with gene symbol so we can consider them as "RNAseq" data for the next steps. 
+
+```{r,echo=T}
+CC.data= as.data.frame(gene.scaling(data = CC.data[,2:dim(CC.data)[2]], n=round(dim(CC.data)[2]*0.05), db = db)) #to not consider the SYMBOL column
+CC.data$Symbol=rownames(CC.data) #for format purpose
+```
+
+### Selection of the different biological conditions for the central cell
+```{r,echo=T}
+CC.selection.S1 = CC.target[which(CC.target$Condition=="M+IgG_8h"),"Nomenclature"]
+CC.selection.S2 = CC.target[which(CC.target$Condition=="L+IgG_8h"),"Nomenclature"]
+CC.selection.S3 = CC.target[which(CC.target$Condition=="L+a-T_8h"),"Nomenclature"]
+CC.selection.S4 = CC.target[which(CC.target$Condition=="L+ a-10_8h"),"Nomenclature"]
+
+CC.data.selection.S1 = CC.data[,which(colnames(CC.data)%in%CC.selection.S1)]
+CC.data.selection.S2 = CC.data[,which(colnames(CC.data)%in%CC.selection.S2)]
+CC.data.selection.S3 = CC.data[,which(colnames(CC.data)%in%CC.selection.S3)]
+CC.data.selection.S4 = CC.data[,which(colnames(CC.data)%in%CC.selection.S4)]
+```
+
+### Computation of ICELLNET intercellular communication scores
+
+```{r,echo=T}
+score.computation.1 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,  
+                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
+                                    PC.type = "Microarray",  db = db, family.type = "Family")
+score1=as.data.frame(score.computation.1[[1]])
+colnames(score1)="M+IgG_8h"
+lr1=score.computation.1[[2]]
+
+score.computation.2 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S2,  
+                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
+                                    PC.type = "Microarray",  db = db, family.type = "Family")
+score2=as.data.frame(score.computation.2[[1]])
+colnames(score2)="L+IgG_8h"
+lr2=score.computation.2[[2]]
+
+score.computation.3 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S3,  
+                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
+                                    PC.type = "Microarray",  db = db, family.type = "Family")
+score3=as.data.frame(score.computation.3[[1]])
+colnames(score3)="L+a-TNFR"
+lr3=score.computation.3[[2]]
+
+score.computation.4 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S4,  
+                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
+                                    PC.type = "Microarray",  db = db, family.type = "Family")
+score4=as.data.frame(score.computation.4[[1]])
+colnames(score4)="L+ a-IL10"
+lr4=score.computation.4[[2]]
+
+Scores= cbind(score1,score2,score3,score4)
+colnames(Scores)=c("M+IgG","L+IgG","L+a-TNFR","L+ a-IL10")
+```
+
+score1, score2, score3 and score4 correspond to global scores, that are just the sum of the individual scores. Matrix of scores (Scores) corresponds to a summary of the global communication scores computed with ICELLNET between all peripheral cells and the central cell. lr1,lr2, lr3, lr4 correspond to individual score matrix, and will be useful for the further visualisation steps.
+
+### Normalisation and rescaling of the global score 
+
+In this example, we want to see the global variation of communication compared to the medium condition, so we are going to divide each communication score of perturbed condition (activated DCs) by the communication score in the medium condition. If you want to study the difference of communication score between different cell types and the central cell, you do not want to normalise (See case study 2). 
+The Scores.norm matrix is then rescaled ranging from 0 to 10 to facilitate the visualisation of the intercellular network after.
+
+```{r, echo=T, warning=FALSE, fig.align='center'}
+#Score normalisation by the medium condition
+Scores.norm=Scores
+for (i in 1:length(my.selection)){
+  Scores.norm[i,]=Scores[i,]/Scores[i,1]
+}
+Scores.norm
+#Score scaling
+Scores.norm2=(Scores.norm-min(Scores.norm))/(max(Scores.norm)-min(Scores.norm))*9+1
+```
+
+
+### Intercellular communication network representation
+
+```{r, echo=T, warning=FALSE, fig.height=10, fig.width=12}
+
+# Color label
+PC.col = c("Epith"="#C37B90", "Muscle_cell"="#c100b9","Fblast_B"="#88b04b", "Fblast"="#88b04b","Endoth"="#88b04b",
+           "Mono"="#ff962c","Macroph"="#ff962c","moDC"="#ff962c","DC1"="#ff962c","DC2"="#ff962c","pDC"="#ff962c","NK"="#ff962c","Neutrop"="#ff962c",
+           "CD4 T cell"="#5EA9C3","CD8 T cell"="#5EA9C3","Treg"="#5EA9C3","B cell"="#5EA9C3")
+
+# Display intercellular communication networks
+network.plot1 = network.create(icn.score = Scores.norm2[1], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out", PC.col)
+network.plot2 = network.create(icn.score =Scores.norm2[2], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out",PC.col)
+network.plot3 = network.create(icn.score = Scores.norm2[3], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out", PC.col)
+network.plot4 = network.create(icn.score =Scores.norm2[4], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out",PC.col)
+grid.arrange(network.plot1, network.plot2, network.plot3, network.plot4, nrow=2, ncol=2)
+
+```
+Here, we observe a general increase of communication by blocking the IL10 communication channel, which suggests that autocrine IL10 secretion controls the communication in LPS-activated DCs.
+To assess the differences between scores in a quantitative manner, a statistical test can be performed (see "Compute pvalue to compare communication scores" section). 
+To see the use of the other visualisation modes, see case study 2. 
+
 
 # Software information <a name="Software-information"></a>
 
@@ -550,4 +575,3 @@ loaded via a namespace (and not attached):
 [37] magrittr_1.5       KernSmooth_2.23-16 cli_2.0.2          stringi_1.4.6      farver_2.0.3       reshape2_1.4.3    
 [43] ellipsis_0.3.0     vctrs_0.2.4        tools_3.6.3        bit64_0.9-7        glue_1.3.2         purrr_0.3.3       
 [49] colorspace_1.4-1   caTools_1.18.0     memoise_1.1.0
-
