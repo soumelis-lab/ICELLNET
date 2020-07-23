@@ -114,7 +114,7 @@ Here we describe the different stages of the ICELLNET package to compute interce
 
 4. Display different visualisation modes to dissect intercellular communication scores 
 
-![](pictures/ICELLNET_Figure2_V10.pdf)
+![](pictures/ICELLNET_Figure2_V10.png)
 
 ## Visualisation modes
 
@@ -312,7 +312,7 @@ network.plot2 = network.create(icn.score =Scores.norm[2], scale = c(round(min(Sc
 grid.arrange(network.plot1, network.plot2, ncol=2, nrow=1)
 ```
 
-![](pictures/ICELLNET_CAF_networks.pdf)
+![](pictures/ICELLNET_CAF_networks.png)
 
 
 To assess the differences between scores in a quantitative manner, a statistical test can be performed (see "Compute pvalue to compare communication scores" section)
@@ -343,7 +343,7 @@ barplot1=LR.family.barplot(contrib.family.1, title="S1_TN", ymax =ymax)
 barplot2=LR.family.barplot(contrib.family.2, title="S4_TN", ymax = ymax)
 grid.arrange(barplot1, barplot2, ncol=2, nrow=1)
 ```
-![](pictures/ICELLNET_CAF_barplots.pdf)
+![](pictures/ICELLNET_CAF_barplots.png)
 
 
 #### Individual communication scores distribution - ballon plot representation
@@ -354,7 +354,7 @@ colnames(lr_ind)=c("S1_Fblast", "S4_Fblast")
 balloon=icellnet::LR.balloon.plot(lr = lr_ind, PC = c("S1_Fblast", "S4_Fblast"), thresh = 20 , type="raw", db.name.couple=db.name.couple, title="Fblast")
 balloon
 ```
-![](pictures/ICELLNET_CAF_balloon.pdf)
+![](pictures/ICELLNET_CAF_balloon.png)
 
 
 #### Pvalue computation to compare communication scores
@@ -362,7 +362,7 @@ balloon
 
 It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the pvalue.plot() function. This allows to interpret the difference of communication score in a quantitative manner.
 
-![](pictures/ICELLNET_CAF_pvalueplot.pdf)
+![](pictures/ICELLNET_CAF_pvalueplot.png)
 
 
 ```{r, warning=F, message=F, echo=T}
