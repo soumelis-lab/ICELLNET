@@ -229,7 +229,7 @@ PC.affy.probes$ID = rownames(PC.affy.probes) # for format purpose
 transform = db.hgu133plus2(db2,PC.affy.probes) # creation of a new db2 database with AffyID instead of gene symbol
 
 ##Gene scaling of the partner cell dataset
-PC.data=gene.scaling(data = PC.data[,1:(dim(PC.data)[2])], n=18, db = transform) 
+PC.data=gene.scaling(data = PC.data[,2:(dim(PC.data)[2])], n=18, db = transform) 
 PC.data$ID=rownames(PC.data) # for format purpose
 PC.data$Symbol=rownames(PC.data) # for format purpose
 ```
