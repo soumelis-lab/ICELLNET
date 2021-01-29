@@ -79,9 +79,9 @@ ICELLNET pipeline first considers the transcriptomic profile of the central cell
 As partner cells, we can use Human Primary Cell Atlas, a public datasets of 745 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. It is possible to select up to 14 different cell types to connect with the central cell (the different options are listed below, in PC.target.all$Class).This number was chosen for clarity purpose. The user can also use other transcriptomic profiles instead of Human Primary Cell Atlas.
 
 ```{r,echo=T}
-#download PC.data.all and PC.target.all objects
-PC.data.all=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/PC.data.all.csv"), sep=";",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
-PC.target.all=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/PC.target.all.csv"), sep=";",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+#download PC.data.all and PC.target.all objects from the github and open them on your Rstudio session - adapt path if needed
+PC.data.all=as.data.frame(read.csv("~/Downloads/PC.data.all.csv", sep=",", header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+PC.target.all=as.data.frame(read.csv("~/Downloads/PC.target.all.csv", sep=",",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
 
 head(PC.data.all[1:5,1:5])
 ```
@@ -191,7 +191,9 @@ You should define two dataframes as target files, one corresponding to the centr
 # Use cases exemples
 
 
-Link to other vignettes coming
+- [Case study 1] (https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple1_CAF.md ) : dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
+
+- Case study 2: Application to single cell data (coming soon).
 
 
 

@@ -5,22 +5,35 @@
 
 In this tutorial, we want to **study the difference of communication of CAF-S1 and CAF-S4 with the other components of the tumor microenvironment (TME), using available transcriptional profiles of CAF-S1 and CAF-S4 in TNBC** (data from [Costa et al. 2018](https://www.cell.com/cancer-cell/fulltext/S1535-6108(18)30011-4)). You can download the CAF dataset [here](https://github.com/soumelis-lab/ICELLNET/tree/master/data_CAF) to apply ICELLNET framework.
 
-###Load database and restrict the database to the different family of cytokines
+### Load database and restrict the database to the different family of cytokines
 ```{r,echo=T}
-db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+
+library(BiocGenerics)
+library("org.Hs.eg.db")
+library("hgu133plus2.db")
+library(jetset)
+library(ggplot2)
+library(dplyr)
+library(icellnet)
+library(gridExtra)
+
+
+db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/ICELLNETdb.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
                
 my.selection.LR=c("Cytokine")
 db2 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Classifications),] #if you want to use all the database, do instead : db2=db
+db2$Subfamily=db2$Cytokines # to define subfamily of interest as cytokines. 
 db.name.couple=name.lr.couple(db2, type="Subfamily")
 head(db.name.couple)
 ```
 
 ### Load partner cell types from Human Primary Cell Atlas dataset 
 
-```{r,echo=T}
-#download PC.data.all and PC.target.all objects
-PC.data.all=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/PC.data.all.csv"), sep=";",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
-PC.target.all=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/PC.target.all.csv"), sep=";",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+```{r, warning=F, echo=T}
+#download PC.data.all and PC.target.all objects from the github and open them on your Rstudio session - adapt path if needed
+PC.data.all=as.data.frame(read.csv("~/Downloads/PC.data.all.csv", sep=",", header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+rownames(PC.data.all)=PC.data.all$ID
+PC.target.all=as.data.frame(read.csv("~/Downloads/PC.target.all.csv", sep=",",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
 
 my.selection=c("Epith", "Fblast_B", "Endoth","Mono", "Macroph", "pDC", "DC2", "DC1", "NK", "Neutrop","CD4 T cell","CD8 T cell", "Treg","B cell")
 PC.target = PC.target.all[which(PC.target.all$Class%in%my.selection | PC.target.all$Class%in%my.selection),c("ID","Class","Cell_type")]
@@ -33,7 +46,7 @@ To use Human Primary Cell Atlas dataset, we have to :
 
 2.  Perform the gene.scaling() function, that will a) select genes corresponding to the ligands and/or receptors included in the database (db). b) scale each ligand/receptor gene expression among all the conditions ranging from 0 to 10. For each gene, the maximum value is defined as the mean expression of the 'n' highest values of expression. Gene expression are divided by the maximum gene expression and then multiplied by 10, scaling the data expression matrix between 0 and 10 for each gene, independantly.
 Default value of n is 1. 
-In this example, n is set to 18 in order to take the mean of the 5% extreme expression values as the maximum.
+In this example, n is set to 18 in order to take the mean of the 5% extreme expression values as the maximum for partner cells.
 
 ```{r, warning=F,echo=T}
 ### Convert the gene symbol to affy ID 
@@ -73,12 +86,13 @@ CC.data.selection.S2 = CC.data[,which(colnames(CC.data)%in%CC.selection.S2)]
 
 ### Computation of ICELLNET intercellular communication scores
 
+Here we compute outward communication scores (direction = "out"), meaning communication from CAF to partner cells.
+
 ```{r, warning=FALSE,echo=T}
 score.computation.1= icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,  
                                     PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
                                     PC.type = "Microarray",  db = db2)
 score1=as.data.frame(score.computation.1[[1]])
-colnames(score1)="S1_TN"
 lr1=score.computation.1[[2]]
 
 
@@ -86,23 +100,21 @@ score.computation.2= icellnet.score(direction="out", PC.data=PC.data, CC.data= C
                                       PC.target = PC.target,PC=my.selection, CC.type = "RNAseq", 
                                       PC.type = "Microarray",  db = db2)
 score2=as.data.frame(score.computation.2[[1]])
-colnames(score2)="S4_TN"
 lr2=score.computation.2[[2]]
 
 Scores=cbind(score1,score2)
-colnames(Scores)=c("S1_TN","S4_TN")
+colnames(Scores)=c("CAF-S1","CAF-S4")
 Scores
 ```
 
-PC.target
-score1 and score2 correspond to global scores, that are just the sum of the individual scores. Matrix of scores (Scores) corresponds to a summary of the global communication scores computed with ICELLNET between all peripheral cells and the central cell. lr1 and lr2 correspond to individual score matrix, and will be useful for the further visualisation steps.
+score1 and score2 correspond to global scores, that are just the sum of the individual scores. Matrix of scores (Scores) corresponds to a summary of the global communication scores computed with ICELLNET between all peripheral cells and the central cell. lr1 and lr2 correspond to individual score matrix, and will be useful for the further visualization steps.
 
 
 ### Dig into intercellular communication with the different visualisation modes  
 
 ####  Intercellular communication network representation
 
-The scores matrix is first rescaled ranging from 0 to 10 to facilitate the visualisation of the network and the interpretation of the arrows.
+The scores matrix is first rescaled ranging from 0 to 10 to facilitate the visualization of the network and the interpretation of the arrows.
 
 ```{r, echo=T, warning=FALSE, fig.height=7, fig.width=15}
 #Score scaling
@@ -114,7 +126,7 @@ PC.col = c("Epith"="#C37B90", "Muscle_cell"="#c100b9","Fblast_B"="#88b04b", "Fbl
 
 network.plot1 = network.create(icn.score = Scores.norm[1], scale = c(round(min(Scores.norm)),round(max(Scores.norm))), direction = "out", PC.col)
 network.plot2 = network.create(icn.score =Scores.norm[2], scale = c(round(min(Scores.norm)),round(max(Scores.norm))), direction = "out",PC.col)
-grid.arrange(network.plot1, network.plot2, ncol=2, nrow=1)
+gridExtra::grid.arrange(network.plot1, network.plot2, ncol=2, nrow=1)
 ```
 
 ![](pictures/ICELLNET_CAF_networks.png)
@@ -124,6 +136,7 @@ To assess the differences between scores in a quantitative manner, a statistical
 
 #### Communication molecules distribution - barplot representation 
 
+Display contribution of each family of moleucles to the scores, with a barplot (if plot=T) or in a table (if plot=F)
 ```{r, echo=T, warning=F,  fig.height=5, fig.width=12 }
 ## Label and range definition
 
@@ -139,24 +152,21 @@ family.col = c( "type 1"=  "#A8CF90", "type 2"= "#676766", "IL1."= "#1D1D18" ,
 
 ymax=round(max(Scores))+1 #to define the y axis range of the barplot
 
-#Compute the contribution of each family of molecules to the global communication scores
-contrib.family.1= LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple)
-contrib.family.2= LR.family.score(lr=lr2, my.family=my.family, db.couple=db.name.couple)
+#Compute the contribution of each family of molecules to the global communication scores + barplot (plot=T)
+contrib.family.1= LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot= T, family.col=family.col, title="CAF-S1")
+contrib.family.2= LR.family.score(lr=lr2, my.family=my.family, db.couple=db.name.couple, plot= T, family.col=family.col, title="CAF-S4")
 
-#Display the contribution of each family of molecules in a barplot representation
-barplot1=LR.family.barplot(contrib.family.1, title="S1_TN", ymax =ymax)
-barplot2=LR.family.barplot(contrib.family.2, title="S4_TN", ymax = ymax)
-grid.arrange(barplot1, barplot2, ncol=2, nrow=1)
+grid.arrange(contrib.family.1, contrib.family.2, ncol=2, nrow=1)
 ```
 ![](pictures/ICELLNET_CAF_barplots.png)
 
 
 #### Individual communication scores distribution - ballon plot representation
-
+Here we show how to plot specific interactions between CAF
 ```{r, echo=T, warning=F}
 lr_ind=cbind(lr1[,"Fblast_B"],lr2[,"Fblast_B"])
 colnames(lr_ind)=c("S1_Fblast", "S4_Fblast")
-balloon=icellnet::LR.balloon.plot(lr = lr_ind, PC = c("S1_Fblast", "S4_Fblast"), thresh = 20 , type="raw", db.name.couple=db.name.couple, title="Fblast")
+balloon=icellnet::LR.balloon.plot(lr = lr_ind, thresh = 25, topn=15, db.name.couple=db.name.couple, title="Fblast", family.col=family.col)
 balloon
 ```
 ![](pictures/ICELLNET_CAF_balloon.png)
@@ -167,30 +177,24 @@ balloon
 
 It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the pvalue.plot() function. This allows to interpret the difference of communication score in a quantitative manner.
 
-![](pictures/ICELLNET_CAF_pvalueplot.png)
 
 
 ```{r, warning=F, message=F, echo=T}
 # Comparison of the communication scores obtained from the CAF-S1 and the different partner cells
 pvalue1=icellnet.score.pvalue(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,
                               PC.target = PC.target,PC=my.selection, CC.type = "RNAseq",PC.type = "Microarray",
-                              db = db2, family.type = "Subfamily", between="cells", method="BH")[[1]]
+                              db = db2,  between="cells", method="BH")[[1]]
 pvalue.plot1=pvalue.plot(pvalue1, PC=my.selection)
 pvalue.plot1
 ```
-```{r, warning=F, message=F, echo=T}
-# Comparison of the communication scores obtained from the CAF-S4 and the different peripheral cells
-pvalue2=icellnet.score.pvalue(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S2,
-                              PC.target = PC.target,PC=my.selection, CC.type = "RNAseq",PC.type = "Microarray",
-                              db = db2, family.type = "Subfamily", between="cells", method="BH")[[1]]
-pvalue.plot2=pvalue.plot(pvalue2, PC=my.selection)
-pvalue.plot2
-```
+
+![](pictures/ICELLNET_CAF_pvalueplot.png)
+
 ```{r, warning=F, message=F, echo=T}
 # Comparison of the communication scores obtained from the CAF-S1 and from the CAF-S4 with the peripheral cells
 pvalue.cond=icellnet.score.pvalue(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1, CC.data2= CC.data.selection.S2,
                                   PC.target = PC.target,PC=my.selection, CC.type = "RNAseq", PC.type = "Microarray",
-                                  db = db2, family.type = "Subfamily", between="conditions", method="BH")[[1]]
+                                  db = db2, between="conditions", method="BH")[[1]]
 pvalue.cond 
 ```
-In this case, for all cell types, pvalue= 0.54. We do not have considered enough biological replicates, this is why the pvalue cannot be significant in this particular case study. 
+In this case, for almost all cell types, pvalue= 0.63. We do not have considered enough biological replicates, this is why the pvalue cannot be significant in this particular case study. 
