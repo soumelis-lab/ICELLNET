@@ -141,7 +141,7 @@ Display contribution of each family of moleucles to the scores, with a barplot (
 ## Label and range definition
 
     ## label and color label if you are working families of molecules already present in the database
-# my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch signalling","Antigen binding") 
+# my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","Antigen binding") 
 # family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"= "#1D1D18"  ,
 #             "Cytokine"="#156399", "Notch signalling" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
      
