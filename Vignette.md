@@ -15,9 +15,7 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
   
 - [How to install ICELLNET package?](#How-to-install-ICELLNET-package?)
 - [How to format your own data to use ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?)
-- [Case study 1: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets](#Case-study-1:-dissect-intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets)
-
-- [Case study 2: IL-10 controls an intercellular communication module in LPS-activated dendritic cells](#Case-study-2:-IL-10-controls-an-intercellular-communication-module-in-LPS-activated-dendritic-cells)
+- [Use cases exemples](#Use-cases-exemples)
 
 - [Software information](#Software-information)
 
@@ -31,24 +29,26 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 
 Cell-to-cell communication is at the basis of the higher-order organization observed in tissues and organisms, at steady state and in response to stress. The availability of large-scale transcriptomics datasets from several cell types has opened the possibility of **reconstructing cell-cell interactions based on co-expression of ligand-receptor pairs**.
 
-We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell communication in a global manner**. It integrates an original expert-curated **database of ligand-receptor interactions** taking into account multiple subunits expression. Based on transcriptomic profiles (gene expression), ICELLNET package allows to compute **communication scores** between cells and provides **several visualization modes** that can be helpful to dig into cell-cell interaction mechanism and extend biological knowledge. 
+We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell communication in a global manner**. It integrates an original expert-curated **database of ligand-receptor interactions** taking into account multiple subunits expression. Based on transcriptomic profiles, ICELLNET package allows to compute **communication scores** between cells and provides **several visualization modes** that are helpful to dig into cell-cell interaction mechanism and extend biological knowledge. 
 
 ## ICELLNET ligand/receptor interaction database  
 
-We have curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch signalling, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: **type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines**. 
+We curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch family, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: **type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines**. 
 
-The most recent version of ligand-receptor interaction database can always be downloaded [here](https://github.com/soumelis-lab/ICELLNET/blob/master/database.tsv).
+Other interactions and classifications of molecules will be implemented.
+The most recent version of ligand-receptor interaction database can always be downloaded [here](https://github.com/soumelis-lab/ICELLNET/blob/master/ICELLNETdb.tsv).
 In R, you can visualize ICELLNET database and its structure: 
 
 ```{r db, echo=T}
-db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/ICELLNETdb.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
 head(db)
 ```
 
-You can use either all the database or restrict it by selecting some specific class of molecules (Cytokines, Growth factor etc..). Below, we show you how to restrict the study to cytokines, chemokines, and checkpoints. If you restrict the database to cytokines, you can take into consideration the subfamily of cytokines.
+You can use either all the database or restrict it by selecting some specific class of molecules (Cytokines, Growth factor etc..). Below, we show you how to restrict the study to cytokines, chemokines, and checkpoints, and how you can take into consideration subfamily of molecules.
 
 ```{r, echo=T}
 summary(as.factor(db$Family)) # list of the different family of molecules considered in the database
+db$Subfamily=db$Cytokine
 summary(as.factor(db$Subfamily[which(db$Family=="Cytokine")])) # list of the different subfamily of cytokines considered in the database
 
 #Restrict the database to some family of molecules 
@@ -75,38 +75,47 @@ Instead of using the ICELLNET database, it is also possible to use its own datab
 
 ### Type of data
 
-ICELLNET pipeline first considers the transcriptomic profile of the central cell, that can correspond to several biological conditions. ICELLNET will then allow to compare the communication channels used by the central cells in these different conditions with peripheral cells.
-As peripheral cells, we use Human Primary Cell Atlas, a public datasets of 745 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. It is possible to select up to 14 different cell types to connect with the central cell (the different options are listed below, in PC.target.all$Class).This number was chosen for clarity purpose. The user can also use other transcriptomic profiles instead of Human Primary Cell Atlas.
+ICELLNET pipeline first considers the transcriptomic profile of the central cell, that can correspond to several biological conditions. ICELLNET will then allow to compare the communication channels used by the central cells in these different conditions with partner cells.
+As partner cells, we can use Human Primary Cell Atlas, a public datasets of 745 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. It is possible to select up to 14 different cell types to connect with the central cell (the different options are listed below, in PC.target.all$Class).This number was chosen for clarity purpose. The user can also use other transcriptomic profiles instead of Human Primary Cell Atlas.
 
 ```{r,echo=T}
+#download PC.data.all and PC.target.all objects
+PC.data.all=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/PC.data.all.csv"), sep=";",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+PC.target.all=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/PC.target.all.csv"), sep=";",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+
 head(PC.data.all[1:5,1:5])
 ```
+List of possible partner cell types :  Adipo, Adr_med, B cell, chondro, DC (or if desired: CD16 DC, DC1, DC2, moDC, pDC), Endoth, Epith, ESM, gameto, Hepato, HSC, Kerat, lps_cells, Macroph, Mono, Neutrop, NK, ostblast, Shwann, SMC, T cell (or if desired: CD4 T cell, CD8 T cell, Treg), TSC: 
 
 ```{r,echo=T}
-summary(as.factor(PC.target.all$Class))
+table(PC.target.all$Class_broad)
+table(PC.target.all$Class)
 ```
-
-### Files format
-
-**For the central cell:** It can be any transcriptomic profile data of one cell type. For **RNA-seq data**, the dataset should be annotated with gene symbol as rownames, and also in a specific column named SYMBOL. For **microarray data**, the ICELLNET functions are adapted to handle Affymetrix Human Genome U133 Plus 2.0 Array annotation. Nevertherless, if the dataset have been generated with an other Affymetrix technology, you have 2 possibilities to adapt the tool : a) Annotate your data with gene symbol before using ICELLNET and then consider your data as "RNA-Seq" for CC.type argument. b) adapt the R code of the `db.hgu133plus2()` function to have the right annotation conversion when using ICELLNET. Same as for RNAseq, the annotations should be set as rownames and in a ID column. 
-
-
-**For the partner cell(if you don't want to use Human Primary Cell Atlas as peripheral cells):** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formated (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
-
 
 ## How is the intercellular communication score computed?
 
-The quantification of intercellular communication consist of scoring the intensity of each ligand/receptor interaction between two cell types with known expression profiles. No filtering threshold is applied on the L/R expression. If the communication molecule (ligand or receptor or both) is not expressed by a cell, the score will be zero. By default, the 380 interactions of the database are considered to compute the score. It is also possible to reduce the number of interactions by manually selecting specific families of molecules in the database or considering DEG to compute the score, depending on the biological question. Whenever needed, we take into account multiple ligand units, or receptor chains, using logical rules.
+The quantification of intercellular communication consist of scoring the intensity of each ligand/receptor interaction between two cell types with known expression profiles. No filtering threshold is applied on the L/R expression. If the communication molecule (ligand or receptor or both) is not expressed by a cell, the score will be zero. By default, all interactions of the database are considered to compute the score. It is also possible to reduce the number of interactions by manually selecting specific families of molecules in the database or considering DEG to compute the score, depending on the biological question. Whenever needed, we take into account multiple ligand units, or receptor chains, using logical rules.
 
-The score of an individual ligand/receptor interaction is computed as the product of their expression levels respectively by the source (central) and by the target (peripheral) cell. These individual scores are then combined into a global metric assessing the overall exchange of information between the cell types of interest
+The score of an individual ligand/receptor interaction is computed as the product of their expression levels respectively by the source (central) and by the target (partner) cell. These individual scores are then combined into a global metric assessing the overall exchange of information between the cell types of interest
 
-Since cell-to-cell communication is directional, we consider ligand expression from the central cell and receptor expression from the peripheral cells to assess outward communication. On the other way, we select receptor expression from the central cell and ligand expression from peripheral cells to assess in-flow communication. This is controlled by the  *direction* argument ("in" or "out") in the `icellnet.score()` function. 
+Since cell-to-cell communication is directional, we consider ligand expression from the central cell and receptor expression from the partner cells to assess outward communication. On the other way, we select receptor expression from the central cell and ligand expression from partner cells to assess in-flow communication. This is controlled by the  *direction* argument ("in" or "out") in the `icellnet.score()` function. 
+
+```{r,echo=T}
+#not run - exemple
+score.computation.1= icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,  
+                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
+                                    PC.type = "Microarray",  db = db2)
+score1=as.data.frame(score.computation.1[[1]]) #communication scores
+lr1=score.computation.1[[2]] # detail of the ligand/receptor interactions scores matrix
+
+```
+
 
 ## Typical workflow 
  
 Here we describe the different stages of the ICELLNET package to compute intercellular communication scores: 
 
-1. Selection of the genes coding for the ligands and the receptors in our database from the transcriptomic profiles of the central cell and the peripheral cells. 
+1. Selection of the genes coding for the ligands and the receptors in our database from the transcriptomic profiles of the central cell and the partner cells. 
 
 2. Rescale gene expression to avoid communication score to be driven only by highly expressed genes.
 
@@ -124,7 +133,7 @@ This allows to visualize intercellular communication networks in a global manner
 
 ### Communication molecules distribution
 
-The barplot representation (`LR.family.score()` an then  `LR.family.barplot()` functions) allows to dissect the global scores at a level of class of molecules, and allows to identify patterns of co-expressed molecules from the same family. This layer of analysis helps the interpretation on a qualitative level.
+The barplot representation (`LR.family.score()` function with plot=T) allows to dissect the global scores at a level of class of molecules, and allows to identify patterns of co-expressed molecules from the same family. This layer of analysis helps the interpretation on a qualitative level.
 
 ### Individual communication scores distribution
 
@@ -132,13 +141,13 @@ The balloon plot (`LR.balloon.plot()` function) is the deepest level of represen
 
 ### Pvalue computation to compare communication scores
 
-Two types of pvalue can be computed (`icellnet.score.pvalue()` function), to compare either the communication scores obtained from the same central cell to different peripheral cells (between="cells"), or to compare the communication scores obtained from two different central cells corresponding to different biological conditions with the same partner cell(between="conditions").If between="cells", the communication score is computed considering the average expression of ligands for the central cell, and each replicates separately for the receptor expression of the peripheral cells. In this way, for one partner celltype, we obtain a distribution of n communication scores, n beeing the number of peripheral cells replicates for this particular cell type. If between="conditions", then, the communication score is computed considering each replicates of the central cell separately, and the average gene expression for the peripheral cells. We obtain a distribution of n communication scores, n beeing the number of central cell replicates in one biological condition. Then, a Wilcoxon statistical test is performed to compare the communication scores distributions. The pvalues are ajusted with `p.adjust()`, with "BH" method as a default. 
+Two types of pvalue can be computed (`icellnet.score.pvalue()` function), to compare either the communication scores obtained from the same central cell to different partner cells (between="cells"), or to compare the communication scores obtained from two different central cells corresponding to different biological conditions with the same partner cell (between="conditions").If between="cells", the communication score is computed considering the average expression of ligands for the central cell, and each replicates separately for the receptor expression of the partner cells. In this way, for one partner cell, we obtain a distribution of n communication scores, n beeing the number of partner cells replicates for this particular cell type. If between="conditions", then, the communication score is computed considering each replicates of the central cell separately, and the average gene expression for the partner cells. We obtain a distribution of n communication scores, n beeing the number of central cell replicates in one biological condition. Then, a Wilcoxon statistical test is performed to compare the communication scores distributions. The pvalues are ajusted with `stats::p.adjust()`, with "BH" method as a default. 
 
 It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the `pvalue.plot()` function. This allows to interpret the difference of communication score in a quantitative manner.
  
 # How to install ICELLNET package? <a name="How-to-install-ICELLNET-package?"></a>
 
-To install `icellnet` package, the easiest way is to use the `R` package `devtools` and its function `install_github`. If you don't have all the dependancies needed to use ICELLNET package, run the commands below:  
+To install `icellnet` package, the easiest way is to use the `R` package `devtools` and its function `devtools::install_github()`. If you don't have all the dependancies needed to use ICELLNET package, run the commands below:  
 
     install.packages(c("devtools", "curl", "jetset", "readxl", "psych", "GGally", "gplots", "ggplot2", "RColorBrewer", "data.table", "grid", "gridExtra", "ggthemes", "scales","rlist")) ##Installs devtools and the icellnet CRAN dependancies
 
@@ -151,392 +160,39 @@ Then you just have to load `devtools` package and run the command below:
     library(devtools)
     install_github("soumelis-lab/ICELLNET",ref="master", subdir="icellnet")
     
-Once all the dependencies are downloaded and loaded, you can load the `icellnet` package.
+Then load the dependancies below and `icellnet` package.
 
-	library(BiocGenerics)
-	library("org.Hs.eg.db")
-	library("hgu133plus2.db")
-	library("annotate")
-	library(jetset)
-	library(readxl)
-	library(psych)
-	library(GGally)
-	library(gplots)
-	library(ggplot2)
-	library(RColorBrewer)
-	library(data.table)
-	library(grid)
-	library(gridExtra)
-	library(ggthemes)
-	library(scales)
-	library(rlist)
-	library(icellnet)
+library(BiocGenerics)
+library("hgu133plus2.db")
+library(jetset)
+library(ggplot2)
+library(dplyr)
+library(icellnet)
 
-To load the most recent version of the ligand/receptor database, you should run the command below: 
+To load the most recent version of the ligand/receptor database, you should run the command below (last updated:  28/01/2021): 
 
-    db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+    db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/ICELLNETdb.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
 
 
 # How to format your own data to use ICELLNET package? <a name="How-to-format-your-own-data-to-use-ICELLNET-package?"></a>
 
 ## Data files format
-**For the central cell:** It can be any transcriptomic profile data of one cell type. For **RNA-seq data**, the dataset should be annotated with gene symbol as rownames, and also in a specific column named 'Symbol'. For **microarray data**, the ICELLNET functions are adapted to handle Affymetrix Human Genome U133 Plus 2.0 Array annotation. Nevertherless, if the dataset have been generated with an other Affymetrix technology, you have 2 possibilities to adapt the tool : a) Annotate your data with gene symbol before using ICELLNET and then consider your data as "RNA-Seq" for CC.type argument. b) adapt the R code of the db.hgu133plus2() function to have the right annotation conversion when using ICELLNET. Same as for RNAseq, the annotations should be set as rownames and in a ID column. 
+**For the central cell:** It can be any transcriptomic profile data of one cell type. For **RNA-seq data**, the dataset should be a datframe annotated with gene symbol as rownames. For **microarray data**, the ICELLNET functions are adapted to handle Affymetrix Human Genome U133 Plus 2.0 Array annotation. Nevertherless, if the dataset have been generated with an other Affymetrix technology, you have 2 possibilities to adapt the tool : a) Annotate your data with gene symbol before using ICELLNET and then consider your data as "RNA-Seq" for CC.type argument. b) adapt the R code of the `db.hgu133plus2()` function to have the adapted annotation conversion when using ICELLNET. Gene annotations should be set as rownames. 
 
-**For the partner cell (if you don't want to use Human Primary Cell Atlas as partner cell types):** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formattted (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
+
+**For the partner cell (if you don't want to use Human Primary Cell Atlas as partner cells):** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formated (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
 
 ## Target files format
-You should define two dataframes as target files, one corresponding to the central cell, and the other one corresponding to the peripheral cells. These dataframe usually describes the different samples. 
+You should define two dataframes as target files, one corresponding to the central cell, and the other one corresponding to the partner cells. These dataframe usually describes the different samples. 
 
-**PC.target** should contains at least an 'ID' column including the name of the samples (usually rownames(PC.target) or colnames(PC.data) ), and a 'Class' column corresponding to a classification of your different samples included in PC.target, such as a cell type classification. The different categories included in the 'Class' column will define the different peripheral cells in the graphs.
+**PC.target** should contains at least an 'ID' column including the name of the samples (usually rownames(PC.target) or colnames(PC.data) ), and a 'Class' column corresponding to a classification of your different samples included in PC.target, such as a cell type classification. The different categories included in the 'Class' column will define the different partner cells in the graphs.
 
 
-# Case study 1: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets <a name="Case-study-1:-dissect-intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets"></a>
+# Use cases exemples
 
-**Cancer-associated fibroblasts** (CAFs) are stromal cells localized in the tumor microenvironment, known to enhance tumor phenotypes, such as cancer cell proliferation and inflammation. Previous studies have shown heterogeneity in CAFs phenotype ( [Kieffer et al.2020](https://cancerdiscovery.aacrjournals.org/content/early/2020/05/20/2159-8290.CD-19-1384) , [Costa et al. 2018](https://www.cell.com/cancer-cell/fulltext/S1535-6108(18)30011-4)). They identified 4 subsets of CAF, including CAF-S1 and CAF-S4 accumulating in Triple Negative Breast Cancer (TNBC). CAF-S1 has been notably associated with an immunosuppressive microenvironment. 
 
-In this tutorial, we want to **study the difference of communication of CAF-S1 and CAF-S4 with the other components of the tumor microenvironment (TME), using available transcriptional profiles of CAF-S1 and CAF-S4 in TNBC** (data from [Costa et al. 2018](https://www.cell.com/cancer-cell/fulltext/S1535-6108(18)30011-4)). You can download the CAF dataset [here](https://github.com/soumelis-lab/ICELLNET/tree/master/data_CAF) to apply ICELLNET framework.
+Link to other vignettes coming
 
-###Load database and restrict the database to the different family of cytokines
-```{r,echo=T}
-db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
-               
-my.selection.LR=c("Cytokine")
-db2 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Classifications),] #if you want to use all the database, do instead : db2=db
-db.name.couple=name.lr.couple(db2, type="Subfamily")
-head(db.name.couple)
-```
-
-### Load partner cell types from Human Primary Cell Atlas dataset 
-
-```{r,echo=T}
-my.selection=c("Epith", "Fblast_B", "Endoth","Mono", "Macroph", "pDC", "DC2", "DC1", "NK", "Neutrop","CD4 T cell","CD8 T cell", "Treg","B cell")
-PC.target = PC.target.all[which(PC.target.all$Class%in%my.selection),c("ID","Class","Cell_type")]
-PC.data = PC.data.all[,PC.target$ID]
-```
-
-To use Human Primary Cell Atlas dataset, we have to :
-
-1. Create a conversion chart between the AffyID and the gene symbol that are used in the database, using the hgu133plus2.db() function.  
-
-2.  Perform the gene.scaling() function, that will a) select genes corresponding to the ligands and/or receptors included in the database (db). b) scale each ligand/receptor gene expression among all the conditions ranging from 0 to 10. For each gene, the maximum value is defined as the mean expression of the 'n' highest values of expression. Gene expression are divided by the maximum gene expression and then multiplied by 10, scaling the data expression matrix between 0 and 10 for each gene, independantly.
-Default value of n is 1. 
-In this example, n is set  in order to take the mean of the 1% extreme expression values as the maximum.
-
-```{r, warning=F,echo=T}
-### Convert the gene symbol to affy ID 
-PC.affy.probes = as.data.frame(PC.data[,c(1,2)])
-PC.affy.probes$ID = rownames(PC.affy.probes) # for format purpose
-transform = db.hgu133plus2(db2,PC.affy.probes) # creation of a new db2 database with AffyID instead of gene symbol
-
-##Gene scaling of the partner cell dataset
-PC.data=gene.scaling(data = PC.data[,2:(dim(PC.data)[2])], n=18, db = transform) 
-PC.data$ID=rownames(PC.data) # for format purpose
-PC.data$Symbol=rownames(PC.data) # for format purpose
-```
-
-### Load central cell: CAF-S1 and CAF-S4 transcriptomic profiles 
-This dataset provides the gene expression matrix of **77 samples** that corresponds to CAF subsets transcriptomic profiles that have been generated by [Costa et al. 2018](https://www.cell.com/cancer-cell/fulltext/S1535-6108(18)30011-4) to identify the four CAF subsets in breast cancers. **Each sample is described in the file CC.target**, that will allow us to select only the samples of our interest : the samples that correspond to either CAF-S1 or CAF-S4 from in Triple Negative Breast Cancer (TN) tumors. 
-
-
-```{r,echo=T}
-# Central cell data file (processed gene expression matrix)
-data=read.table("data_CAF/data_CAF.txt", sep="\t", header = T)
-rownames(data) = data$SYMBOL #for format purpose
-
-#Target central cell file (description of the different samples)
-CC.target = as.data.frame(read.table("data_CAF/target_CAF.txt",sep = "\t",header=T))
-head(CC.target)
-```
-
-
-Same as for the PC.data, the gene expression matrix is rescaled ranging from 0 to 10 considering all the CAF samples to the largest distribution as possible.
-
-```{r,echo=T}
-CC.data= as.data.frame(gene.scaling(data = data[,2:dim(data)[2]], n=round(dim(data)[2]*0.01), db = db2)) #to not consider the SYMBOL column
-CC.data$Symbol=rownames(CC.data) #for format purpose
-```
-
-
-At this stage, we select the samples of interest, which means CAF-S1 or CAF-S4 identified in the tumor (TNBC cancer type). This corresponds to 6 samples for CAF-S1 and 3 samples for CAF-S4.
-
-```{r,echo=T}
-CC.selection.S1 = CC.target[which(CC.target$Type=="T"&CC.target$subset=="S1"&CC.target$Cancer.subtype=="TN"),"Sample.Name"] # CAF-S1 in TNBC samples
-CC.selection.S2 = CC.target[which(CC.target$Type=="T"&CC.target$subset=="S4"&CC.target$Cancer.subtype=="TN"),"Sample.Name"] # CAF-S4 in TNBC samples
-
-CC.data.selection.S1 = CC.data[,which(colnames(CC.data)%in%CC.selection.S1)]
-CC.data.selection.S2 = CC.data[,which(colnames(CC.data)%in%CC.selection.S2)]
-```
-
-### Computation of ICELLNET intercellular communication scores
-
-```{r, warning=FALSE,echo=T}
-score.computation.1= icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,  
-                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
-                                    PC.type = "Microarray",  db = db2, family.type = "Subfamily")
-score1=as.data.frame(score.computation.1[[1]])
-colnames(score1)="S1_TN"
-lr1=score.computation.1[[2]]
-
-
-score.computation.2= icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S2,  
-                                      PC.target = PC.target,PC=my.selection, CC.type = "RNAseq", 
-                                      PC.type = "Microarray",  db = db2, family.type = "Subfamily")
-score2=as.data.frame(score.computation.2[[1]])
-colnames(score2)="S4_TN"
-lr2=score.computation.2[[2]]
-
-Scores=cbind(score1,score2)
-colnames(Scores)=c("S1_TN","S4_TN")
-Scores
-```
-
-score1 and score2 correspond to global scores, that are just the sum of the individual scores. Matrix of scores (Scores) corresponds to a summary of the global communication scores computed with ICELLNET between all peripheral cells and the central cell. lr1 and lr2 correspond to individual score matrix, and will be useful for the further visualisation steps.
-
-
-### Dig into intercellular communication with the different visualisation modes  
-
-####  Intercellular communication network representation
-
-The scores matrix is first rescaled ranging from 0 to 10 to facilitate the visualisation of the network and the interpretation of the arrows.
-
-```{r, echo=T, warning=FALSE, fig.height=7, fig.width=15}
-#Score scaling
-Scores.norm=(Scores-min(Scores))/(max(Scores)-min(Scores))*9+1
-# Display intercellular communication networks
-PC.col = c("Epith"="#C37B90", "Muscle_cell"="#c100b9","Fblast_B"="#88b04b", "Fblast"="#88b04b","Endoth"="#88b04b",
-           "Mono"="#ff962c","Macroph"="#ff962c","moDC"="#ff962c","DC1"="#ff962c","DC2"="#ff962c","pDC"="#ff962c","NK"="#ff962c","Neutrop"="#ff962c",
-           "CD4 T cell"="#5EA9C3","CD8 T cell"="#5EA9C3","Treg"="#5EA9C3","B cell"="#5EA9C3")
-
-network.plot1 = network.create(icn.score = Scores.norm[1], scale = c(round(min(Scores.norm)),round(max(Scores.norm))), direction = "out", PC.col)
-network.plot2 = network.create(icn.score =Scores.norm[2], scale = c(round(min(Scores.norm)),round(max(Scores.norm))), direction = "out",PC.col)
-grid.arrange(network.plot1, network.plot2, ncol=2, nrow=1)
-```
-
-![](pictures/ICELLNET_CAF_networks.png)
-
-
-To assess the differences between scores in a quantitative manner, a statistical test can be performed (see "Compute pvalue to compare communication scores" section)
-
-#### Communication molecules distribution - barplot representation 
-
-```{r, echo=T, warning=F,  fig.height=5, fig.width=12 }
-## Label and range definition
-
-    ## label and color label if you are working families of molecules already present in the database
-# my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch signalling","Antigen binding") 
-# family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"= "#1D1D18"  ,
-#             "Cytokine"="#156399", "Notch signalling" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
-     
-    ## label and color label if you are working with subfamilies of cytokines
-my.family=c("type 1", "type 2", "IL1.", "IL17", "TNF","TGF","RTK")
-family.col = c( "type 1"=  "#A8CF90", "type 2"= "#676766", "IL1."= "#1D1D18" ,
-            "IL17" ="#66ABDF", "TNF" ="#12A039", "TGF" = "#156399", "RTK"="#AECBE3", "other" = "#908F90","NA"="#908F90")
-
-ymax=round(max(Scores))+1 #to define the y axis range of the barplot
-
-#Compute the contribution of each family of molecules to the global communication scores
-contrib.family.1= LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple)
-contrib.family.2= LR.family.score(lr=lr2, my.family=my.family, db.couple=db.name.couple)
-
-#Display the contribution of each family of molecules in a barplot representation
-barplot1=LR.family.barplot(contrib.family.1, title="S1_TN", ymax =ymax)
-barplot2=LR.family.barplot(contrib.family.2, title="S4_TN", ymax = ymax)
-grid.arrange(barplot1, barplot2, ncol=2, nrow=1)
-```
-![](pictures/ICELLNET_CAF_barplots.png)
-
-
-#### Individual communication scores distribution - ballon plot representation
-
-```{r, echo=T, warning=F}
-lr_ind=cbind(lr1[,"Fblast_B"],lr2[,"Fblast_B"])
-colnames(lr_ind)=c("S1_Fblast", "S4_Fblast")
-balloon=icellnet::LR.balloon.plot(lr = lr_ind, PC = c("S1_Fblast", "S4_Fblast"), thresh = 20 , type="raw", db.name.couple=db.name.couple, title="Fblast")
-balloon
-```
-![](pictures/ICELLNET_CAF_balloon.png)
-
-
-#### Pvalue computation to compare communication scores
-
-
-It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the pvalue.plot() function. This allows to interpret the difference of communication score in a quantitative manner.
-
-![](pictures/ICELLNET_CAF_pvalueplot.png)
-
-
-```{r, warning=F, message=F, echo=T}
-# Comparison of the communication scores obtained from the CAF-S1 and the different partner cells
-pvalue1=icellnet.score.pvalue(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,
-                              PC.target = PC.target,PC=my.selection, CC.type = "RNAseq",PC.type = "Microarray",
-                              db = db2, family.type = "Subfamily", between="cells", method="BH")[[1]]
-pvalue.plot1=pvalue.plot(pvalue1, PC=my.selection)
-pvalue.plot1
-```
-```{r, warning=F, message=F, echo=T}
-# Comparison of the communication scores obtained from the CAF-S4 and the different peripheral cells
-pvalue2=icellnet.score.pvalue(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S2,
-                              PC.target = PC.target,PC=my.selection, CC.type = "RNAseq",PC.type = "Microarray",
-                              db = db2, family.type = "Subfamily", between="cells", method="BH")[[1]]
-pvalue.plot2=pvalue.plot(pvalue2, PC=my.selection)
-pvalue.plot2
-```
-```{r, warning=F, message=F, echo=T}
-# Comparison of the communication scores obtained from the CAF-S1 and from the CAF-S4 with the peripheral cells
-pvalue.cond=icellnet.score.pvalue(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1, CC.data2= CC.data.selection.S2,
-                                  PC.target = PC.target,PC=my.selection, CC.type = "RNAseq", PC.type = "Microarray",
-                                  db = db2, family.type = "Subfamily", between="conditions", method="BH")[[1]]
-pvalue.cond 
-```
-In this case, for all cell types, pvalue= 0.54. We do not have considered enough biological replicates, this is why the pvalue cannot be significant in this particular case study. 
-
-# Case study 2: IL-10 controls an intercellular communication module in LPS activated dendritic cells <a name="Case-study-2:-IL-10-controls-an-intercellular-communication-module-in-LPS-activated-dendritic-cells"></a>
-
-In this example, we are interested in **studying communication of resting and perturbed immune cells**. To explore the role of autocrine loops, we cultured LPS-activated human monocyte-derived dendritic cells (DCs) in the presence or absence of blocking antibodies (Abs) to the TNF and IL-10 receptors (αTNFR and αIL10R). We want to compare the communication channels that are used by the DCs in the different activation modes.
-
-**Quick experimental information:** Primary cells were extracted from human blood, and the DCs were isolated by negative selection. They were then activated for 8 hours by being cultured either in presence of LPS, LPS+aTNFR, LPS+aIL10. The control condition corresponds to dendritic cells cultured with medium only. Transcriptomic profiles of dendritic cells in each condition were generated using **Affymetrix technology** (hgu133plus2 platform).
-
-### Load database
-
-```{r,echo=T}
-db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/database.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
-db.name.couple=name.lr.couple(db, type="Family")
-head(db.name.couple)
-```
-
-### Load partner cell types: Human Primary Cell Atlas dataset 
-
-```{r,echo=T}
-my.selection = c("Epith", "Fblast","Endoth","Mono","Macroph","NK","Neutrop","B cell")
-PC.target = PC.target.all[which(PC.target.all$Class%in%my.selection),c("ID","Class","Cell_type")]
-PC.data = PC.data.all[,PC.target$ID]
-```
-
-To use Human Primary Cell Atlas dataset, we have to : 
-
-1. Create a conversion chart between the AffyID and the gene symbol that are used in the database, using the hgu133plus2.db() function. 
-
-2.  Perform the gene.scaling() function, that will a) select genes corresponding to the ligands and/or receptors included in the database (db). b) scale each ligand/receptor gene expression among all the conditions ranging from 0 to 10. For each gene: - the maximum value (10) is defined as the mean expression of the 'n' highest values of expression. - the minimum value (0) is defined as the mean expression of the 'n' lowest values of expression. Default value of n is 1. Outliers are rescaled at either 0 (if below minimum value) or 10 (if above maximum value).
-
-In this example, n is set to take the mean of the 1% extreme expression values as the maximum/minimum.
-
-```{r, warning=F ,echo=T}
-### Convert the gene symbol to affy ID 
-PC.affy.probes = as.data.frame(PC.data[,c(1,2)])
-PC.affy.probes$ID = rownames(PC.affy.probes) # for format purpose
-transform = db.hgu133plus2(db,PC.affy.probes) # creation of a new db2 database with AffyID instead of gene symbol
-
-##Gene scaling of the partner celldataset
-PC.data=gene.scaling(data = PC.data[, 2: dim(PC.data)[2]], n=0.01*dim(PC.data)[2], db = transform) 
-PC.data$ID=rownames(PC.data) # for format purpose
-PC.data$Symbol=rownames(PC.data) # for format purpose
-```
-
-
-### Load central cell: dendritic cell transcriptomic profiles
-```{r,echo=T}
-# Central cell data file (processed gene expression matrix)
-data=read.table("data_DC.txt", sep="", header = T)
-CC.data=data[,-dim(data)[2]]
-
-#Target central cell file (description of the different samples)
-CC.target = as.data.frame(read.table("target_DC.txt",sep = "\t",header=T))
-```
-
-Same as for the PC.data, the gene expression matrix is rescaled ranging from 0 to 10 considering all the CC.data samples. Here, the microarray data for the central cell are already annotated with gene symbol so we can consider them as "RNAseq" data for the next steps. 
-
-```{r,echo=T}
-CC.data= as.data.frame(gene.scaling(data = CC.data[,2:dim(CC.data)[2]], n=round(dim(CC.data)[2]*0.05), db = db)) #to not consider the SYMBOL column
-CC.data$Symbol=rownames(CC.data) #for format purpose
-```
-
-### Selection of the different biological conditions for the central cell
-```{r,echo=T}
-CC.selection.S1 = CC.target[which(CC.target$Condition=="M+IgG_8h"),"Nomenclature"]
-CC.selection.S2 = CC.target[which(CC.target$Condition=="L+IgG_8h"),"Nomenclature"]
-CC.selection.S3 = CC.target[which(CC.target$Condition=="L+a-T_8h"),"Nomenclature"]
-CC.selection.S4 = CC.target[which(CC.target$Condition=="L+ a-10_8h"),"Nomenclature"]
-
-CC.data.selection.S1 = CC.data[,which(colnames(CC.data)%in%CC.selection.S1)]
-CC.data.selection.S2 = CC.data[,which(colnames(CC.data)%in%CC.selection.S2)]
-CC.data.selection.S3 = CC.data[,which(colnames(CC.data)%in%CC.selection.S3)]
-CC.data.selection.S4 = CC.data[,which(colnames(CC.data)%in%CC.selection.S4)]
-```
-
-### Computation of ICELLNET intercellular communication scores
-
-```{r,echo=T}
-score.computation.1 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,  
-                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
-                                    PC.type = "Microarray",  db = db, family.type = "Family")
-score1=as.data.frame(score.computation.1[[1]])
-colnames(score1)="M+IgG_8h"
-lr1=score.computation.1[[2]]
-
-score.computation.2 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S2,  
-                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
-                                    PC.type = "Microarray",  db = db, family.type = "Family")
-score2=as.data.frame(score.computation.2[[1]])
-colnames(score2)="L+IgG_8h"
-lr2=score.computation.2[[2]]
-
-score.computation.3 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S3,  
-                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
-                                    PC.type = "Microarray",  db = db, family.type = "Family")
-score3=as.data.frame(score.computation.3[[1]])
-colnames(score3)="L+a-TNFR"
-lr3=score.computation.3[[2]]
-
-score.computation.4 = icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S4,  
-                                    PC.target = PC.target, PC=my.selection, CC.type = "RNAseq", 
-                                    PC.type = "Microarray",  db = db, family.type = "Family")
-score4=as.data.frame(score.computation.4[[1]])
-colnames(score4)="L+ a-IL10"
-lr4=score.computation.4[[2]]
-
-Scores= cbind(score1,score2,score3,score4)
-colnames(Scores)=c("M+IgG","L+IgG","L+a-TNFR","L+ a-IL10")
-```
-
-score1, score2, score3 and score4 correspond to global scores, that are just the sum of the individual scores. Matrix of scores (Scores) corresponds to a summary of the global communication scores computed with ICELLNET between all peripheral cells and the central cell. lr1,lr2, lr3, lr4 correspond to individual score matrix, and will be useful for the further visualisation steps.
-
-### Normalisation and rescaling of the global score 
-
-In this example, we want to see the global variation of communication compared to the medium condition, so we are going to divide each communication score of perturbed condition (activated DCs) by the communication score in the medium condition. If you want to study the difference of communication score between different cell types and the central cell, you do not want to normalise (See case study 2). 
-The Scores.norm matrix is then rescaled ranging from 0 to 10 to facilitate the visualisation of the intercellular network after.
-
-```{r, echo=T, warning=FALSE, fig.align='center'}
-#Score normalisation by the medium condition
-Scores.norm=Scores
-for (i in 1:length(my.selection)){
-  Scores.norm[i,]=Scores[i,]/Scores[i,1]
-}
-Scores.norm
-#Score scaling
-Scores.norm2=(Scores.norm-min(Scores.norm))/(max(Scores.norm)-min(Scores.norm))*9+1
-```
-
-
-### Intercellular communication network representation
-
-```{r, echo=T, warning=FALSE, fig.height=10, fig.width=12}
-
-# Color label
-PC.col = c("Epith"="#C37B90", "Muscle_cell"="#c100b9","Fblast_B"="#88b04b", "Fblast"="#88b04b","Endoth"="#88b04b",
-           "Mono"="#ff962c","Macroph"="#ff962c","moDC"="#ff962c","DC1"="#ff962c","DC2"="#ff962c","pDC"="#ff962c","NK"="#ff962c","Neutrop"="#ff962c",
-           "CD4 T cell"="#5EA9C3","CD8 T cell"="#5EA9C3","Treg"="#5EA9C3","B cell"="#5EA9C3")
-
-# Display intercellular communication networks
-network.plot1 = network.create(icn.score = Scores.norm2[1], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out", PC.col)
-network.plot2 = network.create(icn.score =Scores.norm2[2], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out",PC.col)
-network.plot3 = network.create(icn.score = Scores.norm2[3], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out", PC.col)
-network.plot4 = network.create(icn.score =Scores.norm2[4], scale = c(round(min(Scores.norm2)),round(max(Scores.norm2))), direction = "out",PC.col)
-grid.arrange(network.plot1, network.plot2, network.plot3, network.plot4, nrow=2, ncol=2)
-
-```
-Here, we observe a general increase of communication by blocking the IL10 communication channel, which suggests that autocrine IL10 secretion controls the communication in LPS-activated DCs.
-To assess the differences between scores in a quantitative manner, a statistical test can be performed (see "Compute pvalue to compare communication scores" section). 
-To see the use of the other visualisation modes, see case study 2. 
 
 
 # Software information <a name="Software-information"></a>
@@ -544,34 +200,28 @@ To see the use of the other visualisation modes, see case study 2.
 ```
 session.info()
 ```
-R version 3.6.3 (2020-02-29)
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
+R version 4.0.3 (2020-10-10)
+Platform: x86_64-apple-darwin17.0 (64-bit)
 Running under: macOS Mojave 10.14.6
 
 Matrix products: default
 BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
 
 locale:
 [1] fr_FR.UTF-8/fr_FR.UTF-8/fr_FR.UTF-8/C/fr_FR.UTF-8/fr_FR.UTF-8
 
 attached base packages:
- [1] grid      stats4    parallel  stats     graphics  grDevices utils     datasets  methods   base     
+[1] stats4    parallel  stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] rlist_0.4.6.1        scales_1.1.0         ggthemes_4.2.0       gridExtra_2.3        data.table_1.12.8   
- [6] RColorBrewer_1.1-2   gplots_3.0.3         GGally_1.5.0         ggplot2_3.3.0        psych_1.9.12.31     
-[11] readxl_1.3.1         jetset_3.4.0         annotate_1.64.0      XML_3.99-0.3         hgu133plus2.db_3.2.3
-[16] org.Hs.eg.db_3.10.0  AnnotationDbi_1.48.0 IRanges_2.20.2       S4Vectors_0.24.3     Biobase_2.46.0      
-[21] BiocGenerics_0.32.0  icellnet_0.0.0.9000 
+ [1] readxl_1.3.1         dplyr_1.0.3          icellnet_0.99.1      ggplot2_3.3.3        jetset_3.4.0         hgu133plus2.db_3.2.3
+ [7] org.Hs.eg.db_3.12.0  AnnotationDbi_1.52.0 IRanges_2.24.1       S4Vectors_0.28.1     Biobase_2.50.0       BiocGenerics_0.36.0 
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.4         lattice_0.20-40    tidyr_1.0.2        gtools_3.8.2       assertthat_0.2.1   digest_0.6.25     
- [7] R6_2.4.1           cellranger_1.1.0   plyr_1.8.6         RSQLite_2.2.0      pillar_1.4.3       rlang_0.4.5       
-[13] rstudioapi_0.11    gdata_2.18.0       blob_1.2.1         labeling_0.3       stringr_1.4.0      RCurl_1.98-1.1    
-[19] bit_1.1-15.2       munsell_0.5.0      compiler_3.6.3     pkgconfig_2.0.3    mnormt_1.5-6       tidyselect_1.0.0  
-[25] tibble_3.0.0       reshape_0.8.8      fansi_0.4.1        withr_2.1.2        crayon_1.3.4       dplyr_0.8.5       
-[31] bitops_1.0-6       nlme_3.1-145       xtable_1.8-4       gtable_0.3.0       lifecycle_0.2.0    DBI_1.1.0         
-[37] magrittr_1.5       KernSmooth_2.23-16 cli_2.0.2          stringi_1.4.6      farver_2.0.3       reshape2_1.4.3    
-[43] ellipsis_0.3.0     vctrs_0.2.4        tools_3.6.3        bit64_0.9-7        glue_1.3.2         purrr_0.3.3       
-[49] colorspace_1.4-1   caTools_1.18.0     memoise_1.1.0
+ [1] Rcpp_1.0.6       cellranger_1.1.0 pillar_1.4.7     compiler_4.0.3   plyr_1.8.6       tools_4.0.3      bit_4.0.4        nlme_3.1-151    
+ [9] lattice_0.20-41  memoise_2.0.0    RSQLite_2.2.3    lifecycle_0.2.0  tibble_3.0.5     gtable_0.3.0     pkgconfig_2.0.3  rlang_0.4.10    
+[17] psych_2.0.12     cli_2.2.0        DBI_1.1.1        rstudioapi_0.13  fastmap_1.1.0    gridExtra_2.3    withr_2.4.1      stringr_1.4.0   
+[25] generics_0.1.0   vctrs_0.3.6      bit64_4.0.5      grid_4.0.3       tidyselect_1.1.0 glue_1.4.2       R6_2.5.0         fansi_0.4.2     
+[33] blob_1.2.1       reshape2_1.4.4   purrr_0.3.4      magrittr_2.0.1   scales_1.1.1     ellipsis_0.3.1   assertthat_0.2.1 mnormt_2.0.2    
+[41] colorspace_2.0-0 stringi_1.5.3    munsell_0.5.0    tmvnsim_1.0-2    cachem_1.0.1     crayon_1.3.4
