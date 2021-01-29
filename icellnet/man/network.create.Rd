@@ -8,7 +8,7 @@ network.create(
   icn.score,
   scale = c(min(icn.score), max(icn.score)),
   direction = c("in", "out"),
-  PC.col
+  PC.col = NULL
 )
 }
 \arguments{
@@ -18,10 +18,10 @@ network.create(
 
 \item{direction}{Direction of the communication (either "out" or "in")}
 
-\item{PC.col}{Color vector for the peripheral cells.}
+\item{PC.col}{Color vector for the partner cells c("cell1"= "color1", "cell2"="color2").}
 }
 \description{
-Display the network from global communication scores matrix between a central cell (CC) and peripheral cell types (PC).
+Display the network from global communication scores matrix between a central cell (CC) and partner cell types (PC).
 }
 \details{
 The matrix of global communication score is obtained with the icellnet.score function.

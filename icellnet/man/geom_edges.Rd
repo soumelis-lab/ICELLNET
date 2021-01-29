@@ -38,6 +38,8 @@ geom_edges(
 \item{show.legend}{to show the legend or not}
 
 \item{inherit.aes}{inherit.aes}
+
+\item{...}{}
 }
 \description{
 Display the edges in the ICELLNET network.

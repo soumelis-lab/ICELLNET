@@ -14,6 +14,7 @@
 #' @param na.rm na.rm
 #' @param show.legend to show the legend or not
 #' @param inherit.aes  inherit.aes
+#' @param ...
 #'
 #' @examples
 #' \dontrun{geom_node_label(aes(label = Cell_type, fill = Cell_type), size = rel(6), fontface = "bold") }
@@ -38,11 +39,11 @@ geom_node_label = function (mapping = NULL,
     }
     position <- ggplot2::position_nudge(nudge_x, nudge_y)
   }
-  layer(
+  ggplot2::layer(
     data = data,
     mapping = mapping,
     stat = StatNodes,
-    geom = ggplot2::GeomLabel,
+    geom = GeomLabel,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,

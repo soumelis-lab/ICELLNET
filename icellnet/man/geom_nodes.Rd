@@ -26,6 +26,8 @@ geom_nodes(
 \item{show.legend}{to show the legend or not}
 
 \item{inherit.aes}{inherit.aes}
+
+\item{...}{}
 }
 \description{
 Display the nodes in the ICELLNET network.

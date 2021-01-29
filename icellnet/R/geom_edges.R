@@ -12,6 +12,7 @@
 #' @param na.rm na.rm
 #' @param show.legend to show the legend or not
 #' @param inherit.aes  inherit.aes
+#' @param ...
 #'
 #' @examples
 #' \dontrun{geom_edges (data = my_df_net_2, aes(size = Score), arrow = arrow( length = unit(7, "pt"), angle = 35, type = "open", ends = "first") }

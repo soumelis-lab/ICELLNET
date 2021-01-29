@@ -12,8 +12,7 @@ icellnet.score(
   PC.target = PC.target,
   CC.type = c("RNAseq", "Microarray"),
   PC.type = c("RNAseq", "Microarray"),
-  db = db,
-  family.type = "Family"
+  db = db
 )
 }
 \arguments{
@@ -32,8 +31,6 @@ icellnet.score(
 \item{PC.type}{Type of transcriptomic data for the peripheral (either "RNAseq" or "Microarray")}
 
 \item{db}{Database of ligand/receptors interactions}
-
-\item{family.type}{"Family" as a default, to separate the different family of molecules in the database. Can be set to "Subfamily" to consider the subfamilies of cytokines.}
 }
 \description{
 Returns global communication scores between a central cell (CC) and peripheral cell types (PC).
@@ -50,5 +47,7 @@ The function returns the global communication score and the individual communica
 \examples{
 \dontrun{icellnet.score( CC.data= CC.data.selection.S1, PC.data=PC.data, PC = my.selection, ...
 PC.target = PC.target, CC.type = "RNAseq", PC.type = "Microarray", direction="out")}
+
+
 
 }

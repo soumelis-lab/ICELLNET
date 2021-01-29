@@ -4,14 +4,12 @@
 \alias{receptor.average.MA}
 \title{receptor.average.MA function}
 \usage{
-receptor.average.MA(db = db, data = data, SYMBOL = rownames(data))
+receptor.average.MA(db = db, data = data)
 }
 \arguments{
 \item{db}{Ligand/receptor database}
 
-\item{data}{A matrix of transcriptomic profiles}
-
-\item{SYMBOL}{List of gene symbols}
+\item{data}{A dataframe of transcriptomic profiles with gene names as rownames}
 }
 \description{
 Compute the average expression for all receptors expressed in dataset provided, only available for Affymetrix Human Genome U133 Plus 2.0 Array.
@@ -22,6 +20,6 @@ correspond to the same biological condition. If the receptor is composed of seve
 of the mean values obtained for each subunits.
 }
 \examples{
-\dontrun{receptor.average.MA ( db=db, data = data,  SYMBOL = rownames(data))}
+\dontrun{receptor.average.MA ( db=db, data = data)}
 
 }

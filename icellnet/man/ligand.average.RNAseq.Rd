@@ -4,14 +4,12 @@
 \alias{ligand.average.RNAseq}
 \title{ligand.average.RNAseq function}
 \usage{
-ligand.average.RNAseq(db = db, data = data, SYMBOL = rownames(data))
+ligand.average.RNAseq(db = db, data = data)
 }
 \arguments{
 \item{db}{Ligand/receptor database}
 
-\item{data}{A matrix of transcriptomic profiles}
-
-\item{SYMBOL}{List of gene symbols}
+\item{data}{A dataframe of transcriptomic profiles with gene names as rownames}
 }
 \description{
 Compute the average expression for all ligands expressed in dataset provided, only available for RNA-seq dataset with gene symbol annotation.
@@ -22,5 +20,5 @@ correspond to the same biological condition. If the ligand is composed of severa
 of the mean values obtained for each subunits.
 }
 \examples{
-\dontrun{ ligand.average.RNAseq ( db=db, data = data,  SYMBOL = rownames(data))}
+\dontrun{ ligand.average.RNAseq ( db=db, data = data)}
 }

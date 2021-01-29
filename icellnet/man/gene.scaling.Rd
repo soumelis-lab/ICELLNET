@@ -7,7 +7,7 @@
 gene.scaling(data = data, n = n, db = db)
 }
 \arguments{
-\item{data}{Matrix of transcriptomic profiles}
+\item{data}{Matrix or dataframe transcriptomic profiles with gene name symbol as rownames.}
 
 \item{n}{Number of highest expression values selected to define the maximum value of expression for the scaling}
 
@@ -26,9 +26,7 @@ For each gene:
 Default value of n is 1.
 }
 \examples{
-\dontrun{In this example, our matrix (CC.data) contains 80 transcriptional profiles.
-The n is set to 4 in order to take the mean of the 5\% extreme expression values as the maximum expression value.
-mean(4 highest values) --> 10
+\dontrun{
 gene.scaling (data = CC.data, n=4, db = db)
 }
 

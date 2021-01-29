@@ -14,7 +14,6 @@ icellnet.score.pvalue(
   CC.type = c("RNAseq", "Microarray"),
   PC.type = c("RNAseq", "Microarray"),
   db = db,
-  family.type = "Family",
   between = c("cells", "conditions"),
   method = "BH"
 )
@@ -37,8 +36,6 @@ icellnet.score.pvalue(
 \item{PC.type}{Type of transcriptomic data for the peripheral (either "RNAseq" or "Microarray")}
 
 \item{db}{Database of ligand/receptors interactions}
-
-\item{family.type}{"Family" as a default, to separate the different family of molecules in the database. Can be set to "Subfamily" to consider the subfamilies of cytokines.}
 
 \item{between}{Type of pvalue matrix desired : "cells" to compare communication scores of the central cell with different peripheral cells, "conditions" to compare the communication score of two central cells in different biological conditions with the same peripheral cell.}
 

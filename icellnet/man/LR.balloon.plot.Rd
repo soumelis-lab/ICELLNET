@@ -6,32 +6,33 @@
 \usage{
 LR.balloon.plot(
   lr = lr,
-  PC = PC,
-  thresh = thresh,
-  type = c("raw", "percentage"),
+  thresh = 0,
+  topn = NULL,
   db.name.couple = db.name.couple,
-  title = title
+  title = title,
+  family.col = family.col
 )
 }
 \arguments{
 \item{lr}{Matrix of individual communication scores}
 
-\item{PC}{Vector of selected peripheral cell types}
-
 \item{thresh}{Value set as a threshold to display the L/R pairs contributing with a score superior to this threshold}
 
-\item{type}{"raw" as default, can be set to "percentage" if you wish to consider the threshold as a defined percentage of the global communication score}
+\item{topn}{Value set as top n interactions to display}
 
 \item{db.name.couple}{output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default}
 
 \item{title}{Title of the balloon plot}
+
+\item{family.col}{Color vector for the family of molecules c("family1"= "color1", "family2"="color2")}
 }
 \description{
-Display the individual communication scores of ligand/receptor pairs that contributes with a score superior to a threshold (thresh = 10 as a default)
+Display the individual communication scores of ligand/receptor pairs that contributes with a score superior to a threshold (thresh = 10 as a default) and/or the top n interactions contributing to the score. Return a ggplot object.
 }
 \examples{
 \dontrun{lr <- icellnet.score.results[[2]]
-LR.balloon.plot(lr = lr, PC =PC , thresh = 20,  db.name.couple=name.lr.couple(db, "Family"))
+LR.balloon.plot(lr = lr, thresh = 20, top_n=NULL, db.name.couple=name.lr.couple(db, "Family"))
 }
+
 
 }

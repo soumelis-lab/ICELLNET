@@ -14,7 +14,6 @@ icellnet.ind.score(
   CC.type = c("RNAseq", "Microarray"),
   PC.type = c("RNAseq", "Microarray"),
   db = db,
-  family.type = "Family",
   between = c("cells", "conditions")
 )
 }
@@ -23,9 +22,9 @@ icellnet.ind.score(
 
 \item{CC.data}{Data.frame of transcriptomic profiles corresponding to the central cell}
 
-\item{PC.data}{Data.frame of transcriptomic profiles corresponding to the peripheral cells}
+\item{PC.data}{Data.frame of transcriptomic profiles corresponding to the partner cells}
 
-\item{PC}{Vector selecting a list of peripheral cell for the cell-cell communication analysis}
+\item{PC}{Vector selecting a list of partnercell for the cell-cell communication analysis}
 
 \item{PC.target}{Data.frame of information concerning the PC.data samples}
 
@@ -33,16 +32,14 @@ icellnet.ind.score(
 
 \item{CC.type}{Type of transcriptomic data for the central cell (either "RNAseq" or "Microarray")}
 
-\item{PC.type}{Type of transcriptomic data for the peripheral (either "RNAseq" or "Microarray")}
+\item{PC.type}{Type of transcriptomic data for the partner (either "RNAseq" or "Microarray")}
 
 \item{db}{Database of ligand/receptors interactions}
 
-\item{family.type}{"Family" as a default, to separate the different family of molecules in the database. Can be set to "Subfamily" to consider the subfamilies of cytokines.}
-
-\item{between}{Type of pvalue matrix desired : "cells" to compare communication scores of the central cell with different peripheral cells, "conditions" to compare the communication score of two central cells in different biological conditions with the same peripheral cell.}
+\item{between}{Type of pvalue matrix desired : "cells" to compare communication scores of the central cell with different partner cells, "conditions" to compare the communication score of two central cells in different biological conditions with the same partner cell.}
 }
 \description{
-Needed to compute the pvalue in the icellnet.score.pvalue function. Returns communication scores between a central cell (CC) and peripheral cell types (PC).
+Needed to compute the pvalue in the icellnet.score.pvalue function. Returns communication scores between a central cell (CC) and partner cell types (PC).
 }
 \details{
 See icellnet.score.pvalue function for more details.
@@ -52,5 +49,5 @@ The function returns the communication score per replicates.
 \examples{
 \dontrun{icellnet.ind.score ( direction = "in", CC.data = CC.data, PC.data = PC.data,...
 PC = PC, PC.target = PC.target, cell=cell, CC.type = "RNAseq", PC.type="RNAseq" , db = db, ...
-family.type = "Family", between="cells")}
+between="cells")}
 }

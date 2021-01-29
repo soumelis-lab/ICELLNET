@@ -27,6 +27,8 @@ geom_node_label(
 
 \item{position}{position}
 
+\item{...}{}
+
 \item{parse}{parse}
 
 \item{nudge_x}{nudge_x}

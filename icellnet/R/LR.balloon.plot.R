@@ -1,120 +1,76 @@
 #'
 #' Plot of individual communication scores of contributing L/R pairs.
 #'
-#' @description Display the individual communication scores of ligand/receptor pairs that contributes with a score superior to a threshold (thresh = 10 as a default)
+#' @description Display the individual communication scores of ligand/receptor pairs that contributes with a score superior to a threshold (thresh = 10 as a default) and/or the top n interactions contributing to the score. Return a ggplot object.
 #'
 #' @param lr Matrix of individual communication scores
-#' @param PC Vector of selected peripheral cell types
 #' @param thresh Value set as a threshold to display the L/R pairs contributing with a score superior to this threshold
-#' @param type "raw" as default, can be set to "percentage" if you wish to consider the threshold as a defined percentage of the global communication score
+#' @param topn Value set as top n interactions to display
 #' @param db.name.couple output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default
 #' @param title Title of the balloon plot
+#' @param family.col Color vector for the family of molecules c("family1"= "color1", "family2"="color2")
 #
 #'
 #' @export
 #' @examples
 #' \dontrun{lr <- icellnet.score.results[[2]]
-#' LR.balloon.plot(lr = lr, PC =PC , thresh = 20,  db.name.couple=name.lr.couple(db, "Family"))
+#' LR.balloon.plot(lr = lr, thresh = 20, top_n=NULL, db.name.couple=name.lr.couple(db, "Family"))
 #' }
 #'
-LR.balloon.plot = function (lr = lr,
-                            PC = PC,
-                            thresh = thresh,
-                            type = c("raw" , "percentage"),
-                            db.name.couple = db.name.couple,
-                            title = title) {
-  lr=lr[complete.cases(lr),]
-  lr=lr[is.finite(log2(rowSums(lr))),]
-  rank0 = as.data.table(x = character(0))
-  i = 2
-  if (length(PC) == 1) {
-    ranked.lr.cell = as.data.table(sort(lr[, cell], decreasing = TRUE), keep.rownames =
-                                     TRUE)
-    if (type == "percentage") {
-      ranked.lr.cell$V2 = round(ranked.lr.cell$V2 / sum(lr[, cell]) * 100, 1)#as.numeric(score)*100,1)
-    }
-    if (is.null(which (as.numeric(sum(
-      ranked.lr.cell$V2
-    )) > as.numeric(thresh)))) {
-      i = i + 1
-    } else
-      rank = as.data.table (ranked.lr.cell[which (as.numeric(sum(ranked.lr.cell$V2)) > as.numeric(thresh))] , keep.rownames =
-                              TRUE)
-    rank0 = rank
-  } else
-    for (cell in PC) {
-      ranked.lr.cell = as.data.table(sort(lr[, cell], decreasing = TRUE), keep.rownames =
-                                       TRUE)
-      if (type == "percentage") {
-        ranked.lr.cell$V2 = round(ranked.lr.cell$V2 / sum(lr[, cell]) * 100, 1)#as.numeric(score)*100,1)
-      }
-      if (is.null(which (as.numeric(sum(
-        ranked.lr.cell$V2
-      )) > as.numeric(thresh)))) {
-        i = i + 1
-      } else
-        rank = as.data.table (ranked.lr.cell[which (as.numeric(ranked.lr.cell$V2) > as.numeric(thresh))] , keep.rownames =
-                                TRUE)
-      rank0 <- merge(rank0, rank, by = "V1", all = TRUE)
-      colnames(rank0)[i] <- cell
-      i = i + 1
-    }
-  vars <- PC
-  rank0$family = rep(NA, length(rank0$V1))
-  for (i in 1:length(rank0$V1)) {
-    rank0$family[i] = as.character(db.name.couple[which(db.name.couple[, 1] ==
-                                                          rank0$V1[i]), 2])
-  }
-  melted <- melt(rank0, id.vars = c("V1", "family"))
-  melted$family[is.na(melted$family)] <- "NA"
-  melted = melted %>% arrange(family, variable)
-  melted <-
-    melted %>% mutate(row = group_indices_(melted, .dots = c('family', 'V1')))
-  melted <-
-    melted %>% mutate(col = group_indices_(melted, .dots = c('variable')))
-  vars_x_axis <-
-    c(melted %>% arrange(col) %>% select(variable) %>% distinct())$variable
-  names_y_axis <-
-    c(melted %>% arrange(row) %>%  group_by(V1) %>% distinct(V1) %>%  select(V1))$V1
-  plot <-
-    ggplot(melted,
-           aes(
-             x = factor(col),
-             y = factor(row),
-             color = factor(family),
-             size = value #,
-             #alpha = value
-           )) +
-    geom_point() +    # plot as points
-    geom_text(aes(label = round(value), x = col + 0.4),
-              alpha = 1.0,
-              size = 3) +   # display the value next to the "balloons"
-    #scale_alpha_continuous(range = c(0.4, 0.8)) +
-    scale_size_area(max_size = 8) +
-    scale_x_discrete(
-      breaks = 1:length(vars_x_axis),
-      labels = vars_x_axis,
-      position = 'top'
-    ) +   # set the labels on the X axis
-    scale_y_discrete(breaks = 1:length(names_y_axis), labels = names_y_axis) +                 # set the labels on the Y axis
-    scale_color_manual(values = family.col) +
-    theme_classic() +
-    labs(title = title) +
-    theme(
-      axis.line = element_blank(),
-      # disable axis lines
-      axis.title = element_blank(),
-      # disable axis titles
-      panel.border = element_blank(),
-      # disable panel border
-      panel.grid.major.x = element_blank(),
-      # disable lines in grid on X-axis
-      panel.grid.minor.x = element_blank(),
-      axis.text.y = element_text(size = 13),
-      axis.text.x = element_text(angle = 90),
-      axis.ticks.x = element_blank(),
-      axis.ticks.y = element_blank()
-    )
+#'
+LR.balloon.plot <- function (lr = lr, thresh = 0, topn = NULL, db.name.couple = db.name.couple,
+          title = title, family.col = family.col)
+{
+  interactions = rownames(lr)
+  lr = as.data.frame(lr)
+  lr$Pair = interactions
+  lr = as.data.frame(lr[stats::complete.cases(lr), ])
+  lr = lr %>% dplyr::filter_if(is.numeric, dplyr::any_vars(. > 0)) %>% dplyr::filter_if(is.numeric, dplyr::any_vars(. >= thresh))
+  if (!is.null(topn)) {
+    if (topn > dim(lr)[1]) {
+      note(paste0("lr contains only ", dim(lr)[1], " after filtering interaction highest than theshold"))
+      lr = dplyr::left_join(lr, as.data.frame(db.name.couple),
+                            by = "Pair")
 
+    }
+    else {
+      lr = lr %>% dplyr::mutate(sum = rowSums(dplyr::across(where(is.numeric)))) %>%
+        dplyr::arrange(dplyr::desc(sum)) %>% dplyr::top_n(topn,
+                                                          sum)
+      lr = dplyr::left_join(lr, as.data.frame(db.name.couple),
+                            by = "Pair") %>% dplyr::select(-sum)
+    }
+  } else {
+    lr = dplyr::left_join(lr, as.data.frame(db.name.couple), by = "Pair")
+  }
+  if (!(is.null(lr$Subfamily))){
+    lr=lr %>% dplyr::rename(Family=Subfamily)
+  }
+  melted <- reshape2::melt(lr, id.vars = c("Pair", "Family"))
+  melted$Family[is.na(melted$Family)] <- "NA"
+  melted = melted %>% dplyr::arrange(Family, variable)
+  melted <- melted %>% dplyr::mutate(row = group_indices_(melted,
+                                                          .dots = c("Family", "Pair")))
+  melted <- melted %>% dplyr::mutate(col = group_indices_(melted,
+                                                          .dots = c("variable")))
+  vars_x_axis <- c(melted %>% dplyr::arrange(col) %>% dplyr::select(variable) %>%
+                     dplyr::distinct())$variable
+  names_y_axis <- c(melted %>% dplyr::arrange(row) %>% dplyr::group_by(Pair) %>%
+                      dplyr::distinct(Pair) %>% dplyr::select(Pair))$Pair
+  plot <- ggplot2::ggplot(melted, ggplot2::aes(x = factor(col),
+                                               y = factor(row), color = factor(Family), size = value)) +
+    ggplot2::geom_point() +
+    ggplot2::geom_text(ggplot2::aes(label = round(value), x = col + 0.4), alpha = 1, size = 3) +
+    ggplot2::scale_size_area(max_size = 8) +
+    ggplot2::scale_x_discrete(breaks = 1:length(vars_x_axis),
+                              labels = vars_x_axis, position = "top") +
+    ggplot2::scale_y_discrete(breaks = 1:length(names_y_axis), labels = names_y_axis) +
+    ggplot2::scale_color_manual(values = family.col) +
+    ggplot2::theme_bw() + ggplot2::labs(title = title) +
+    ggplot2::theme(axis.line = ggplot2::element_blank(), axis.title = ggplot2::element_blank(),
+                                                                        panel.border = ggplot2::element_blank(), panel.grid.major.x = ggplot2::element_blank(),
+                                                                        panel.grid.minor.x = ggplot2::element_blank(),
+                                                                        axis.text.x = ggplot2::element_text(angle = 0), axis.ticks.x = ggplot2::element_blank(),
+                                                                        axis.ticks.y = ggplot2::element_blank())
   return(plot)
 }

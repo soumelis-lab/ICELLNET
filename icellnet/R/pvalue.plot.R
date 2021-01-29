@@ -15,17 +15,17 @@
 #'
 #'
 pvalue.plot <-function(pvalue, PC=PC){
-  melted<- melt(pvalue, na.rm = TRUE)
+  melted<- reshape2::melt(pvalue, na.rm = TRUE)
   melted$Var1=factor(melted$Var1, levels= rev(PC))
   melted$Var2=factor(melted$Var2, levels= PC)
   # Heatmap
-  plot.pvalue =ggplot(data = melted, aes(Var2, Var1, fill = value))+
-    geom_tile(color = "white")+
-    scale_fill_gradientn(colours = c("red","tomato","white","darkblue"),
+  plot.pvalue = ggplot2::ggplot(data = melted, ggplot2::aes(Var2, Var1, fill = value))+
+    ggplot2::geom_tile(color = "white")+
+    ggplot2::scale_fill_gradientn(colours = c("red","tomato","white","darkblue"),
                          values = c(0.00,0.05,0.1,1), name="p-value", space = "Lab", na.value = "grey50") +
-    theme_minimal()+
-    labs(x = NULL, y = NULL) +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 12, hjust = 1), panel.grid = element_blank(), axis.text.y = element_text(vjust = 1, size = 12, hjust = 1))+
-    coord_fixed()
+    ggplot2::theme_minimal()+
+    ggplot2::labs(x = NULL, y = NULL) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, vjust = 1, size = 12, hjust = 1), panel.grid = ggplot2::element_blank(), axis.text.y = ggplot2::element_text(vjust = 1, size = 12, hjust = 1))+
+    ggplot2::coord_fixed()
   return(plot.pvalue)
 }

@@ -1,6 +1,6 @@
 #' Display the communication network with ICELLNET method
 #'
-#' @description Display the network from global communication scores matrix between a central cell (CC) and peripheral cell types (PC).
+#' @description Display the network from global communication scores matrix between a central cell (CC) and partner cell types (PC).
 #' @details The matrix of global communication score is obtained with the icellnet.score function.
 #' - out == display the communication score from the CC to PC
 #' - in == display the communication score from the PC to CC
@@ -11,18 +11,24 @@
 #' @param icn.score Matrix of global communication scores
 #' @param scale  vector that contains the minimum and the maximum of the global communication score matrix.
 #' @param direction Direction of the communication (either "out" or "in")
-#' @param PC.col Color vector for the peripheral cells.
+#' @param PC.col Color vector for the partner cells c("cell1"= "color1", "cell2"="color2").
 #'
 #' @export
 #' @examples
 #' \dontrun{network.create(icn.score = Scores.norm, scale = c(round(min(Scores.norm)),...
 #' round(max(Scores.norm))), direction = "out", PC.col)}
 #'
-network.create = function(icn.score, scale = c(min(icn.score), max(icn.score)), direction = c("in", "out"), PC.col) {
+network.create = function(icn.score, scale = c(min(icn.score), max(icn.score)), direction = c("in", "out"), PC.col=NULL) {
   # Color palette
-  CC.col = "grey"
-  names(CC.col) = colnames(icn.score)
-  my_pal = c(PC.col, CC.col)
+  if (is.null(PC.col)){
+    my_pal = c(rep ("white", dim(icn.score)[1]+1))
+    names(my_pal)= c(rownames(icn.score), colnames(icn.score))
+  }else {
+    CC.col = "grey"
+    names(CC.col) = colnames(icn.score)
+    my_pal = c(PC.col, CC.col)
+  }
+
   # PC Nodes
   mtx.coord = data.frame(row.names = rownames(icn.score))
   mtx.coord$x = 0 + 0.2 * cos(seq(0, 2 * pi, length.out = (dim(icn.score)[1] +
@@ -89,7 +95,7 @@ network.create = function(icn.score, scale = c(min(icn.score), max(icn.score)), 
 
   if (direction =="in"){
     gg.net <-
-      ggplot(my_df_net, aes(
+      ggplot2::ggplot(my_df_net, ggplot2::aes(
         x = x,
         y = y,
         xend = xend,
@@ -97,44 +103,44 @@ network.create = function(icn.score, scale = c(min(icn.score), max(icn.score)), 
       )) +
       geom_edges(
         data = my_df_net_2,
-        aes(size = Score),
-        arrow = arrow(
-          length = unit(7, "pt"),
+        ggplot2::aes(size = Score),
+        arrow = grid::arrow(
+          length = grid::unit(7, "pt"),
           angle = 35,
           type = "open",
           ends = "first"
         )
       ) +
-      scale_size(
+      ggplot2::scale_size(
         range = c(1, 6),
         breaks = c(1, 2, 4, 6, 8, 10),
         labels = c(1, 2, 4, 6, 8, 10),
         limits = scale
       ) +
-      geom_point(color = "black",
+      ggplot2::geom_point(color = "black",
                  size = 31,
                  shape = 1) +
-      geom_nodes(aes(color = Cell_type), size = 30) +
-      scale_color_manual(values = my_pal, guide = F) +
-      scale_fill_manual(values = my_pal, guide = F) +
-      geom_node_label(aes(label = Cell_type, fill = Cell_type),
-                      size = rel(6),
+      geom_nodes(ggplot2::aes(color = Cell_type), size = 30) +
+      ggplot2::scale_color_manual(values = my_pal, guide = F) +
+      ggplot2::scale_fill_manual(values = my_pal, guide = F) +
+      geom_node_label(ggplot2::aes(label = Cell_type, fill = Cell_type),
+                      size = ggplot2::rel(6),
                       fontface = "bold") +
-      expand_limits(x = c(-0.25, 0.25), y = c(-0.25, 0.25)) +
-      theme_bw(base_size = 12, base_family = "") +
-      theme(
-        axis.text = element_blank(),
-        axis.ticks = element_blank(),
-        axis.title = element_blank(),
-        legend.key = element_blank(),
-        panel.background = element_rect(fill = "white", colour = NA),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        plot.margin = unit(c(0, 0, 0, 0), "cm")
+      ggplot2::expand_limits(x = c(-0.25, 0.25), y = c(-0.25, 0.25)) +
+      ggplot2::theme_bw(base_size = 12, base_family = "") +
+      ggplot2::theme(
+        axis.text = ggplot2::element_blank(),
+        axis.ticks = ggplot2::element_blank(),
+        axis.title = ggplot2::element_blank(),
+        legend.key = ggplot2::element_blank(),
+        panel.background = ggplot2::element_rect(fill = "white", colour = NA),
+        panel.border = ggplot2::element_blank(),
+        panel.grid = ggplot2::element_blank(),
+        plot.margin = grid::unit(c(0, 0, 0, 0), "cm")
       )
   }else if (direction =="out"){
     gg.net <-
-      ggplot(my_df_net, aes(
+      ggplot2::ggplot(my_df_net, ggplot2::aes(
         x = x,
         y = y,
         xend = xend,
@@ -142,40 +148,40 @@ network.create = function(icn.score, scale = c(min(icn.score), max(icn.score)), 
       )) +
       geom_edges(
         data = my_df_net_2,
-        aes(size = Score),
-        arrow = arrow(
-          length = unit(7, "pt"),
+        ggplot2::aes(size = Score),
+        arrow = grid::arrow(
+          length = grid::unit(7, "pt"),
           angle = 35,
           type = "open",
-          ends = "last" #first
+          ends = "last"
         )
       ) +
-      scale_size(
+      ggplot2::scale_size(
         range = c(1, 6),
         breaks = c(1, 2, 4, 6, 8, 10),
         labels = c(1, 2, 4, 6, 8, 10),
         limits = scale
       ) +
-      geom_point(color = "black",
+      ggplot2::geom_point(color = "black",
                  size = 31,
                  shape = 1) +
-      geom_nodes(aes(color = Cell_type), size = 30) +
-      scale_color_manual(values = my_pal, guide = F) +
-      scale_fill_manual(values = my_pal, guide = F) +
-      geom_node_label(aes(label = Cell_type, fill = Cell_type),
-                      size = rel(6),
+      geom_nodes(ggplot2::aes(color = Cell_type), size = 30) +
+      ggplot2::scale_color_manual(values = my_pal, guide = F) +
+      ggplot2::scale_fill_manual(values = my_pal, guide = F) +
+      geom_node_label(ggplot2::aes(label = Cell_type, fill = Cell_type),
+                      size = ggplot2::rel(6),
                       fontface = "bold") +
-      expand_limits(x = c(-0.25, 0.25), y = c(-0.25, 0.25)) +
-      theme_bw(base_size = 12, base_family = "") +
-      theme(
-        axis.text = element_blank(),
-        axis.ticks = element_blank(),
-        axis.title = element_blank(),
-        legend.key = element_blank(),
-        panel.background = element_rect(fill = "white", colour = NA),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        plot.margin = unit(c(0, 0, 0, 0), "cm")
+      ggplot2::expand_limits(x = c(-0.25, 0.25), y = c(-0.25, 0.25)) +
+      ggplot2::theme_bw(base_size = 12, base_family = "") +
+      ggplot2::theme(
+        axis.text = ggplot2::element_blank(),
+        axis.ticks = ggplot2::element_blank(),
+        axis.title = ggplot2::element_blank(),
+        legend.key = ggplot2::element_blank(),
+        panel.background = ggplot2::element_rect(fill = "white", colour = NA),
+        panel.border = ggplot2::element_blank(),
+        panel.grid = ggplot2::element_blank(),
+        plot.margin = grid::unit(c(0, 0, 0, 0), "cm")
       )
   } else
     stop('Error : Direction of the communication ("in" or "out") must be specified ')

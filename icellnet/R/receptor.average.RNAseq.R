@@ -7,17 +7,16 @@
 #' correspond to the same biological condition. If the receptor is composed of several subunits, the function computes the geometric mean of expression
 #' of the mean values obtained for each subunits.
 #'
-#' @param data A matrix of transcriptomic profiles
+#' @param data A dataframe of transcriptomic profiles with gene names as rownames
 #' @param db Ligand/receptor database
-#' @param SYMBOL List of gene symbols
 #' @export
 #' @examples
-#' \dontrun{receptor.average.RNAseq ( db=db, data = data,  SYMBOL = rownames(data))}
+#' \dontrun{receptor.average.RNAseq (db=db, data = data)}
 #'
 receptor.average.RNAseq <-
   function(db = db,
-           data = data,
-           SYMBOL = rownames(data)) {
+           data = data) {
+    SYMBOL = rownames(data)
     # check type of data
     x.rc = vector(length = dim(db)[1])
     data = as.data.frame(data)
@@ -31,17 +30,17 @@ receptor.average.RNAseq <-
           x.rc[mol] = mean(data.matrix(data[which(data$Symbol == db$`Receptor 1`[mol]), which(colnames(data) !=
                                                                                                 "Symbol")]))
         } else if (is.na(db$`Receptor 3`[mol])) {
-          x.rc[mol] = geometric.mean(c(mean(data.matrix(data[which(data$Symbol == db$`Receptor 1`[mol]), which(colnames(data) !=
+          x.rc[mol] = psych::geometric.mean(c(mean(data.matrix(data[which(data$Symbol == db$`Receptor 1`[mol]), which(colnames(data) !=
                                                                                                                  "Symbol")])),
                                        mean(data.matrix(data[which(data$Symbol ==
                                                                      db$`Receptor 2`[mol]), which(colnames(data) != "Symbol")]))))
         } else if (is.na(db$`Receptor 2`[mol])) {
-          x.rc[mol] = geometric.mean(c(mean(data.matrix(data[which(data$Symbol == db$`Receptor 1`[mol]), which(colnames(data) !=
+          x.rc[mol] = psych::geometric.mean(c(mean(data.matrix(data[which(data$Symbol == db$`Receptor 1`[mol]), which(colnames(data) !=
                                                                                                                  "Symbol")])),
                                        mean(data.matrix(data[which(data$Symbol ==
                                                                      db$`Receptor 3`[mol]), which(colnames(data) != "Symbol")]))))
         } else{
-          x.rc[mol] = geometric.mean(c(
+          x.rc[mol] = psych::geometric.mean(c(
             mean(data.matrix(data[which(data$Symbol == db$`Receptor 1`[mol]), which(colnames(data) !=
                                                                                       "Symbol")])),
             mean(data.matrix(data[which(data$Symbol ==

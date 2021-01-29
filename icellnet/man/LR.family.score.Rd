@@ -7,7 +7,11 @@
 LR.family.score(
   lr = lr,
   my.family = my.family,
-  db.couple = as.data.frame(db.couple)
+  db.couple = as.data.frame(db.couple),
+  plot = F,
+  title = NULL,
+  ymax = NULL,
+  family.col = NULL
 )
 }
 \arguments{
@@ -16,12 +20,20 @@ LR.family.score(
 \item{my.family}{Vector selecting family or subfamilies of molecules for the analysis}
 
 \item{db.couple}{Output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default}
+
+\item{plot}{Logical, by default plot=F. If plot=T, function returns a ggplot object}
+
+\item{title}{Title of the barplot (character)}
+
+\item{ymax}{Value as limit of the yaxis. If ymax=NULL, ymax takes the maximum value of the table}
+
+\item{family.col}{Color vector for the family of molecules c("family1"= "color1", "family2"="color2").}
 }
 \description{
 Computes the contribution of families or subfamilies of molecules (included in my.selection) to the global communication scores.
-The function returns a table that can be visualized in a barplot using the LR.family.barplot() function.
+If plot=FALSE, the function returns a table. If plot=T, returns a ggplot object, barplot representing contribution of families of molecules to the communication scores.
 }
 \examples{
-\dontrun{LR.family.score(lr=lr, my.family=my.family, db.couple=db.name.couple)}
+\dontrun{LR.family.score(lr=lr, my.family=my.family, db.couple=db.name.couple, plot=F)}
 
 }

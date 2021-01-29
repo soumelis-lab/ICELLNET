@@ -23,7 +23,6 @@
 #' @param PC.type Type of transcriptomic data for the peripheral (either "RNAseq" or "Microarray")
 #' @param direction Direction of the communication (either "out" or "in"). "out" represent the communication from the central cell to the peripheral cells, which means that the ligands considered are expressed by the central cell, and the receptors are expressed by the peripheral cells. "in" represents the communication from the peripheral cells to the central cells, which means that the considered ligands are expressed by the peripheral cells and the receptors are expressed by the central cells.
 #' @param db Database of ligand/receptors interactions
-#' @param family.type "Family" as a default, to separate the different family of molecules in the database. Can be set to "Subfamily" to consider the subfamilies of cytokines.
 #' @param between Type of pvalue matrix desired : "cells" to compare communication scores of the central cell with different peripheral cells, "conditions" to compare the communication score of two central cells in different biological conditions with the same peripheral cell.
 #' @param method method to adjust the pvalue. See p.adjust() function for the available methods. "BH" method is set as a default.
 #'
@@ -43,7 +42,6 @@ icellnet.score.pvalue = function(direction = c("out", "in"),
                                  CC.type = c("RNAseq", "Microarray"),
                                  PC.type = c("RNAseq", "Microarray"),
                                  db = db,
-                                 family.type = "Family",
                                  between=c("cells","conditions"),
                                  method = "BH") {
   scores_rep=list()
@@ -75,20 +73,19 @@ icellnet.score.pvalue = function(direction = c("out", "in"),
                               CC.type =CC.type ,
                               PC.type =PC.type,
                               db = db,
-                              family.type = family.type,
                               between=between)
-      scores_rep=list.append(scores_rep, list(cell,calc))
+      scores_rep=rlist::list.append(scores_rep, list(cell,calc))
     }
     #Compute pvalue from the score_rep matrix
     for (i in 1:(length(PC)-1)) {
       for (j in (i+1):length(PC)) {
         score1 = scores_rep[[i]][[2]]
         score2 = scores_rep[[j]][[2]]
-        pvalue[PC[j], PC[i]] = wilcox.test(score1, score2)[[3]]
+        pvalue[PC[j], PC[i]] = stats::wilcox.test(score1, score2)[[3]]
 
       }
     }
-    p.adjust2 <-matrix(p.adjust(pvalue, method = "BH"),
+    p.adjust2 <-matrix(stats::p.adjust(pvalue, method = "BH"),
                        nrow = length(PC),
                        ncol = length(PC))
     rownames(p.adjust2) = PC
@@ -109,9 +106,8 @@ icellnet.score.pvalue = function(direction = c("out", "in"),
                                cell=cell,
                                CC.type =CC.type ,
                                PC.type =PC.type,
-                               db = db,
-                               family.type = family.type, between=between)
-      scores_rep1=list.append(scores_rep1, list(cell,calc1))
+                               db = db, between=between)
+      scores_rep1=rlist::list.append(scores_rep1, list(cell,calc1))
 
       calc2=icellnet.ind.score(direction = direction,
                                CC.data = CC.data2,
@@ -120,18 +116,17 @@ icellnet.score.pvalue = function(direction = c("out", "in"),
                                cell=cell,
                                CC.type =CC.type ,
                                PC.type =PC.type,
-                               db = db,
-                               family.type = family.type, between=between)
-      scores_rep2=list.append(scores_rep2, list(cell,calc2))
+                               db = db, between=between)
+      scores_rep2=rlist::list.append(scores_rep2, list(cell,calc2))
     }
 
     for (i in 1:length(PC)){
       score1 = scores_rep1[[i]][[2]]
       score2 = scores_rep2[[i]][[2]]
-      pvalue[i] = wilcox.test(score1, score2)[[3]]
+      pvalue[i] = stats::wilcox.test(score1, score2)[[3]]
     }
     p.adjust2 <-
-      matrix(p.adjust(pvalue, method = "BH"),
+      matrix(stats::p.adjust(pvalue, method = "BH"),
              nrow = length(PC),
              ncol = 1)
     rownames(p.adjust2) = PC

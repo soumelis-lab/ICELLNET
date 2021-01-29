@@ -9,7 +9,7 @@ name.lr.couple(db = db, type = c("Family", "Subfamily"))
 \arguments{
 \item{db}{Ligand/receptor database}
 
-\item{type}{Can be set to "Family" or "Subfamily", to display the  family/subfamily of molecules which the L/R interaction belongs to.}
+\item{type}{Can be set to "Family" or "Subfamily", to display the  family/subfamily of molecules which the L/R interaction belongs to. If you want to focus on a specific subfamily of molecules from the icellnet database, set it as db$Subfamily. (ex: db$Subfamily = db$Checkpoints or db$Subfamily = db$Cytokines"}
 }
 \description{
 From the database of ligand/receptors interactions, the function retrieves the corresponding gene symbols.

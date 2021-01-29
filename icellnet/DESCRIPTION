@@ -1,27 +1,26 @@
 Package: icellnet
-Title: ICELLNET : A transcriptome-based framework to dissect
-        intercellular communication
-Version: 0.0.0.9000
+Type: Package
+Title: Dissection of intercellular communication using the
+        transcriptome-based framework ICELLNET
+Version: 0.99.1
 Authors@R: 
     c(person(given = "Lucile",
            family = "Massenet-Regad",
            role = "cre", 
-           email = "lucile.massenet@inserm.fr"),
+           email = "lucile.massenet@espci.org"),
      person(given = "Floriane",
            family = "No<U+00EB>l",
            role ="aut", 
            email = "floriane.noel@inserm.fr"))
 Maintainer: Lucile Massenet-Regad <lucile.massenet@espci.org>
-Description: ICELLNET is a transcriptomic-based framework to dissect cell communication in a global manner. It integrates an original expert-curated database of ligand-receptor interactions taking into account multiple subunits expression. Based on transcriptomic profiles (gene expression), ICELLNET package allows to compute communication scores between cells and provides several visualization modes that can be helpful to dig into cell-cell interaction mechanism and extend biological knowledge.
+Description: ICELLNET is a transcriptomic-based framework to dissect cell communication in a global manner. It integrates an original expert-curated database of ligand-receptor interactions taking into account multiple subunits expression. Based on transcriptomic profiles (gene expression), ICELLNET package allows to compute communication scores between cells and provides several visualization modes that can be helpful to dig into cell-cell interaction mechanism and extend biological knowledge
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
-Imports: readxl, curl, ggplot2, gplots, org.Hs.eg.db, hgu133plus2.db,
-        annotate, jetset, GGally, RColorBrewer, ggthemes, reshape2,
-        tidyr, dplyr, AnnotationDbi, stats, BiocGenerics, data.table,
-        psych
+RoxygenNote: 7.1.1
+Imports: stats, dplyr, data.table, ggplot2, jetset, psych, reshape2,
+        rlist, AnnotationDbi, hgu133plus2.db
 NeedsCompilation: no
-Packaged: 2020-07-23 15:05:09 UTC; luciletravail
+Packaged: 2021-01-29 14:53:57 UTC; lucilemassenet
 Author: Lucile Massenet-Regad [cre],
   Floriane No<U+00EB>l [aut]
