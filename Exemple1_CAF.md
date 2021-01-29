@@ -1,11 +1,11 @@
 
-# Case study 1: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets <a name="Case-study-1:-dissect-intercellular-commmunication-of-Cancer-Associated-Fibroblasts-subsets"></a>
+# Case study 1: dissect intercellular commmunication of Cancer Associated Fibroblasts subsets 
 
 **Cancer-associated fibroblasts** (CAFs) are stromal cells localized in the tumor microenvironment, known to enhance tumor phenotypes, such as cancer cell proliferation and inflammation. Previous studies have shown heterogeneity in CAFs phenotype ( [Kieffer et al.2020](https://cancerdiscovery.aacrjournals.org/content/early/2020/05/20/2159-8290.CD-19-1384) , [Costa et al. 2018](https://www.cell.com/cancer-cell/fulltext/S1535-6108(18)30011-4)). They identified 4 subsets of CAF, including CAF-S1 and CAF-S4 accumulating in Triple Negative Breast Cancer (TNBC). CAF-S1 has been notably associated with an immunosuppressive microenvironment. 
 
 In this tutorial, we want to **study the difference of communication of CAF-S1 and CAF-S4 with the other components of the tumor microenvironment (TME), using available transcriptional profiles of CAF-S1 and CAF-S4 in TNBC** (data from [Costa et al. 2018](https://www.cell.com/cancer-cell/fulltext/S1535-6108(18)30011-4)). You can download the CAF dataset [here](https://github.com/soumelis-lab/ICELLNET/tree/master/data_CAF) to apply ICELLNET framework.
 
-### Load database and restrict the database to the different family of cytokines
+### Load ICELLNET database and restrict the database to the different family of cytokines
 ```{r,echo=T}
 
 library(BiocGenerics)

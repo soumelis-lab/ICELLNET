@@ -191,9 +191,9 @@ You should define two dataframes as target files, one corresponding to the centr
 # Use cases exemples
 
 
-- [Case study 1] (https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple1_CAF.md ) : dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
+- [Case study 1](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple1_CAF.md) : dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
 
-- Case study 2: Application to single cell data (coming soon).
+- [Case study 2](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) : Application of ICELLNET pipeline to scRNAseq from a Seurat object to infer intercellular communication between clusters.
 
 
 
