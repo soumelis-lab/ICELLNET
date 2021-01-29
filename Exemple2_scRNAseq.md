@@ -1,7 +1,7 @@
 
 # Case study 2: dissect intercellular commmunication in single cell data from a Seurat object
 
-Data from this tutorial are coming from [Arazi et al.2019](https://pubmed.ncbi.nlm.nih.gov/31209404/) study. 
+Data used in this tutorial are coming from [Arazi et al.2019](https://pubmed.ncbi.nlm.nih.gov/31209404/) study. 
 
 ### Load libraries and ICELLNET database + compute db.name.couple
 ```{r,echo=T}
