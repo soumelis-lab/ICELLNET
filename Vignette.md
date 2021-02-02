@@ -36,7 +36,7 @@ We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell co
 We curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch family, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: **type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines**. 
 
 Other interactions and classifications of molecules will be implemented.
-The most recent version of ligand-receptor interaction database can always be downloaded [here](https://github.com/soumelis-lab/ICELLNET/blob/master/ICELLNETdb.tsv).
+The most recent version of ligand-receptor interaction database can always be downloaded [here](https://github.com/soumelis-lab/ICELLNET/blob/master/data/ICELLNETdb.tsv).
 In R, you can visualize ICELLNET database and its structure: 
 
 ```{r db, echo=T}
