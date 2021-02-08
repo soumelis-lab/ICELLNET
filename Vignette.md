@@ -5,12 +5,12 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 # Table of content
 
 - [Introduction to ICELLNET R package](#Introduction-to-ICELLNET-R-package)
-  * [What is ICELLNET for?](##What-is-ICELLNET-for?)
-  * [ICELLNET ligand/receptor interaction database](##ICELLNET-ligand/receptor-interaction-database) 
-  * [Input data](##Input-data)
-  * [Typical workflow](##Typical-workflow)
-  * [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?)
-  * [Visualization modes](##Visualization-modes)
+- [ICELLNET ligand/receptor interaction database](#ICELLNET-ligand/receptor-interaction-database) 
+- [Input data](#Input-data)
+
+- [Typical workflow](#Typical-workflow)
+- [How is the intercellular communication score computed?](#How-is-the-intercellular-communication-score-computed?)
+- [Visualization modes](#Visualization-modes)
 
   
 - [How to install ICELLNET package?](#How-to-install-ICELLNET-package?)
@@ -25,13 +25,11 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 
 # Introduction to ICELLNET R package  <a name="Introduction-to-ICELLNET-R-package"></a>
 
-## What is ICELLNET for? <a name="What-is-ICELLNET-for?"></a> 
-
 Cell-to-cell communication is at the basis of the higher-order organization observed in tissues and organisms, at steady state and in response to stress. The availability of large-scale transcriptomics datasets from several cell types has opened the possibility of **reconstructing cell-cell interactions based on co-expression of ligand-receptor pairs**.
 
 We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell communication in a global manner**. It integrates an original expert-curated **database of ligand-receptor interactions** taking into account multiple subunits expression. Based on transcriptomic profiles, ICELLNET package allows to compute **communication scores** between cells and provides **several visualization modes** that are helpful to dig into cell-cell interaction mechanism and extend biological knowledge. 
 
-## ICELLNET ligand/receptor interaction database <a name="ICELLNET-ligand/receptor-interaction-database?"></a>
+# ICELLNET ligand/receptor interaction database <a name="ICELLNET-ligand/receptor-interaction-database?"></a>
 
 We curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch family, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: **type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines**. 
 
@@ -71,7 +69,7 @@ Instead of using the ICELLNET database, it is also possible to use its own datab
 |   |   |   |   |   |   |   |   |
 
 
-## Input data <a name="Input-data"></a>
+# Input data <a name="Input-data"></a>
 
 ICELLNET pipeline considers transcriptomic profiles of a defined "central cell", that can correspond for exemple to a cell type in several biological conditions. ICELLNET will then allow to compare the communication channels used by the central cells in these different conditions with partner cells.
 As partner cells, we can use Human Primary Cell Atlas, a public datasets of 745 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. 
@@ -95,7 +93,7 @@ table(PC.target.all$Class_broad)
 table(PC.target.all$Class)
 ```
 
-## Typical workflow <a name="Typical-workflow"></a>
+# Typical workflow <a name="Typical-workflow"></a>
  
 Here we describe the different stages of the ICELLNET package to compute intercellular communication scores: 
 
@@ -110,7 +108,7 @@ Here we describe the different stages of the ICELLNET package to compute interce
 ![](pictures/ICELLNET_Figure2_V10.png)
 
 
-## How is the intercellular communication score computed? <a name="How-is-the-intercellular-communication-score-computed?"></a>
+# How is the intercellular communication score computed? <a name="How-is-the-intercellular-communication-score-computed?"></a>
 
 The quantification of intercellular communication consist of scoring the intensity of each ligand/receptor interaction between two cell types with known expression profiles. No filtering threshold is applied on the L/R expression. If the communication molecule (ligand or receptor or both) is not expressed by a cell, the score will be zero. By default, all interactions of the database are considered to compute the score. It is also possible to reduce the number of interactions by manually selecting specific families of molecules in the database or considering DEG to compute the score, depending on the biological question. Whenever needed, we take into account multiple ligand units, or receptor chains, using logical rules.
 
@@ -129,7 +127,7 @@ lr1=score.computation.1[[2]] # detail of the ligand/receptor interactions scores
 ```
 
 
-## Visualization modes <a name="Visualization-modes?"></a>
+# Visualization modes <a name="Visualization-modes?"></a>
 
 ### Intercellular communication network representation
 
@@ -142,7 +140,6 @@ The barplot representation (`LR.family.score()` function (with plot=T) allows to
 
 Color legends for these functions can be found below (easy to adapt to study other family of molecules):
 
-## Label and range definition
 ```{r, echo=T, warning=F,  fig.height=5, fig.width=12 }
     ## label and color label if you are working families of molecules already present in the database
 # my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","Antigen binding") 
