@@ -29,7 +29,7 @@ Cell-to-cell communication is at the basis of the higher-order organization obse
 
 We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell communication in a global manner**. It integrates an original expert-curated **database of ligand-receptor interactions** taking into account multiple subunits expression. Based on transcriptomic profiles, ICELLNET package allows to compute **communication scores** between cells and provides **several visualization modes** that are helpful to dig into cell-cell interaction mechanism and extend biological knowledge. 
 
-# ICELLNET ligand/receptor interaction database <a name="ICELLNET-ligand/receptor-interaction-database?"></a>
+# ICELLNET ligand/receptor interaction database <a name="ICELLNET-ligand/receptor-interaction-database"></a>
 
 We curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch family, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: **type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines**. 
 
@@ -127,7 +127,7 @@ lr1=score.computation.1[[2]] # detail of the ligand/receptor interactions scores
 ```
 
 
-# Visualization modes <a name="Visualization-modes?"></a>
+# Visualization modes <a name="Visualization-modes"></a>
 
 ### Intercellular communication network representation
 
