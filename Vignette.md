@@ -8,8 +8,8 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
   * [What is ICELLNET for?](##What-is-ICELLNET-for?)
   * [ICELLNET ligand/receptor interaction database](##ICELLNET-ligand/receptor-interaction-database) 
   * [Input data](##Input-data)
-  * [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?)
   * [Typical workflow](##Typical-workflow)
+  * [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?)
   * [Visualisation modes](##Visualisation-modes)
 
   
@@ -71,12 +71,12 @@ Instead of using the ICELLNET database, it is also possible to use its own datab
 |   |   |   |   |   |   |   |   |
 
 
-## Input data 
+## Input data
 
-### Type of data
+ICELLNET pipeline considers transcriptomic profiles of a defined "central cell", that can correspond for exemple to a cell type in several biological conditions. ICELLNET will then allow to compare the communication channels used by the central cells in these different conditions with partner cells.
+As partner cells, we can use Human Primary Cell Atlas, a public datasets of 745 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. 
 
-ICELLNET pipeline first considers the transcriptomic profile of the central cell, that can correspond to several biological conditions. ICELLNET will then allow to compare the communication channels used by the central cells in these different conditions with partner cells.
-As partner cells, we can use Human Primary Cell Atlas, a public datasets of 745 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. It is possible to select up to 14 different cell types to connect with the central cell (the different options are listed below, in PC.target.all$Class).This number was chosen for clarity purpose. The user can also use other transcriptomic profiles instead of Human Primary Cell Atlas.
+As partner cells, the user can also use other transcriptomic profiles instead of Human Primary Cell Atlas (see section [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?) for format details).
 
 ```{r,echo=T}
 #download PC.data.all and PC.target.all objects from the github and open them on your Rstudio session - adapt path if needed
@@ -85,6 +85,9 @@ PC.target.all=as.data.frame(read.csv("~/Downloads/PC.target.all.csv", sep=",",he
 
 head(PC.data.all[1:5,1:5])
 ```
+
+It is possible to select different cell types to connect with the central cell. The different options are visible by running `table(PC.target.all$Class_broad)` and `table(PC.target.all$Class)`, thus offering different level of granularity. 
+
 List of possible partner cell types :  Adipo, Adr_med, B cell, chondro, DC (or if desired: CD16 DC, DC1, DC2, moDC, pDC), Endoth, Epith, ESM, gameto, Hepato, HSC, Kerat, lps_cells, Macroph, Mono, Neutrop, NK, ostblast, Shwann, SMC, T cell (or if desired: CD4 T cell, CD8 T cell, Treg), TSC: 
 
 ```{r,echo=T}
@@ -92,13 +95,28 @@ table(PC.target.all$Class_broad)
 table(PC.target.all$Class)
 ```
 
+## Typical workflow 
+ 
+Here we describe the different stages of the ICELLNET package to compute intercellular communication scores: 
+
+1. Selection of the genes coding for the ligands and the receptors in our database from the transcriptomic profiles of the central cell and the partner cells. 
+
+2. Rescale gene expression to avoid communication score to be driven only by highly expressed genes.
+
+3. Compute ICELLNET communication scores (`direction="out"` for outward communication, `direction="out"` for inward communication, see [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?) for more details)
+
+4. Display different visualization modes to dissect intercellular communication scores 
+
+![](pictures/ICELLNET_Figure2_V10.png)
+
+
 ## How is the intercellular communication score computed?
 
 The quantification of intercellular communication consist of scoring the intensity of each ligand/receptor interaction between two cell types with known expression profiles. No filtering threshold is applied on the L/R expression. If the communication molecule (ligand or receptor or both) is not expressed by a cell, the score will be zero. By default, all interactions of the database are considered to compute the score. It is also possible to reduce the number of interactions by manually selecting specific families of molecules in the database or considering DEG to compute the score, depending on the biological question. Whenever needed, we take into account multiple ligand units, or receptor chains, using logical rules.
 
 The score of an individual ligand/receptor interaction is computed as the product of their expression levels respectively by the source (central) and by the target (partner) cell. These individual scores are then combined into a global metric assessing the overall exchange of information between the cell types of interest
 
-Since cell-to-cell communication is directional, we consider ligand expression from the central cell and receptor expression from the partner cells to assess outward communication. On the other way, we select receptor expression from the central cell and ligand expression from partner cells to assess in-flow communication. This is controlled by the  *direction* argument ("in" or "out") in the `icellnet.score()` function. 
+Since cell-to-cell communication is directional, we consider ligand expression from the central cell and receptor expression from the partner cells to assess outward communication (`direction="out"`). On the other way, we select receptor expression from the central cell and ligand expression from partner cells to assess inward communication (`direction="in"`). This is controlled by the  *direction* argument ("in" or "out") in the `icellnet.score()` function. 
 
 ```{r,echo=T}
 #not run - exemple
@@ -111,33 +129,44 @@ lr1=score.computation.1[[2]] # detail of the ligand/receptor interactions scores
 ```
 
 
-## Typical workflow 
- 
-Here we describe the different stages of the ICELLNET package to compute intercellular communication scores: 
-
-1. Selection of the genes coding for the ligands and the receptors in our database from the transcriptomic profiles of the central cell and the partner cells. 
-
-2. Rescale gene expression to avoid communication score to be driven only by highly expressed genes.
-
-3. Compute ICELLNET communication scores
-
-4. Display different visualisation modes to dissect intercellular communication scores 
-
-![](pictures/ICELLNET_Figure2_V10.png)
-
-## Visualisation modes
+## Visualization modes
 
 ### Intercellular communication network representation
 
 This allows to visualize intercellular communication networks in a global manner through the function `network.create()`. In these directed graphs, nodes represent cell types, the width of the edges connecting two cell types is proportional to a global measure of the intensity of the communication between them and the arrows indicate the direction of communication. 
 
+
 ### Communication molecules distribution
 
-The barplot representation (`LR.family.score()` function with plot=T) allows to dissect the global scores at a level of class of molecules, and allows to identify patterns of co-expressed molecules from the same family. This layer of analysis helps the interpretation on a qualitative level.
+The barplot representation (`LR.family.score()` function (with plot=T) allows to dissect the global scores at a level of class of molecules, and allows to identify patterns of co-expressed molecules from the same family. This layer of analysis helps the interpretation on a qualitative level.
+
+Color legends for these functions can be found below (easy to adapt to study other family of molecules):
+
+## Label and range definition
+```{r, echo=T, warning=F,  fig.height=5, fig.width=12 }
+    ## label and color label if you are working families of molecules already present in the database
+# my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","Antigen binding") 
+# family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"= "#1D1D18"  ,
+#             "Cytokine"="#156399", "Notch family" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
+     
+    ## label and color label if you are working with subfamilies of cytokines
+my.family=c("type 1", "type 2", "IL1.", "IL17", "TNF","TGF","RTK")
+family.col = c( "type 1"=  "#A8CF90", "type 2"= "#676766", "IL1."= "#1D1D18" ,
+            "IL17" ="#66ABDF", "TNF" ="#12A039", "TGF" = "#156399", "RTK"="#AECBE3", "other" = "#908F90","NA"="#908F90")
+
+```
+
+
 
 ### Individual communication scores distribution
 
 The balloon plot (`LR.balloon.plot()` function) is the deepest level of representation of the communication, displaying the most contributing ligand/receptor pairs to the communication score. This allows to identify specific individual interactions that can drive the intercellular communication and should be confirmed experimentally. 
+*topn* parameter set the top n highest interactions to display (ex: `topn=10` means display the 10 highest contribution of specific interactions to the communication scores)
+*thresh* parameter allpws to set a threshold, in order to display interaction contributing to communication scores only above this value. (ex: thres=20, only interactions with an individual score above 20 will be visualized). Looking at individual scores distribution is helpful to identify relevant threshold values for you case.
+
+Same color legend used as `LR.family.score()` function above.
+
+
 
 ### Pvalue computation to compare communication scores
 

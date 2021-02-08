@@ -28,6 +28,7 @@ head(db.name.couple)
 ```
 
 ### Load partner cell types from Human Primary Cell Atlas dataset 
+PC.data.all.csv and PC.target.all.csv files are available to download [here](https://github.com/soumelis-lab/ICELLNET/tree/master/data). This is the dataset of Human Primary Cell Atlas that will be used as partner cells  in this tutorial. 
 
 ```{r, warning=F, echo=T}
 #download PC.data.all and PC.target.all objects from the github and open them on your Rstudio session - adapt path if needed
@@ -40,11 +41,11 @@ PC.target = PC.target.all[which(PC.target.all$Class%in%my.selection | PC.target.
 PC.data = PC.data.all[,PC.target$ID]
 ```
 
-To use Human Primary Cell Atlas dataset, we have to :
+Next steps to use Human Primary Cell Atlas dataset as partner cells :
 
 1. Create a conversion chart between the AffyID and the gene symbol that are used in the database, using the hgu133plus2.db() function.  
 
-2.  Perform the gene.scaling() function, that will a) select genes corresponding to the ligands and/or receptors included in the database (db). b) scale each ligand/receptor gene expression among all the conditions ranging from 0 to 10. For each gene, the maximum value is defined as the mean expression of the 'n' highest values of expression. Gene expression are divided by the maximum gene expression and then multiplied by 10, scaling the data expression matrix between 0 and 10 for each gene, independantly.
+2.  Perform the gene.scaling() function, that will a) select genes corresponding to the ligands and/or receptors included in the database (db). b) scale each ligand/receptor gene expression among all the conditions ranging from 0 to 10. For each gene, the maximum value is defined as the mean expression of the 'n' highest values of expression. Gene expression are divided by the maximum gene expression and then multiplied by 10, scaling the data expression matrix between 0 and 10 for each gene, independently.
 Default value of n is 1. 
 In this example, n is set to 18 in order to take the mean of the 5% extreme expression values as the maximum for partner cells.
 
@@ -86,7 +87,8 @@ CC.data.selection.S2 = CC.data[,which(colnames(CC.data)%in%CC.selection.S2)]
 
 ### Computation of ICELLNET intercellular communication scores
 
-Here we compute outward communication scores (direction = "out"), meaning communication from CAF to partner cells.
+Here we compute outward communication scores (direction = "out"), meaning communication from CAF subsets to partner cells.
+This means we consider ligands expressed by CAFs and receptors expressed by partner cells to compute intercellular communication scores.
 
 ```{r, warning=FALSE,echo=T}
 score.computation.1= icellnet.score(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1,  
@@ -143,7 +145,7 @@ Display contribution of each family of moleucles to the scores, with a barplot (
     ## label and color label if you are working families of molecules already present in the database
 # my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","Antigen binding") 
 # family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"= "#1D1D18"  ,
-#             "Cytokine"="#156399", "Notch signalling" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
+#             "Cytokine"="#156399", "Notch family" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
      
     ## label and color label if you are working with subfamilies of cytokines
 my.family=c("type 1", "type 2", "IL1.", "IL17", "TNF","TGF","RTK")

@@ -27,11 +27,11 @@ head(db.name.couple)
 ```{r, warning=F, echo=T}
 
 #Load data
-seurat <- readRDS(file = "Lupus_Seurat_SingleCell_Landscape.Rds")
+seurat <- readRDS(file = "path/Lupus_Seurat_SingleCell_Landscape.Rds")
 seurat <- NormalizeData(seurat)
 seurat <- ScaleData(seurat)
 
-#only for UMAP visualisation, not for ICELLNET purpose
+#only for UMAP visualization, not for ICELLNET purpose
 seurat <- FindVariableFeatures(seurat, selection.method = "vst", nfeatures = 2000)
 seurat <- RunPCA(seurat)
 seurat <- RunUMAP(seurat, dims = 1:50)
@@ -46,8 +46,6 @@ data <- as.data.frame(GetAssayData(seurat, slot = "counts"))
 target <- seurat@meta.data
 target$Class=target$author_annotation
 target$Cell=rownames(target)
-head(target)
-
 
 average.manual=matrix(ncol=length(unique(target$author_annotation)), nrow=length(rownames(data)))
 colnames(average.manual)=unique(target$author_annotation)
@@ -63,6 +61,7 @@ for (cell in unique(target$author_annotation)){
 ### 3 - Apply icellnet pipeline on cluster of interest
 
 In this example, we investigate cDC to T cell communication from CM3 cluster (= conventional dendritic cells, 82 cells), to either CT3b or CT0a clusters (CT3b=TFH-like cells, 50 cells ; CT0a = effector memory CD4+ T cells, 220 cells). 
+
 
 Format CC.data and PC.data and PC.target
 ```{r, warning=F, echo=T}
@@ -80,6 +79,10 @@ my.selection=c("CT3b","CT0a")
 ```
 
 Compute intercellular communication scores
+
+We investigate conventional dendritic cells (cDCs, CM3 cluster) to T cell (either CT3b or CT0a clusters) outward communication, so this means that we consider ligands expressed by cDCs and receptors expressed by T cells to compute intercellular communication scores. 
+Outward communication -> direction = "out"
+
 ```{r, warning=F, echo=T}
 score.computation.1= icellnet.score(direction="out", PC.data=PC.data, 
                                     CC.data= as.data.frame(data.icell[,c("CM3")], row.names = rownames(data.icell)),  
@@ -89,13 +92,13 @@ score1=as.data.frame(score.computation.1[[1]])
 lr1=score.computation.1[[2]]
 
 ```
-Visualisation of contribution of family of molecules to communication scores
+Visualization of contribution of family of molecules to communication scores
 
 ```{r, warning=F, echo=T}
 # label and color label if you are working families of molecules already present in the database
-my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch signalling","Antigen binding")
+my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","Antigen binding")
 family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"= "#1D1D18"  ,
-            "Cytokine"="#156399", "Notch signalling" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
+            "Cytokine"="#156399", "Notch family" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
             
 ymax=round(max(score1))+1 #to define the y axis range of the barplot
 
@@ -105,11 +108,11 @@ LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=T, t
 ```
 ![](pictures/ICELLNET_scRNAseq_barplot.png)
 
-Visualisation of highest and most different interactions between the two conditions (here, selection of interaction with difference of >10 units, and visualiation of topn=40 interactions).
+Visualization of highest and most different interactions between the two conditions (here, selection of interaction with difference of >10 units, and visualization of topn=30 interactions).
 
 ```{r, warning=F, echo=T}
 delta.com=as.data.frame(lr1[which((abs(lr1[,1]-lr1[,2])>10)==TRUE),])
 colnames(delta.com)=c("CM3_to_CT3b", "CM3_to_CT0a")
-LR.balloon.plot(lr = delta.com, thresh = 0 , topn=40 , db.name.couple=db.name.couple, family.col=family.col, title="Most different interactions")
+LR.balloon.plot(lr = delta.com, thresh = 0 , topn=30 , db.name.couple=db.name.couple, family.col=family.col, title="Most different interactions")
 ```
 ![](pictures/ICELLNET_scRNAseq_balloon.png)
