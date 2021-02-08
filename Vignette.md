@@ -10,11 +10,11 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
   * [Input data](##Input-data)
   * [Typical workflow](##Typical-workflow)
   * [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?)
-  * [Visualisation modes](##Visualisation-modes)
+  * [Visualization modes](##Visualization-modes)
 
   
 - [How to install ICELLNET package?](#How-to-install-ICELLNET-package?)
-- [How to format your own data to use ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?)
+- [How to format your own data to ue ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?)
 - [Use cases exemples](#Use-cases-exemples)
 
 - [Software information](#Software-information)
@@ -25,13 +25,13 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 
 # Introduction to ICELLNET R package  <a name="Introduction-to-ICELLNET-R-package"></a>
 
-## What is ICELLNET for? 
+## What is ICELLNET for? <a name="What-is-ICELLNET-for?"></a> 
 
 Cell-to-cell communication is at the basis of the higher-order organization observed in tissues and organisms, at steady state and in response to stress. The availability of large-scale transcriptomics datasets from several cell types has opened the possibility of **reconstructing cell-cell interactions based on co-expression of ligand-receptor pairs**.
 
 We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell communication in a global manner**. It integrates an original expert-curated **database of ligand-receptor interactions** taking into account multiple subunits expression. Based on transcriptomic profiles, ICELLNET package allows to compute **communication scores** between cells and provides **several visualization modes** that are helpful to dig into cell-cell interaction mechanism and extend biological knowledge. 
 
-## ICELLNET ligand/receptor interaction database  
+## ICELLNET ligand/receptor interaction database <a name="ICELLNET-ligand/receptor-interaction-database?"></a>
 
 We curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch family, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: **type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines**. 
 
@@ -71,12 +71,12 @@ Instead of using the ICELLNET database, it is also possible to use its own datab
 |   |   |   |   |   |   |   |   |
 
 
-## Input data
+## Input data <a name="Input-data"></a>
 
 ICELLNET pipeline considers transcriptomic profiles of a defined "central cell", that can correspond for exemple to a cell type in several biological conditions. ICELLNET will then allow to compare the communication channels used by the central cells in these different conditions with partner cells.
 As partner cells, we can use Human Primary Cell Atlas, a public datasets of 745 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. 
 
-As partner cells, the user can also use other transcriptomic profiles instead of Human Primary Cell Atlas (see section [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?) for format details).
+As partner cells, the user can also use other transcriptomic profiles instead of Human Primary Cell Atlas (see section  [How to format your own data to use ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?)for format details).
 
 ```{r,echo=T}
 #download PC.data.all and PC.target.all objects from the github and open them on your Rstudio session - adapt path if needed
@@ -95,7 +95,7 @@ table(PC.target.all$Class_broad)
 table(PC.target.all$Class)
 ```
 
-## Typical workflow 
+## Typical workflow <a name="Typical-workflow"></a>
  
 Here we describe the different stages of the ICELLNET package to compute intercellular communication scores: 
 
@@ -110,7 +110,7 @@ Here we describe the different stages of the ICELLNET package to compute interce
 ![](pictures/ICELLNET_Figure2_V10.png)
 
 
-## How is the intercellular communication score computed?
+## How is the intercellular communication score computed? <a name="How-is-the-intercellular-communication-score-computed?"></a>
 
 The quantification of intercellular communication consist of scoring the intensity of each ligand/receptor interaction between two cell types with known expression profiles. No filtering threshold is applied on the L/R expression. If the communication molecule (ligand or receptor or both) is not expressed by a cell, the score will be zero. By default, all interactions of the database are considered to compute the score. It is also possible to reduce the number of interactions by manually selecting specific families of molecules in the database or considering DEG to compute the score, depending on the biological question. Whenever needed, we take into account multiple ligand units, or receptor chains, using logical rules.
 
@@ -129,7 +129,7 @@ lr1=score.computation.1[[2]] # detail of the ligand/receptor interactions scores
 ```
 
 
-## Visualization modes
+## Visualization modes <a name="Visualization-modes?"></a>
 
 ### Intercellular communication network representation
 
@@ -168,7 +168,7 @@ Same color legend used as `LR.family.score()` function above.
 
 
 
-### Pvalue computation to compare communication scores
+### Compute pvalue to compare communication scores
 
 Two types of pvalue can be computed (`icellnet.score.pvalue()` function), to compare either the communication scores obtained from the same central cell to different partner cells (between="cells"), or to compare the communication scores obtained from two different central cells corresponding to different biological conditions with the same partner cell (between="conditions").If between="cells", the communication score is computed considering the average expression of ligands for the central cell, and each replicates separately for the receptor expression of the partner cells. In this way, for one partner cell, we obtain a distribution of n communication scores, n beeing the number of partner cells replicates for this particular cell type. If between="conditions", then, the communication score is computed considering each replicates of the central cell separately, and the average gene expression for the partner cells. We obtain a distribution of n communication scores, n beeing the number of central cell replicates in one biological condition. Then, a Wilcoxon statistical test is performed to compare the communication scores distributions. The pvalues are ajusted with `stats::p.adjust()`, with "BH" method as a default. 
 
@@ -217,7 +217,7 @@ You should define two dataframes as target files, one corresponding to the centr
 **PC.target** should contains at least an 'ID' column including the name of the samples (usually rownames(PC.target) or colnames(PC.data) ), and a 'Class' column corresponding to a classification of your different samples included in PC.target, such as a cell type classification. The different categories included in the 'Class' column will define the different partner cells in the graphs.
 
 
-# Use cases exemples
+# Use cases exemples <a name="Use-cases-exemples"></a>
 
 
 - [Case study 1](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple1_CAF.md) : dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
