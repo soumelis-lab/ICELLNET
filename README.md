@@ -1,9 +1,9 @@
-# ICELLNET: A transcriptome-based framework to dissect intercellular communication
+# Dissection of intercellular communication using the transcriptome-based framework ICELLNET
 ---
 Floriane Noël and Lucile Massenet-Regad 
 ---
 
-This repository hosts the source code corresponding to the method described in [Noël et al, 2020](https://www.biorxiv.org/content/10.1101/2020.03.05.976878v1) to infer intercellular communication networks and dissect intercellular communication between multiples cell types based on their transcriptomic profiles.
+This repository hosts the source code corresponding to the method described in [Noël, F., Massenet-Regad, L., Carmi-Levy, I. et al. ](https://www.nature.com/articles/s41467-021-21244-x) to infer intercellular communication networks and dissect intercellular communication between multiples cell types based on their transcriptomic profiles.
 
 To install it, the easiest way is to use the `R` package `devtools` and its function `install_github`. If you don't have all the dependancies needed to use ICELLNET package, run the commands below:  
 
