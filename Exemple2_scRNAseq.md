@@ -42,7 +42,7 @@ DimPlot(seurat, reduction = 'umap', group.by = 'author_annotation', label = T)
 ### 2 - Retrieve count matrix and compute manually average gene expression per cluster
 
 ```{r, warning=F, echo=T}
-data <- as.data.frame(GetAssayData(seurat, slot = "counts"))
+data <- as.data.frame(GetAssayData(seurat, slot = "data"))
 target <- seurat@meta.data
 target$Class=target$author_annotation
 target$Cell=rownames(target)
