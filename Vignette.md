@@ -159,10 +159,10 @@ family.col = c( "type 1"=  "#A8CF90", "type 2"= "#676766", "IL1."= "#1D1D18" ,
 
 The balloon plot (`LR.balloon.plot()` function) is the deepest level of representation of the communication, displaying the most contributing ligand/receptor pairs to the communication score. This allows to identify specific individual interactions that can drive the intercellular communication and should be confirmed experimentally. 
 *topn* parameter set the top n highest interactions to display (ex: `topn=10` means display the 10 highest contribution of specific interactions to the communication scores)
-*thresh* parameter allpws to set a threshold, in order to display interaction contributing to communication scores only above this value. (ex: thres=20, only interactions with an individual score above 20 will be visualized). Looking at individual scores distribution is helpful to identify relevant threshold values for you case.
+*thresh* parameter allows to set a threshold, in order to display interaction contributing to communication scores only above this value. (ex: thresh=20, only interactions with an individual score above 20 will be visualized). Looking at individual scores distribution is helpful to identify relevant threshold values for you case.
+*sort.by* parameter ("sum" as default, can be set to "var") to ran the interactions either as the most contributing interactions in all conditions ("sum"), or the most different interactions among conditions ("var", ranking by computing the variance among scores for each interaction)
 
 Same color legend used as `LR.family.score()` function above.
-
 
 
 ### Compute pvalue to compare communication scores
@@ -188,12 +188,15 @@ Then you just have to load `devtools` package and run the command below:
     
 Then load the dependancies below and `icellnet` package.
 
-library(BiocGenerics)
-library("hgu133plus2.db")
-library(jetset)
-library(ggplot2)
-library(dplyr)
-library(icellnet)
+    library(BiocGenerics)
+    library("hgu133plus2.db")
+    library("org.Hs.eg.db")
+    library(jetset)
+    library(ggplot2)
+    library(dplyr)
+    library(gridExtra)
+    library(icellnet)
+
 
 To load the most recent version of the ligand/receptor database, you should run the command below (last updated:  28/01/2021): 
 
@@ -217,9 +220,9 @@ You should define two dataframes as target files, one corresponding to the centr
 # Use cases exemples <a name="Use-cases-exemples"></a>
 
 
-- [Case study 1](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple1_CAF.md) : dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
+- [Case study 1](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple1_CAF.md): dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
 
-- [Case study 2](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) : Application of ICELLNET pipeline to scRNAseq from a Seurat object to infer intercellular communication between clusters.
+- [Case study 2](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md): Application of ICELLNET pipeline to scRNAseq from a Seurat object to infer intercellular communication between clusters.
 
 
 

@@ -2,6 +2,7 @@
 
 export(LR.balloon.plot)
 export(LR.family.score)
+export(Perc_exp_infos)
 export(db.hgu133plus2)
 export(gene.scaling)
 export(icellnet.score)

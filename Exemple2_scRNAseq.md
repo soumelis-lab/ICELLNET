@@ -27,7 +27,7 @@ head(db.name.couple)
 ```{r, warning=F, echo=T}
 
 #Load data
-seurat <- readRDS(file = "path/Lupus_Seurat_SingleCell_Landscape.Rds")
+seurat <- readRDS(file = "Lupus_Seurat_SingleCell_Landscape.Rds")
 seurat <- NormalizeData(seurat)
 seurat <- ScaleData(seurat)
 
@@ -39,10 +39,35 @@ DimPlot(seurat, reduction = 'umap', group.by = 'author_annotation', label = T)
 ```
 ![](pictures/ICELLNET_scRNAseq_UMAP.png)
 
-### 2 - Retrieve count matrix and compute manually average gene expression per cluster
+### 2 - Retrieve gene expression matrix 
+ 
+##### a - Compute manually average gene expression per cluster without filtering 
 
 ```{r, warning=F, echo=T}
-data <- as.data.frame(GetAssayData(seurat, slot = "data"))
+# Taking into account the total nb of cells in each cluster
+filter.perc=0
+average.clean= sc.data.cleaning(object = seurat, db = db, filter.perc = filter.perc, save_file = T, path="path/", force.file = F)
+```
+
+##### b - Compute manually average gene expression per cluster with filtering for gene expression by a defined cell percentage at a cluster level
+
+ICELLNET offers the possibility to filter the initial gene expression matrix to keep genes at least expressed by defined percentage of cell in their respective cluster (below 2%): 
+
+```{r, warning=F, echo=T}
+filter.perc=2
+average.clean= sc.data.cleaning(object = seurat, db = db2, filter.perc = filter.perc, save_file = T, path="path/", force.file = F)
+```
+This filtering allows to remove all the genes that are expressed by a very low number in some clusters, to avoid false negative cell-cell interactions scores. If you don't know, we advice to apply first ICELLNET without filtering, and then with filtering at 2%. This will help a lot in the analysis (see steps 3 and 4).
+
+##### c - Compute manually average gene expression per cluster without starting from a SeuratObject.
+
+If your are starting from a SeuratObject, continue directly on step 3.
+
+If you are not starting from a SeuratObject but from a matrix of count, check that the matrix is normalised by library size and follow the steps below (explained with Seurat packages references for formatting).
+
+```{r, warning=F, echo=T}
+data <- as.data.frame(GetAssayData(seurat, slot = "data")) #or other matrix for which features expression values # are scaled by the total expression in each cell
+
 target <- seurat@meta.data
 target$Class=target$author_annotation
 target$Cell=rownames(target)
@@ -55,8 +80,9 @@ for (cell in unique(target$author_annotation)){
   cells.clust=target$Cell[which(target$author_annotation==cell)]
   average.manual[,cell]=apply(data[,which(colnames(data)%in%cells.clust)], 1, mean)
 }
-```
 
+average.clean=average.manual
+```
 
 ### 3 - Apply icellnet pipeline on cluster of interest
 
@@ -66,8 +92,7 @@ In this example, we investigate cDC to T cell communication from CM3 cluster (= 
 Format CC.data and PC.data and PC.target
 ```{r, warning=F, echo=T}
 
-data.icell=as.data.frame(gene.scaling(as.data.frame(average.manual), n=1, db=db))
-
+data.icell=as.data.frame(gene.scaling(as.data.frame(average.clean), n=1, db=db))
 
 PC.data=as.data.frame(data.icell[,c("CT3b","CT0a", "Symbol")], row.names = rownames(data.icell))
 
@@ -110,9 +135,31 @@ LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=T, t
 
 Visualization of highest and most different interactions between the two conditions (here, selection of interaction with difference of >10 units, and visualization of topn=30 interactions).
 
+30 first most contributing interactions (sort.by="sum")
 ```{r, warning=F, echo=T}
-delta.com=as.data.frame(lr1[which((abs(lr1[,1]-lr1[,2])>10)==TRUE),])
-colnames(delta.com)=c("CM3_to_CT3b", "CM3_to_CT0a")
-LR.balloon.plot(lr = delta.com, thresh = 0 , topn=30 , db.name.couple=db.name.couple, family.col=family.col, title="Most different interactions")
+colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
+LR.balloon.plot(lr = lr1, thresh = 0 , topn=30 , sort.by="sum",  db.name.couple=db.name.couple, family.col=family.col, title="Most contributing interactions")
 ```
-![](pictures/ICELLNET_scRNAseq_balloon.png)
+![](pictures/ICELLNET_scRNAseq_balloon1.png)
+
+
+30 first most different interactions between the conditions (sort.by="var")
+```{r, warning=F, echo=T}
+colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
+LR.balloon.plot(lr = lr1, thresh = 0 , topn=30 , sort.by="var",  db.name.couple=db.name.couple, family.col=family.col, title="Most contributing interactions")
+```
+![](pictures/ICELLNET_scRNAseq_balloon2.png)
+
+### Remarks on interpretation: 
+
+- ICELLNET will always define for each gene the maximum gene expression value as 10. Then, maximum score is 100 for an interaction (10 for the ligand, 10 for the receptor). 
+
+- This means that high interaction scores does not mean high expression. You should come back to the initial SeuratObject to look at gene expression, and that the ligand/receptor of interest if effectively expressed by the cluster.
+
+- Filtering of genes expressed by each cluster according to cell percentage expressing the gene (= with counts >0) for each cluster can be an option to remove false-negative interactions scores. This can be done with the sc.data.clean function, by setting filter.perc to a defined value (2 for 2%, 5 for 5% etc...). Filtered genes (expressed by a number of cells among the cluster below the percentage) will be set to 0. 
+
+
+
+
+
+
