@@ -8,6 +8,7 @@ LR.balloon.plot(
   lr = lr,
   thresh = 0,
   topn = NULL,
+  sort.by = "sum",
   db.name.couple = db.name.couple,
   title = title,
   family.col = family.col
@@ -19,6 +20,8 @@ LR.balloon.plot(
 \item{thresh}{Value set as a threshold to display the L/R pairs contributing with a score superior to this threshold}
 
 \item{topn}{Value set as top n interactions to display}
+
+\item{sort.by}{character, "sum" or "var", "sum" as default. In combination with topn parameter, allows to sort L/R pairs according to the most contributing ("sum"), or the most different among conditions ("var")}
 
 \item{db.name.couple}{output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default}
 
@@ -33,6 +36,8 @@ Display the individual communication scores of ligand/receptor pairs that contri
 \dontrun{lr <- icellnet.score.results[[2]]
 LR.balloon.plot(lr = lr, thresh = 20, top_n=NULL, db.name.couple=name.lr.couple(db, "Family"))
 }
+
+
 
 
 }

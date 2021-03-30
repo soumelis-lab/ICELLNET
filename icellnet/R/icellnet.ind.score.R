@@ -33,6 +33,15 @@ icellnet.ind.score = function(direction = c("out", "in"),CC.data = CC.data,
                               between=c("cells","conditions"))
   {
 
+  #check PC.target format
+  if (is.null(PC.target$Class)){
+    PC.target$Class="NaN"
+    note("PC.target$Class was not defined in input file. Defined in the code as NaN column")}
+  if (is.null(PC.target$Cell_type)){
+    PC.target$Cell_type="NaN"
+    note("PC.target$Cell_type was not defined in input file. Defined in the code as NaN column")}
+
+
   if (PC.type == "Microarray") {
     PC.affy.probes = as.data.frame(PC.data[, c(1, 2)])
     PC.affy.probes$ID = rownames(PC.affy.probes)
@@ -43,7 +52,7 @@ icellnet.ind.score = function(direction = c("out", "in"),CC.data = CC.data,
     CC_Probes_to_symbol = db.hgu133plus2(db, CC.affy.probes)
   }
   #PC data
-  cell.IDs=PC.target$ID[grepl(cell, PC.target$Cell_type) | grepl(cell, PC.target$Class)]
+  cell.IDs = PC.target$ID[PC.target$Cell_type==cell |  PC.target$Class==cell]
   if (length(cell.IDs)==0){
     stop(paste0( "Cell type ", cell, " is not found in the PC.target file"))
   }

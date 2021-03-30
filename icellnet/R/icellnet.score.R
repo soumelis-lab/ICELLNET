@@ -27,24 +27,25 @@
 #'
 #'
 #'
-icellnet.score = function(direction = c("out", "in"),
-                          CC.data = CC.data,
-                          PC.data = PC.data,
-                          PC = PC,
-                          PC.target = PC.target,
-                          CC.type = c("RNAseq", "Microarray"),
-                          PC.type = c("RNAseq", "Microarray"),
-                          db = db)
-  {
-  if(dim(CC.data)[2]==1| dim(PC.data)[2] ==1){note("Check that PC.data and/or CC.data contains rownames. Ignore this note if this is the case")}
-  #Creation of output matrix
+icellnet.score <- function (direction = c("out", "in"), CC.data = CC.data, PC.data = PC.data,
+                                             PC = PC, PC.target = PC.target, CC.type = c("RNAseq", "Microarray"),
+                                             PC.type = c("RNAseq", "Microarray"), db = db) {
+  if (dim(CC.data)[2] == 1 | dim(PC.data)[2] == 1) {
+    note("Check that PC.data and/or CC.data contains rownames. Ignore this note if this is the case")
+  }
   score_global = matrix(nrow = length(PC), ncol = 1)
   rownames(score_global) = PC
   colnames(score_global) = direction
-
-  lr_global = matrix(nrow = dim(db)[1] , ncol = length(PC))
+  lr_global = matrix(nrow = dim(db)[1], ncol = length(PC))
   colnames(lr_global) = PC
-  rownames(lr_global) = name.lr.couple (db, type = "Family")[, 1]
+  rownames(lr_global) = name.lr.couple(db, type = "Family")[, 1]
+  #check PC.target format
+  if (is.null(PC.target$Class)){
+    PC.target$Class="NaN"
+    note("PC.target$Class was not defined in input file. Defined in the code as NaN column")}
+  if (is.null(PC.target$Cell_type)){
+    PC.target$Cell_type="NaN"
+    note("PC.target$Cell_type was not defined in input file. Defined in the code as NaN column")}
 
   if (PC.type == "Microarray") {
     PC.affy.probes = as.data.frame(PC.data[, c(1, 2)])
@@ -56,79 +57,79 @@ icellnet.score = function(direction = c("out", "in"),
     CC.affy.probes$ID = rownames(CC.affy.probes)
     CC_Probes_to_symbol = db.hgu133plus2(db, CC.affy.probes)
   }
-
-
-  #Compute the score
   if (direction == "out") {
     for (cell in PC) {
-      # check all cell types defined in PC exists in PC.data and select PC.target$ID
-      cell.IDs=PC.target$ID[grepl(cell, PC.target$Cell_type) | grepl(cell, PC.target$Class)]
-      if (length(cell.IDs)==0){
-        warning (paste0( "Cell type ", cell, " is not found in the PC.target file"))
+      cell.IDs = PC.target$ID[PC.target$Cell_type==cell |  PC.target$Class==cell]
+      if (length(cell.IDs) == 0) {
+        warning(paste0("Cell type ", cell, " is not found in the PC.target file"))
         score_global[cell, ] = "NaN"
-      }else{
+      }
+      else {
         if (PC.type == "Microarray") {
-          rc.PC = receptor.average.MA(
-            db = PC_Probes_to_symbol,
-            data = as.data.frame(PC.data[, cell.IDs], row.names = rownames(PC.data)))
-        } else if (PC.type == "RNAseq") {
-          rc.PC = receptor.average.RNAseq(
-            db = db,
-            data = as.data.frame(PC.data[, cell.IDs], row.names = rownames(PC.data)))
-        } else {
-          stop('Error : PC.type must be displayed ("Microarray" or "RNAseq").')
+          rc.PC = receptor.average.MA(db = PC_Probes_to_symbol,
+                                      data = as.data.frame(PC.data[, cell.IDs],
+                                                           row.names = rownames(PC.data)))
         }
-
+        else if (PC.type == "RNAseq") {
+          rc.PC = receptor.average.RNAseq(db = db, data = as.data.frame(PC.data[,
+                                                                                cell.IDs], row.names = rownames(PC.data)))
+        }
+        else {
+          stop("Error: PC.type must be displayed (\"Microarray\" or \"RNAseq\").")
+        }
         if (CC.type == "Microarray") {
           lg.CC = ligand.average.MA(db = CC_Probes_to_symbol,
                                     data = CC.data)
-        } else if (CC.type == "RNAseq") {
-          lg.CC = ligand.average.RNAseq(db = db,
-                                        data = CC.data)
-        } else{ stop('Error : CC.type must be displayed ("Microarray" or "RNAseq").') }
+        }
+        else if (CC.type == "RNAseq") {
+          lg.CC = ligand.average.RNAseq(db = db, data = CC.data)
+        }
+        else {
+          stop("Error: CC.type must be displayed (\"Microarray\" or \"RNAseq\").")
+        }
         lr_global[, cell] = lg.CC * rc.PC
         score_global[cell, ] = sum(lg.CC * rc.PC, na.rm = T)
       }
-        }
-
-  } else if (direction == "in") {
+    }
+  }
+  else if (direction == "in") {
     for (cell in PC) {
-      # check all cell types defined in PC exists in PC.data and select PC.target$ID
-      cell.IDs=PC.target$ID[grepl(cell, PC.target$Cell_type) | grepl(cell, PC.target$Class)]
-      if (length(cell.IDs)==0){
-        warning (paste0( "Cell type ", cell, " is not found in the PC.target file"))
+      cell.IDs = PC.target$ID[PC.target$Cell_type==cell |  PC.target$Class==cell]
+      if (length(cell.IDs) == 0) {
+        warning(paste0("Cell type ", cell, " is not found in the PC.target file"))
         score_global[cell, ] = "NaN"
-      } else {
-      if (PC.type == "Microarray") {
-        lg.PC = ligand.average.MA(
-          db =  PC_Probes_to_symbol,
-          data = as.data.frame(PC.data[, cell.IDs], row.names = rownames(PC.data)))
-      } else if (PC.type == "RNAseq") {
-        lg.PC = ligand.average.RNAseq(
-          db = db,
-          data = as.data.frame(PC.data[, cell.IDs ], row.names = rownames(PC.data)))
-      } else {
-        stop('Error : PC.type must be displayed ("Microarray" or "RNAseq").')
       }
-      if (CC.type == "Microarray") {
-        rc.CC = receptor.average.MA(
-          db = CC_Probes_to_symbol,
-          data = CC.data)
-      } else if (CC.type == "RNAseq") {
-        rc.CC = receptor.average.RNAseq(
-          db = db,
-          data = CC.data)
-      } else {
-        stop('Error : CC.type must be displayed ("Microarray" or "RNAseq").')
-      }
-      lr_global[, cell] = lg.PC * rc.CC
-      score_global[cell, ] = sum(lg.PC * rc.CC, na.rm = T)
+      else {
+        if (PC.type == "Microarray") {
+          lg.PC = ligand.average.MA(db = PC_Probes_to_symbol,
+                                    data = as.data.frame(PC.data[, cell.IDs],
+                                                         row.names = rownames(PC.data)))
+        }
+        else if (PC.type == "RNAseq") {
+          lg.PC = ligand.average.RNAseq(db = db, data = as.data.frame(PC.data[,
+                                                                              cell.IDs], row.names = rownames(PC.data)))
+        }
+        else {
+          stop("Error: PC.type must be displayed (\"Microarray\" or \"RNAseq\").")
+        }
+        if (CC.type == "Microarray") {
+          rc.CC = receptor.average.MA(db = CC_Probes_to_symbol,
+                                      data = CC.data)
+        }
+        else if (CC.type == "RNAseq") {
+          rc.CC = receptor.average.RNAseq(db = db, data = CC.data)
+        }
+        else {
+          stop("Error: CC.type must be displayed (\"Microarray\" or \"RNAseq\").")
+        }
+        lr_global[, cell] = lg.PC * rc.CC
+        score_global[cell, ] = sum(lg.PC * rc.CC, na.rm = T)
       }
     }
-    } else {
-    stop('Error : Direction of the communication ("in" or "out") must be specified ')
-      }
-
+  }
+  else {
+    stop("Error: Direction of the communication (\"in\" or \"out\") must be specified ")
+  }
   main <- list(score_global, lr_global)
   return(main)
 }
