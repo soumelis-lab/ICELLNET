@@ -2,6 +2,9 @@
 
 export(LR.balloon.plot)
 export(LR.family.score)
+export(LR.heatmap)
+export(LR.selection)
+export(LR.viz)
 export(Perc_exp_infos)
 export(db.hgu133plus2)
 export(gene.scaling)

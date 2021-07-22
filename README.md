@@ -24,10 +24,15 @@ Once all the dependencies are downloaded and loaded, you can load the ‘icellne
 Examples on how to use `icellnet` package functions can be found in the Vignette.
 
 ## News - ICELLNET
-Last package update: 2021-03-31
+Last package update: 2021-07-21
 
-**New on ICELLNET:**
-- ICELLNET ligand /receptor database include now **543 human ligand/receptor interactions** manually curated, with a particular interest on immune checkpoints, cytokines, and chemokines.
+**New on ICELLNET - 2021-07-21:**
+- ICELLNET ligand/receptor database include now **752 human ligand/receptor interactions**, manually curated. In addition to immune checkpoints, cytokines, and chemokines, it now includes additional interactions from classified in an additional family "extracellular matrix", among others added interactions.
+- New release (version 1.00): New graphical representations to handle cell-cell communication studies from single-cell RNAseq datasets. See [Exemple2_scRNAseq.md](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) for details.
+
+
+**New on ICELLNET - 2021-03-30:**
+- ICELLNET ligand/receptor database include now **543 human ligand/receptor interactions** manually curated, with a particular interest on immune checkpoints, cytokines, and chemokines.
 - ICELLNET includes now new features to handle cell-cell communication studies from single-cell RNAseq datasets. See [Vignette](https://github.com/soumelis-lab/ICELLNET/blob/master/Vignette.md) and use case [Exemple2_scRNAseq.md](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) for details.
 
 

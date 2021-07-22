@@ -1,7 +1,7 @@
 #'
 #' Plot of individual communication scores of contributing L/R pairs.
 #'
-#' @description Display the individual communication scores of ligand/receptor pairs that contributes with a score superior to a threshold (thresh = 10 as a default) and/or the top n interactions contributing to the score. Return a ggplot object.
+#' @description Display the individual communication scores of ligand/receptor pairs that contributes with a score superior to a threshold and/or the top n interactions contributing to the score. Return a ggplot object.
 #'
 #' @param lr Matrix of individual communication scores
 #' @param thresh Value set as a threshold to display the L/R pairs contributing with a score superior to this threshold

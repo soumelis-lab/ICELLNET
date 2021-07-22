@@ -1,7 +1,7 @@
 
 # Case study 2: dissect intercellular commmunication in single cell data from a Seurat object
 
-Data used in this tutorial are coming from [Arazi et al.2019](https://pubmed.ncbi.nlm.nih.gov/31209404/) study. 
+Data used in this tutorial are coming from [Arazi et al.2019](https://pubmed.ncbi.nlm.nih.gov/31209404/) study. [Here](https://github.com/soumelis-lab/ICELLNET/blob/master/Code_SeuratObject_Exemple2.md) is the code we used to create the SeuratObject used in the tutorial.
 
 ### Load libraries and ICELLNET database + compute db.name.couple
 ```{r,echo=T}
@@ -41,7 +41,7 @@ DimPlot(seurat, reduction = 'umap', group.by = 'author_annotation', label = T)
 
 ### 2 - Retrieve gene expression matrix 
  
-##### a - Compute manually average gene expression per cluster without filtering 
+#### a - Compute manually average gene expression per cluster without filtering 
 
 ```{r, warning=F, echo=T}
 # Taking into account the total nb of cells in each cluster
@@ -49,7 +49,7 @@ filter.perc=0
 average.clean= sc.data.cleaning(object = seurat, db = db, filter.perc = filter.perc, save_file = T, path="path/", force.file = F)
 ```
 
-##### b - Compute manually average gene expression per cluster with filtering for gene expression by a defined cell percentage at a cluster level
+#### b - Compute manually average gene expression per cluster with filtering for gene expression by a defined cell percentage at a cluster level
 
 ICELLNET offers the possibility to filter the initial gene expression matrix to keep genes at least expressed by defined percentage of cell in their respective cluster (below 2%): 
 
@@ -57,9 +57,9 @@ ICELLNET offers the possibility to filter the initial gene expression matrix to 
 filter.perc=2
 average.clean= sc.data.cleaning(object = seurat, db = db2, filter.perc = filter.perc, save_file = T, path="path/", force.file = F)
 ```
-This filtering allows to remove all the genes that are expressed by a very low number in some clusters, to avoid false negative cell-cell interactions scores. If you don't know, we advice to apply first ICELLNET without filtering, and then with filtering at 2%. This will help a lot in the analysis (see steps 3 and 4).
+This filtering allows to remove all the genes that are expressed by a very low number of cells in some clusters, to avoid false negative cell-cell interactions scores. If you are applying ICELLNET for the first time on your dataset, we advice to apply first ICELLNET without filtering, and then with filtering at 2% to see the differences and filtered genes. This will help a lot in the analysis and for biological interpretation of the data(see steps 3 and 4).
 
-##### c - Compute manually average gene expression per cluster without starting from a SeuratObject.
+#### c - Compute manually average gene expression per cluster without starting from a SeuratObject.
 
 If your are starting from a SeuratObject, continue directly on step 3.
 
@@ -103,7 +103,7 @@ rownames(PC.target)=c("CT3b","CT0a")
 my.selection=c("CT3b","CT0a")
 ```
 
-Compute intercellular communication scores
+**Compute intercellular communication scores**
 
 We investigate conventional dendritic cells (cDCs, CM3 cluster) to T cell (either CT3b or CT0a clusters) outward communication, so this means that we consider ligands expressed by cDCs and receptors expressed by T cells to compute intercellular communication scores. 
 Outward communication -> direction = "out"
@@ -117,7 +117,7 @@ score1=as.data.frame(score.computation.1[[1]])
 lr1=score.computation.1[[2]]
 
 ```
-Visualization of contribution of family of molecules to communication scores
+**Visualisation of contribution of family of molecules to communication scores**
 
 ```{r, warning=F, echo=T}
 # label and color label if you are working families of molecules already present in the database
@@ -133,9 +133,9 @@ LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=T, t
 ```
 ![](pictures/ICELLNET_scRNAseq_barplot.png)
 
-Visualization of highest and most different interactions between the two conditions (here, selection of interaction with difference of >10 units, and visualization of topn=30 interactions).
+**Visualisation of highest and most different interactions between the two conditions (selection of topn=30 interactions):** 
 
-30 first most contributing interactions (sort.by="sum")
+**30 first most contributing interactions (sort.by="sum")**
 ```{r, warning=F, echo=T}
 colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
 LR.balloon.plot(lr = lr1, thresh = 0 , topn=30 , sort.by="sum",  db.name.couple=db.name.couple, family.col=family.col, title="Most contributing interactions")
@@ -143,20 +143,20 @@ LR.balloon.plot(lr = lr1, thresh = 0 , topn=30 , sort.by="sum",  db.name.couple=
 ![](pictures/ICELLNET_scRNAseq_balloon1.png)
 
 
-30 first most different interactions between the conditions (sort.by="var")
+**30 first most different interactions between the conditions (sort.by="var")**
 ```{r, warning=F, echo=T}
 colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
 LR.balloon.plot(lr = lr1, thresh = 0 , topn=30 , sort.by="var",  db.name.couple=db.name.couple, family.col=family.col, title="Most contributing interactions")
 ```
 ![](pictures/ICELLNET_scRNAseq_balloon2.png)
 
-### Remarks on interpretation: 
+### Remarks on biological interpretation: 
 
-- ICELLNET will always define for each gene the maximum gene expression value as 10. Then, maximum score is 100 for an interaction (10 for the ligand, 10 for the receptor). 
+- **ICELLNET will always set, for each gene, maximum gene expression value at 10**. Then, the maximum score that you can obtain for an individual interaction is 100 (10 for the ligand, 10 for the receptor). 
 
-- This means that high interaction scores does not mean high expression. You should come back to the initial SeuratObject to look at gene expression, and that the ligand/receptor of interest if effectively expressed by the cluster.
+- This means that high interaction scores does not mean high expression. You **should come back to the initial SeuratObject to look at individual gene expression**, and that the ligand/receptor of interest if effectively expressed by the cluster.
 
-- Filtering of genes expressed by each cluster according to cell percentage expressing the gene (= with counts >0) for each cluster can be an option to remove false-negative interactions scores. This can be done with the sc.data.clean function, by setting filter.perc to a defined value (2 for 2%, 5 for 5% etc...). Filtered genes (expressed by a number of cells among the cluster below the percentage) will be set to 0. 
+- **Filtering of genes expressed by each cluster according to cell percentage expressing the gene (= with counts >0) for each cluster can be an option to remove false-negative interactions scores.**  This can be done with the sc.data.clean function, by setting filter.perc to a defined value (2 for 2%, 5 for 5% etc...). Filtered genes (expressed by a number of cells among the cluster below the percentage) will be set to 0. 
 
 
 
