@@ -54,7 +54,7 @@ LR.family.score = function(lr = lr,
   melted <- reshape2::melt(table)
   melted$Var1 = as.factor(melted$Var1)
   if (is.null(family.col))
-  {note("Colors automatically assigned. If you want to assign particular colors for fmaily of molecules, set it as family.col parameter")
+  {note("Colors automatically assigned. If you want to assign particular colors for family of molecules, set it as family.col parameter")
     plot <- ggplot2::ggplot(data = melted,  ggplot2::aes(x = Var2, y = value, fill = Var1)) +
       ggplot2::geom_bar(stat = "identity") +
       ggplot2::scale_fill_brewer()  +

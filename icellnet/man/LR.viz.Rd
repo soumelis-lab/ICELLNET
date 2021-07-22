@@ -13,10 +13,10 @@ LR.viz(data = data, couple = couple, db = db, plot = TRUE)
 
 \item{db}{Ligand/receptor database}
 
-\item{plot}{logical FALSE/TRUE (TRUE by default). If TRUE, the function return the graphical representation of communication score for each cell pais as a heatmap. If FALSE, the communication score matrix is returned.}
+\item{plot}{logical FALSE/TRUE (TRUE by default). If TRUE, the function returns the graphical representation of communication score for each cell pairs as a heatmap. If FALSE, the communication score matrix is returned.}
 }
 \description{
-Plot individual communication scores of a specific L/R interactions for all cell pairs combination. Useful to see specificity of an interaction between two cell types. Relevant only for single cell datasets, deciphering communication between clusters. Returns either a ggplot object (if plot=TRUE) or a matrix.
+Plot individual communication scores of a specific L/R interactions for all cell pairs. Useful to see specificity of an interaction between two cell types. Relevant only for single cell datasets, deciphering communication between clusters. Returns either a ggplot object (if plot=TRUE) or a matrix.
 }
 \examples{
 \dontrun{LR.viz(data=data.icell , couple=couple, db=db , plot=TRUE)}

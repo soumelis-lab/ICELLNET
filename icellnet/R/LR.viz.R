@@ -1,13 +1,13 @@
 #'
 #' Plot individual communication scores of a specific L/R interactions for all cell pairs.
 #'
-#' @description  Plot individual communication scores of a specific L/R interactions for all cell pairs combination. Useful to see specificity of an interaction between two cell types. Relevant only for single cell datasets, deciphering communication between clusters. Returns either a ggplot object (if plot=TRUE) or a matrix.
+#' @description  Plot individual communication scores of a specific L/R interactions for all cell pairs. Useful to see specificity of an interaction between two cell types. Relevant only for single cell datasets, deciphering communication between clusters. Returns either a ggplot object (if plot=TRUE) or a matrix.
 #'
 #'
 #' @param data A dataframe of transcriptomic profiles with gene names as rownames
 #' @param couple character, name of a interaction "L / R". If several subunits, refer to output of name.lr.couple() function for interaction names.
 #' @param db Ligand/receptor database
-#' @param plot logical FALSE/TRUE (TRUE by default). If TRUE, the function return the graphical representation of communication score for each cell pais as a heatmap. If FALSE, the communication score matrix is returned.
+#' @param plot logical FALSE/TRUE (TRUE by default). If TRUE, the function returns the graphical representation of communication score for each cell pairs as a heatmap. If FALSE, the communication score matrix is returned.
 #'
 #' @export
 #' @examples

@@ -1,24 +1,20 @@
----
-title: "LN_PublicDataset"
-author: "Melissa Saichi"
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+#  Creation of Lupus_Seurat_SingleCell_Landscape.Rds file for tutorial Exemple2_scRNAseq"
+*authors: "Melissa Saichi and Lucile Massenet-Regad"*
 
-###PART1 ##: Data acquisition
+
+## PART 1: Data acquisition ##
 
 According to the Nat.Immunol publication, the dataset is publicly available on Immport/ SingleCell Broad Portal, under the accession code: SDY997
 Important note: This accession code is for all the AMP consortium : it has other datasets on autoimmune diseases such as Rhumatoid Arthritis (RA) and SLE (equivalent to LN).
 
-##Data acquisition steps:
+### Data acquisition steps:
 + Connect to SingleCell Portal by clicking on : https://portals.broadinstitute.org/single_cell/study/amp-phase-1
 This will give you access to the "Download section".
 + The LN dataset was stored as : exprMatrixSleBroad.tsv.gz "Broad dataset" for the Immune part & exprMatrixSleMetro "Metro Dataset" for the "Stromal part".
 + Download the exprMatrixSleBroad.tsv.gz & the metadata file in which were stored the cell metadata of all studied cells from both datasets
 
-### PART2 :Data analysis ##
+## PART 2: Data analysis ##
 
 ```{r data loading}
 rm(list=ls())
@@ -44,7 +40,6 @@ Idents(sln)=sln$Cluster #important to apply icellnet for desired clusters after.
 
 saveRDS(sln, "Lupus_Seurat_SingleCell_Landscape.Rds")
 
-#See Exemple2_scRNAseq tutorial for next steps.
 ```
 
 

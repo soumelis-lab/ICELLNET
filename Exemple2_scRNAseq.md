@@ -35,7 +35,7 @@ seurat <- ScaleData(seurat)
 seurat <- FindVariableFeatures(seurat, selection.method = "vst", nfeatures = 2000)
 seurat <- RunPCA(seurat)
 seurat <- RunUMAP(seurat, dims = 1:50)
-DimPlot(seurat, reduction = 'umap', group.by = 'author_annotation', label = T)
+DimPlot(seurat, reduction = 'umap', group.by = 'Cluster', label = T)
 ```
 ![](pictures/ICELLNET_scRNAseq_UMAP.png)
 
@@ -51,19 +51,19 @@ average.clean= sc.data.cleaning(object = seurat, db = db, filter.perc = filter.p
 
 #### b - Compute manually average gene expression per cluster with filtering for gene expression by a defined cell percentage at a cluster level
 
-ICELLNET offers the possibility to filter the initial gene expression matrix to keep genes at least expressed by defined percentage of cell in their respective cluster (below 2%): 
+ICELLNET offers the possibility to filter the initial gene expression matrix to keep genes at least expressed by defined percentage of cell in their respective cluster (below 10%): 
 
 ```{r, warning=F, echo=T}
-filter.perc=2
-average.clean= sc.data.cleaning(object = seurat, db = db2, filter.perc = filter.perc, save_file = T, path="path/", force.file = F)
+filter.perc=10
+average.clean= sc.data.cleaning(object = seurat, db = db, filter.perc = filter.perc, save_file = T, path="path/", force.file = F)
 ```
-This filtering allows to remove all the genes that are expressed by a very low number of cells in some clusters, to avoid false negative cell-cell interactions scores. If you are applying ICELLNET for the first time on your dataset, we advice to apply first ICELLNET without filtering, and then with filtering at 2% to see the differences and filtered genes. This will help a lot in the analysis and for biological interpretation of the data(see steps 3 and 4).
+This filtering allows to remove all the genes that are expressed by a very low number of cells in some clusters, to avoid false negative cell-cell interactions scores. If you are applying ICELLNET for the first time on your dataset, we advice to apply first ICELLNET without filtering, and then with filtering at 10% to see the differences and filtered genes. This will help a lot in the analysis and for biological interpretation of the data(see steps 3 and 4).
 
 #### c - Compute manually average gene expression per cluster without starting from a SeuratObject.
 
 If your are starting from a SeuratObject, continue directly on step 3.
 
-If you are not starting from a SeuratObject but from a matrix of count, check that the matrix is normalised by library size and follow the steps below (explained with Seurat packages references for formatting).
+If you are not starting from a SeuratObject but from a matrix of count, check that the matrix is normalized by library size and follow the steps below (explained below with Seurat formatting as reference for clarity).
 
 ```{r, warning=F, echo=T}
 data <- as.data.frame(GetAssayData(seurat, slot = "data")) #or other matrix for which features expression values # are scaled by the total expression in each cell
@@ -117,14 +117,14 @@ score1=as.data.frame(score.computation.1[[1]])
 lr1=score.computation.1[[2]]
 
 ```
-**Visualisation of contribution of family of molecules to communication scores**
+**Visualization of contribution of family of molecules to communication scores**
 
 ```{r, warning=F, echo=T}
 # label and color label if you are working families of molecules already present in the database
-my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","Antigen binding")
-family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"= "#1D1D18"  ,
-            "Cytokine"="#156399", "Notch family" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
-            
+my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","Antigen binding", "ECM")
+family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"= "#1D1D18"  , "ECM"="slateblue4",
+                "Cytokine"="#156399", "Notch family" ="#676766", "Antigen binding" = "slateblue1",  "other" = "#908F90",  "NA"="#908F90")
+
 ymax=round(max(score1))+1 #to define the y axis range of the barplot
 
 LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=F) # table of contribution of each family of molecule to the scores
@@ -133,20 +133,20 @@ LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=T, t
 ```
 ![](pictures/ICELLNET_scRNAseq_barplot.png)
 
-**Visualisation of highest and most different interactions between the two conditions (selection of topn=30 interactions):** 
+**Visualization of highest and most different interactions between the two conditions (selection of topn=20 interactions):** 
 
-**30 first most contributing interactions (sort.by="sum")**
+**20 first most contributing interactions (sort.by="sum")**
 ```{r, warning=F, echo=T}
 colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
-LR.balloon.plot(lr = lr1, thresh = 0 , topn=30 , sort.by="sum",  db.name.couple=db.name.couple, family.col=family.col, title="Most contributing interactions")
+LR.balloon.plot(lr = lr1, thresh = 0 , topn=20 , sort.by="sum",  db.name.couple=db.name.couple, family.col=family.col, title="Most contributing interactions")
 ```
 ![](pictures/ICELLNET_scRNAseq_balloon1.png)
 
 
-**30 first most different interactions between the conditions (sort.by="var")**
+**20 first most different interactions between the conditions (sort.by="var")**
 ```{r, warning=F, echo=T}
 colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
-LR.balloon.plot(lr = lr1, thresh = 0 , topn=30 , sort.by="var",  db.name.couple=db.name.couple, family.col=family.col, title="Most contributing interactions")
+LR.balloon.plot(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  db.name.couple=db.name.couple, family.col=family.col, title="Most different interactions")
 ```
 ![](pictures/ICELLNET_scRNAseq_balloon2.png)
 
@@ -157,6 +157,67 @@ LR.balloon.plot(lr = lr1, thresh = 0 , topn=30 , sort.by="var",  db.name.couple=
 - This means that high interaction scores does not mean high expression. You **should come back to the initial SeuratObject to look at individual gene expression**, and that the ligand/receptor of interest if effectively expressed by the cluster.
 
 - **Filtering of genes expressed by each cluster according to cell percentage expressing the gene (= with counts >0) for each cluster can be an option to remove false-negative interactions scores.**  This can be done with the sc.data.clean function, by setting filter.perc to a defined value (2 for 2%, 5 for 5% etc...). Filtered genes (expressed by a number of cells among the cluster below the percentage) will be set to 0. 
+
+# Update - 21/07/2021 - New graphical representations with ICELLNET to dissect intercellular communication
+
+Let's say we now want to decipher communication between conventional dendritic cells (cDCs, CM3 cluster) to all T cell clusters  (CT0a, CT0b, CT1, CT2, CT3a, CT3b, CT4, CT5a, CT5b, CT6 clusters) outward communication.
+
+```{r, warning=F, echo=T}
+
+PC=c("CT0a", "CT0b", "CT1", "CT2", "CT3a", "CT3b", "CT4", "CT5a", "CT5b", "CT6") #vectors including name of partner cells
+PC.data=as.data.frame(data.icell[,c(PC,"Symbol")], row.names = rownames(data.icell))
+
+PC.target=data.frame("ID"=colnames(data.icell), "Cell_type"=colnames(data.icell), "Class"=colnames(data.icell))
+rownames(PC.target)=PC.target$ID
+
+score.computation.1= icellnet.score(direction="out", PC.data=PC.data, 
+                                    CC.data= as.data.frame(data.icell[,c("CM3")], row.names = rownames(data.icell)),  
+                                    PC.target = PC.target, PC=PC, CC.type = "RNAseq", 
+                                    PC.type = "RNAseq",  db = db)
+score1=as.data.frame(score.computation.1[[1]])
+lr1=score.computation.1[[2]]
+
+```
+
+## Heatmap representation 
+Similar to `LR.balloon.plot`, the goal is to easily visualise specific interactions (most different between conditions or most contributing to the scores).
+
+```{r, echo=T}
+LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  db.name.couple=db.name.couple, title="Most different interactions")
+LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  db.name.couple=db.name.couple, title="Most contributing interactions")
+```
+![](pictures/ICELLNET_scRNAseq_heatmap.png)
+
+It is also possible to select the same interactions with the `LR.selection()` function and use other package for visualization such as *ComplexHeatmap package* that provides clustering of interaction and cell types. See example below.
+
+```{r, echo=T}
+pairs=LR.selection(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  db.name.couple=db.name.couple)
+
+library(ComplexHeatmap)
+library(circlize)
+col_fun = colorRamp2(c(0, 100), c("white", "red"))
+ComplexHeatmap::Heatmap(as.matrix(pairs), cluster_rows = T, cluster_columns = T, clustering_method_rows = "ward.D", name="Score", 
+            clustering_distance_rows = "euclidean", show_column_dend = T , show_row_dend = T, show_column_names = T , show_row_names = T,   
+            column_title ="Communication from cDC to T cell clusters", col = col_fun)
+```
+![](pictures/ICELLNET_scRNAseq_CHeatmap.png)
+
+## Interaction specificity plot
+
+This feature allows to represent graphically the communication score of a specific interaction for all combinations of cell pairs included in the dataset. *This representation is useful only when studying communication between cells all coming from the same dataset (ex: different clusters of a single cell RNAseq dataset* This representation allows to easily identify :
++ which clusters are expressing the ligand (in y axis) among all cell types included in the dataset
++ which clusters are expressing the receptor (x axis) among all cell types included in the dataset
++ the intensity of communication score for this specific interaction for all cell pairs
++ the specificity of the studied interaction
+
+If plot=T, the function returns a graphical representation (ggplot object) of communication score for each cell pairs as a heatmap. If FALSE, the communication score matrix is returned.
+
+```{r, echo=T}
+LR.viz(data=data.icell, db = db, couple="CD86 / CD28", plot=T)
+LR.viz(data=data.icell, db = db, couple="IL18 / IL18R1 + IL18RAP", plot=T)
+```
+
+![](pictures/ICELLNET_scRNAseq_spe1.png)
 
 
 
