@@ -37,7 +37,7 @@ seurat <- RunPCA(seurat)
 seurat <- RunUMAP(seurat, dims = 1:50)
 DimPlot(seurat, reduction = 'umap', group.by = 'Cluster', label = T)
 ```
-![](pictures/ICELLNET_scRNAseq_UMAP.png)
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/pictures/ICELLNET_scRNAseq_UMAP.png" width=50% height=50%>
 
 ### 2 - Retrieve gene expression matrix 
  
@@ -131,7 +131,8 @@ LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=F) #
 
 LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=T, title="DC-T comm", family.col=family.col) #display barplot
 ```
-![](pictures/ICELLNET_scRNAseq_barplot.png){:height="36px" width="36px"}
+
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/pictures/ICELLNET_scRNAseq_barplot.png" width=50% height=50%>
 
 **Visualization of highest and most different interactions between the two conditions (selection of topn=20 interactions):** 
 
@@ -140,15 +141,14 @@ LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=T, t
 colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
 LR.balloon.plot(lr = lr1, thresh = 0 , topn=20 , sort.by="sum",  db.name.couple=db.name.couple, family.col=family.col, title="Most contributing interactions")
 ```
-![](pictures/ICELLNET_scRNAseq_balloon1.png)
-
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/pictures/ICELLNET_scRNAseq_balloon1.png" width=50% height=50%>
 
 **20 first most different interactions between the conditions (sort.by="var")**
 ```{r, warning=F, echo=T}
 colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
 LR.balloon.plot(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  db.name.couple=db.name.couple, family.col=family.col, title="Most different interactions")
 ```
-![](pictures/ICELLNET_scRNAseq_balloon2.png)
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/pictures/ICELLNET_scRNAseq_balloon2.png" width=50% height=50%>
 
 ### Remarks on biological interpretation: 
 
@@ -200,7 +200,8 @@ ComplexHeatmap::Heatmap(as.matrix(pairs), cluster_rows = T, cluster_columns = T,
             clustering_distance_rows = "euclidean", show_column_dend = T , show_row_dend = T, show_column_names = T , show_row_names = T,   
             column_title ="Communication from cDC to T cell clusters", col = col_fun)
 ```
-![](pictures/ICELLNET_scRNAseq_CHeatmap.png)
+
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/pictures/ICELLNET_scRNAseq_CHeatmap.png" width=50% height=50%>
 
 ## Interaction specificity plot
 
