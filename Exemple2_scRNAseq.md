@@ -131,7 +131,7 @@ LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=F) #
 
 LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot=T, title="DC-T comm", family.col=family.col) #display barplot
 ```
-![](pictures/ICELLNET_scRNAseq_barplot.png)
+![](pictures/ICELLNET_scRNAseq_barplot.png){:height="36px" width="36px"}
 
 **Visualization of highest and most different interactions between the two conditions (selection of topn=20 interactions):** 
 
