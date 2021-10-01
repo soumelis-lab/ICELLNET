@@ -14,8 +14,8 @@
 #' \dontrun{LR.viz(data=data.icell , couple=couple, db=db , plot=TRUE)}
 #'
 #'
-
 LR.viz <- function(data=data , couple=couple, db=db , plot=TRUE){
+
   #check format data
   SYMBOL = rownames(data)
   data = as.data.frame(data)
@@ -24,41 +24,61 @@ LR.viz <- function(data=data , couple=couple, db=db , plot=TRUE){
   }
   #format db and select interaction of interest
   rownames(db)=name.lr.couple(db=db, type="Family")[,1]
-  if ((couple %in% rownames(db))==FALSE){
-    note("ERROR - interaction not in the DB - correct interaction")
-  }
   db.sel=db[which(rownames(db)==couple),]
   if (dim(db.sel)[1]==0){
     print("ERROR - interaction not in the DB - correct interaction")
   }
   if (is.na(db.sel$`Ligand 2`)) {
-    lig=as.vector(data[which(data$Symbol == db.sel$`Ligand 1`) , which(colnames(data) !=  "Symbol")])
+    if (db.sel$`Ligand 1`%in% data$Symbol){
+      lig=as.vector(data[which(data$Symbol == db.sel$`Ligand 1`) , which(colnames(data) !=  "Symbol")])
+    } else {lig = NA}
   }else{
-    lig=as.vector(apply(data[which(data$Symbol %in% c(db.sel$`Ligand 1`, db.sel$`Ligand 2`)), which(colnames(data) !=
-                                                                                                      "Symbol")], 2, psych::geometric.mean) )}
-
-  if (is.na(db.sel$`Receptor 2`) & is.na(db.sel$`Receptor 3`)){
-    rec=as.vector(data[which(data$Symbol == db.sel$`Receptor 1`) , which(colnames(data) !=  "Symbol")])
-  } else if (is.na(db.sel$`Receptor 3`)){
-    rec=as.vector(apply(data[which(data$Symbol %in% c(db.sel$`Receptor 1`, db.sel$`Receptor 2`)), which(colnames(data) !=
-                                                                                                          "Symbol")], 2, psych::geometric.mean))
-  } else{
-    rec=as.vector(apply(data[which(data$Symbol %in% c(db.sel$`Receptor 1`, db.sel$`Receptor 2`, db.sel$`Receptor 3`)), which(colnames(data) !=
-                                                                                                                               "Symbol")], 2, psych::geometric.mean))
+    if (db.sel$`Ligand 1`%in% data$Symbol & db.sel$`Ligand 2`%in% data$Symbol){
+      lig=as.vector(apply(data[which(data$Symbol %in% c(db.sel$`Ligand 1`, db.sel$`Ligand 2`)), which(colnames(data) !=
+                                                                                                        "Symbol")], 2, psych::geometric.mean) )}
+    else {lig = NA}
   }
 
+  if (is.na(db.sel$`Receptor 2`) & is.na(db.sel$`Receptor 3`)){
+    if (db.sel$`Receptor 1`%in% data$Symbol){
+      rec=as.vector(data[which(data$Symbol == db.sel$`Receptor 1`) , which(colnames(data) !=  "Symbol")])
+    }else {rec = NA}
+
+  } else if (is.na(db.sel$`Receptor 3`)){
+    if (db.sel$`Receptor 1`%in% data$Symbol & db.sel$`Receptor 2`%in% data$Symbol ){
+      rec=as.vector(apply(data[which(data$Symbol %in% c(db.sel$`Receptor 1`, db.sel$`Receptor 2`)), which(colnames(data) !=
+                                                                                                            "Symbol")], 2, psych::geometric.mean))
+    }else {rec = NA}
+
+  } else{
+    if (db.sel$`Receptor 1`%in% data$Symbol & db.sel$`Receptor 2`%in% data$Symbol ){
+      rec=as.vector(apply(data[which(data$Symbol %in% c(db.sel$`Receptor 1`, db.sel$`Receptor 2`, db.sel$`Receptor 3`)), which(colnames(data) !=
+                                                                                                                                 "Symbol")], 2, psych::geometric.mean))
+    }else {rec = NA}
+  }
   mat=matrix(as.numeric(lig), ncol=1) %*% matrix(as.numeric(rec), nrow = 1)
-  colnames(mat)=colnames(select_if(data, is.numeric))
-  rownames(mat)=colnames(select_if(data, is.numeric))
-  melted=reshape2::melt(mat)
-  colnames(melted)=c("Ligand", "Receptor", "value")
-  if (plot==T){
-    p1 <-ggplot(melted, ggplot2::aes(x = Receptor,
-                                     y = Ligand, fill=value)) +  ggplot2::geom_tile(aes(fill = value)) +
-      ggplot2::scale_fill_gradient(low="white", high="blue")+
-      ggplot2::theme(axis.text.x=ggplot2::element_text(angle=45, hjust = 1)) +
-      ggplot2::labs(title = couple)
-    return (p1)
-  }else
+
+  if (all(is.na(mat))){
+    # lean that at least one ligand/receptor genes is not in the data matrix.
+    mat = matrix(nrow=dim(data)[2]-1, ncol=dim(data)[2]-1)
+    colnames(mat)=colnames(select_if(data, is.numeric))
+    rownames(mat)=colnames(select_if(data, is.numeric))
     return(mat)
+  }else{
+
+    colnames(mat)=colnames(select_if(data, is.numeric))
+    rownames(mat)=colnames(select_if(data, is.numeric))
+    if (plot==T){
+      melted=reshape2::melt(mat)
+      colnames(melted)=c("Ligand", "Receptor", "value")
+
+      p1 <-ggplot(melted, ggplot2::aes(x = Receptor,
+                                       y = Ligand, fill=value)) +  geom_tile(aes(fill = value)) +
+        scale_fill_gradient(low="white", high="blue")+
+        theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+        ggplot2::labs(title = couple)
+      return (p1)
+    }else
+      return(mat)
+  }
 }

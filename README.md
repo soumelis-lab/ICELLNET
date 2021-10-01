@@ -24,7 +24,7 @@ Once all the dependencies are downloaded and loaded, you can load the ‘icellne
 Examples on how to use `icellnet` package functions can be found in the Vignette.
 
 ## News - ICELLNET
-Last package update: 2021-07-21
+Last package update: 2021-10-01
 
 **New on ICELLNET - 2021-07-21:**
 - ICELLNET ligand/receptor database include now **752 human ligand/receptor interactions**, manually curated. In addition to immune checkpoints, cytokines, and chemokines, it now includes additional interactions from classified in an additional family "extracellular matrix", among others added interactions.

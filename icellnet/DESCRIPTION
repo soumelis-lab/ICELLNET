@@ -2,7 +2,7 @@ Package: icellnet
 Type: Package
 Title: Dissection of intercellular communication using the
         transcriptome-based framework ICELLNET
-Version: 1.00
+Version: 1.0.1
 Authors@R: 
     c(person(given = "Lucile",
            family = "Massenet-Regad",
@@ -16,10 +16,10 @@ Maintainer: Lucile Massenet-Regad <lucile.massenet@espci.org>
 Description: ICELLNET is a transcriptomic-based framework to dissect cell communication in a global manner. It integrates an original expert-curated database of ligand-receptor interactions taking into account multiple subunits expression. Based on transcriptomic profiles (gene expression), ICELLNET package allows to compute communication scores between cells and provides several visualization modes that can be helpful to dig into cell-cell interaction mechanism and extend biological knowledge.
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: stats, dplyr, data.table, ggplot2, jetset, psych, reshape2,
         rlist, AnnotationDbi, hgu133plus2.db
 NeedsCompilation: no
-Packaged: 2021-07-22 09:32:18 UTC; travail
+Packaged: 2021-10-01 13:03:23 UTC; travail
 Author: Lucile Massenet-Regad [cre],
   Floriane No<U+00EB>l [aut]
