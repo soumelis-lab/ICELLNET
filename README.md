@@ -29,7 +29,7 @@ Last package update: 2021-10-01
 Last ligand-receptor database update: 2022-06-15
 
 **New on ICELLNET - 2022-06-15:**
-ICELLNET database has been expanded to **1024 interactions**, focusing on adding **tumor microenvironment** related interactions.
+ICELLNET database has been expanded to **1034 interactions**, focusing on adding **tumor microenvironment** related interactions.
 
 **New on ICELLNET - 2021-07-21:**
 - ICELLNET ligand/receptor database include now **752 human ligand/receptor interactions**, manually curated. In addition to immune checkpoints, cytokines, and chemokines, it now includes additional interactions from classified in an additional family "extracellular matrix", among others added interactions.
