@@ -25,6 +25,7 @@ Examples on how to use `icellnet` package functions can be found in the Vignette
 
 ## ICELLNET news:
 Last package update: 2021-10-01
+
 Last ligand-receptor database update: 2022-06-15
 
 **New on ICELLNET - 2022-06-15:**
