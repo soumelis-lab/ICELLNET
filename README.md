@@ -23,13 +23,16 @@ Then you just have to load `devtools` package and run the command below:
 Once all the dependencies are downloaded and loaded, you can load the ‘icellnet’ package.    
 Examples on how to use `icellnet` package functions can be found in the Vignette.
 
-## News - ICELLNET
+## ICELLNET news:
 Last package update: 2021-10-01
+Last ligand-receptor database update: 2022-06-15
+
+**New on ICELLNET - 2022-06-15:**
+ICELLNET database has been expanded to **1024 interactions**, focusing on adding **tumor microenvironment** related interactions.
 
 **New on ICELLNET - 2021-07-21:**
 - ICELLNET ligand/receptor database include now **752 human ligand/receptor interactions**, manually curated. In addition to immune checkpoints, cytokines, and chemokines, it now includes additional interactions from classified in an additional family "extracellular matrix", among others added interactions.
 - New release (version 1.00): New graphical representations to handle cell-cell communication studies from single-cell RNAseq datasets. See [Exemple2_scRNAseq.md](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) for details.
-
 
 **New on ICELLNET - 2021-03-30:**
 - ICELLNET ligand/receptor database include now **543 human ligand/receptor interactions** manually curated, with a particular interest on immune checkpoints, cytokines, and chemokines.
