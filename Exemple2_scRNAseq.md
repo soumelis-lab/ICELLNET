@@ -184,7 +184,7 @@ Similar to `LR.balloon.plot`, the goal is to easily visualise specific interacti
 
 ```{r, echo=T}
 LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  db.name.couple=db.name.couple, title="Most different interactions")
-LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  db.name.couple=db.name.couple, title="Most contributing interactions")
+LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="sum",  db.name.couple=db.name.couple, title="Most contributing interactions")
 ```
 ![](pictures/ICELLNET_scRNAseq_heatmap.png)
 
