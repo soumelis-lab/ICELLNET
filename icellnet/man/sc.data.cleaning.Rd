@@ -6,6 +6,7 @@
 \usage{
 sc.data.cleaning(
   object = object,
+  assay = "RNA",
   db = db,
   filter.perc = NULL,
   save_file = T,
@@ -15,6 +16,8 @@ sc.data.cleaning(
 }
 \arguments{
 \item{object}{Seurat object with cells category (as future partner cells as Idents())}
+
+\item{assay}{Seurat assay, RNA assay by default.}
 
 \item{db}{Ligand/receptor database}
 
@@ -30,7 +33,7 @@ sc.data.cleaning(
 This function computes average expression per cluster from a Seurat object and eventually filters genes to keep only genes expressed by a specific percentage of the cells in their respective cluster. It returns the average the gene expression matrix (filtered) with clusters in columns.
 }
 \details{
-This function starts from a Seurat object and will used object[['RNA']]@data to compute average expression for each gene and for each cluster.
+This function starts from a Seurat object and will used object[['RNA']]@data (as default, other it has to be specified) to compute average expression for each gene and for each cluster.
 The function will also generate a statistic file (csv format) displaying for each gene in each cluster :
 1) the percentage of cells expressing the gene for this specific cluster
 2) the gene average expression value, considering all cells from the cluster.

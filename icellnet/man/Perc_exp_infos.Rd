@@ -4,10 +4,12 @@
 \alias{Perc_exp_infos}
 \title{Perc_exp_infos function}
 \usage{
-Perc_exp_infos(object = object, gene = gene, cell_id = cell_id)
+Perc_exp_infos(object = object, assay = "RNA", gene = gene, cell_id = cell_id)
 }
 \arguments{
 \item{object}{SeuratObject with clusters as Idents(), and with slot counts and data.}
+
+\item{assay}{Seurat assay, RNA assay by default.}
 
 \item{gene}{Character, name of the gene of interest}
 

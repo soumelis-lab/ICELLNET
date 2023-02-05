@@ -13,7 +13,6 @@
 #' @examples
 #' \dontrun{LR.viz(data=data.icell , couple=couple, db=db , plot=TRUE)}
 #'
-#'
 LR.viz <- function(data=data , couple=couple, db=db , plot=TRUE){
 
   #check format data
@@ -59,10 +58,11 @@ LR.viz <- function(data=data , couple=couple, db=db , plot=TRUE){
   mat=matrix(as.numeric(lig), ncol=1) %*% matrix(as.numeric(rec), nrow = 1)
 
   if (all(is.na(mat))){
-    # lean that at least one ligand/receptor genes is not in the data matrix.
+    # mean that at least one ligand/receptor genes is not present in the data matrix.
     mat = matrix(nrow=dim(data)[2]-1, ncol=dim(data)[2]-1)
     colnames(mat)=colnames(select_if(data, is.numeric))
     rownames(mat)=colnames(select_if(data, is.numeric))
+    print("Cannot display graph : at least one ligand/receptor genes is not present in the data matrix" ) ## To add to packhe
     return(mat)
   }else{
 

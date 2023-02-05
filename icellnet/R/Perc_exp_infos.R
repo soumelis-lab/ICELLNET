@@ -7,6 +7,7 @@
 #'
 #' @param object SeuratObject with clusters as Idents(), and with slot counts and data.
 #' @param gene Character, name of the gene of interest
+#' @param assay Seurat assay, RNA assay by default.
 #' @param cell_id Name/identity of the cluster, found also in Idents(object).
 #' @export
 #' @examples
@@ -14,9 +15,9 @@
 #'
 
 
-Perc_exp_infos <-function(object=object, gene=gene, cell_id=cell_id){
+Perc_exp_infos <-function(object=object, assay="RNA", gene=gene, cell_id=cell_id){
   WhichCells=colnames(object)[which(Idents(object)==cell_id)]
-  value.pos=sum(object[['RNA']]@counts[gene,WhichCells]>0)/length(WhichCells)
-  value.exp=mean(object[['RNA']]@data[gene,WhichCells])
+  value.pos=sum(object[[assay]]@counts[gene,WhichCells]>0)/length(WhichCells)
+  value.exp=mean(object[[assay]]@data[gene,WhichCells])
   return(c(value.pos, value.exp))
 }

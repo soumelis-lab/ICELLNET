@@ -21,5 +21,4 @@ Plot individual communication scores of a specific L/R interactions for all cell
 \examples{
 \dontrun{LR.viz(data=data.icell , couple=couple, db=db , plot=TRUE)}
 
-
 }
