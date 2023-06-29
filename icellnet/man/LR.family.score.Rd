@@ -36,4 +36,5 @@ If plot=FALSE, the function returns a table. If plot=T, returns a ggplot object,
 \examples{
 \dontrun{LR.family.score(lr=lr, my.family=my.family, db.couple=db.name.couple, plot=F)}
 
+
 }

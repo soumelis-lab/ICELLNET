@@ -60,14 +60,14 @@ LR.viz <- function(data=data , couple=couple, db=db , plot=TRUE){
   if (all(is.na(mat))){
     # mean that at least one ligand/receptor genes is not present in the data matrix.
     mat = matrix(nrow=dim(data)[2]-1, ncol=dim(data)[2]-1)
-    colnames(mat)=colnames(select_if(data, is.numeric))
-    rownames(mat)=colnames(select_if(data, is.numeric))
-    print("Cannot display graph : at least one ligand/receptor genes is not present in the data matrix" ) ## To add to packhe
+    colnames(mat)=colnames(dplyr::select_if(data, is.numeric))
+    rownames(mat)=colnames(dplyr::select_if(data, is.numeric))
+    print("Cannot display graph : at least one ligand/receptor genes is not present in the data matrix" )
     return(mat)
   }else{
 
-    colnames(mat)=colnames(select_if(data, is.numeric))
-    rownames(mat)=colnames(select_if(data, is.numeric))
+    colnames(mat)=colnames(dplyr::select_if(data, is.numeric))
+    rownames(mat)=colnames(dplyr::select_if(data, is.numeric))
     if (plot==T){
       melted=reshape2::melt(mat)
       colnames(melted)=c("Ligand", "Receptor", "value")
@@ -75,7 +75,7 @@ LR.viz <- function(data=data , couple=couple, db=db , plot=TRUE){
       p1 <-ggplot(melted, ggplot2::aes(x = Receptor,
                                        y = Ligand, fill=value)) +  geom_tile(aes(fill = value)) +
         scale_fill_gradient(low="white", high="blue")+
-        theme(axis.text.x=element_text(angle=45, hjust = 1)) +
+        theme(axis.text.x=ggplot2::element_text(angle=45, hjust = 1)) +
         ggplot2::labs(title = couple)
       return (p1)
     }else

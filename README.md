@@ -24,9 +24,12 @@ Once all the dependencies are downloaded and loaded, you can load the ‘icellne
 Examples on how to use `icellnet` package functions can be found in the Vignette.
 
 ## ICELLNET news:
-Last package update: 2021-10-01
+Last package update: 2023-06-29
 
 Last ligand-receptor database update: 2022-06-15
+
+**New on ICELLNET - 2023-02-05:**
+ICELLNET can now handle spatial transcriptomic data!
 
 **New on ICELLNET - 2022-06-15:**
 ICELLNET database has been expanded to **1034 interactions**, focusing on adding **tumor microenvironment** related interactions.

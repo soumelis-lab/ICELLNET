@@ -17,69 +17,62 @@
 #' @examples
 #' \dontrun{LR.family.score(lr=lr, my.family=my.family, db.couple=db.name.couple, plot=F)}
 #'
-LR.family.score = function(lr = lr,
-                           my.family = my.family,
-                           db.couple = as.data.frame(db.couple), plot=F, title=NULL, ymax=NULL, family.col=NULL) {
-
-  lr=lr[stats::complete.cases(lr),]
-  lr=lr[is.finite(log2(rowSums(lr))),]
-  contribution = matrix(nrow = (length(my.family) + 1), ncol = length(lr[1, ]))
+#'
+LR.family.score <- function (lr = lr, my.family = my.family, db.couple = as.data.frame(db.couple),
+                             plot = F, title = NULL, ymax = NULL, family.col = NULL)
+{
+  lr = na.omit(lr)
+  coln=colnames(lr)
+  lr = as.data.frame(lr[is.finite(log2(rowSums(lr))), ])
+  colnames(lr)= coln
+  contribution = matrix(nrow = (length(my.family) + 1), ncol = length(lr[1,]))
   colnames(contribution) = rownames(t(lr))
   rownames(contribution) = c(my.family, c("other"))
+
   for (family in my.family) {
     list = db.couple[which(db.couple[, 2] %in% family), 1]
     list = dplyr::intersect(list, rownames(lr))
     if (length(list) > 1) {
-      lr.family = lr[list, ]
-      contribution[family, ] <-
-        colSums(lr.family, na.rm = TRUE, dims = 1)
-    } else if (length(list) == 1) {
-      contribution[family, ] = lr[list, ]
-    } else{
+      lr.family = as.data.frame(lr[list, ])
+      contribution[family, ] <- colSums(lr.family, na.rm = TRUE,
+                                        dims = 1)
+    }
+    else if (length(list) == 1) {
+      contribution[family, ] =  lr[list, ]
+    }
+    else {
       contribution[family, ] = 0
     }
   }
   family = "other"
   contribution2 = matrix(ncol = length(lr[1, ]))
-  contribution2 = colSums(lr, na.rm = TRUE, dims = 1) - colSums(contribution, na.rm =
-                                                                  TRUE, dims = 1)
+  contribution2 = colSums(lr, na.rm = TRUE, dims = 1) - colSums(contribution,
+                                                                na.rm = TRUE, dims = 1)
   contribution[family, ] = contribution2
-  if (plot==F){
+  if (plot == F) {
     return(contribution)
-  }else
-    table = contribution
+  }
+  else table = contribution
   if (is.null(ymax)) {
     ymax = max(colSums(table)) + 1
   }
   melted <- reshape2::melt(table)
   melted$Var1 = as.factor(melted$Var1)
-  if (is.null(family.col))
-  {note("Colors automatically assigned. If you want to assign particular colors for family of molecules, set it as family.col parameter")
-    plot <- ggplot2::ggplot(data = melted,  ggplot2::aes(x = Var2, y = value, fill = Var1)) +
-      ggplot2::geom_bar(stat = "identity") +
-      ggplot2::scale_fill_brewer()  +
-      ggplot2::labs(
-        x = NULL,
-        y = "score",
-        fill = NULL ,
-        title = title
-      ) +
-      ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
+  if (is.null(family.col)) {
+    print("Colors automatically assigned. If you want to assign particular colors for family of molecules, set it as family.col parameter")
+    plot <- ggplot2::ggplot(data = melted, ggplot2::aes(x = Var2,
+                                                        y = value, fill = Var1)) + ggplot2::geom_bar(stat = "identity") +
+      ggplot2::scale_fill_brewer() + ggplot2::labs(x = NULL,
+                                                   y = "score", fill = NULL, title = title) + ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
       ggplot2::theme_classic() + ggplot2::ylim(0, ymax) +
       ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
-  } else
-    plot <- ggplot2::ggplot(data = melted,  ggplot2::aes(x = Var2, y = value, fill = Var1)) +
-    ggplot2::geom_bar(stat = "identity") +
-    ggplot2::scale_fill_manual(values = family.col)+
-    ggplot2::labs(
-      x = NULL,
-      y = "score",
-      fill = NULL ,
-      title = title
-    ) +
-    ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
-    ggplot2::theme_classic() + ggplot2::ylim(0, ymax) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
+  }
+  else plot <- ggplot2::ggplot(data = melted, ggplot2::aes(x = Var2,
+                                                           y = value, fill = Var1)) + ggplot2::geom_bar(stat = "identity") +
+    ggplot2::scale_fill_manual(values = family.col) + ggplot2::labs(x = NULL,
+                                                                    y = "score", fill = NULL, title = title) + ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
+    ggplot2::theme_classic() + ggplot2::ylim(0, ymax) + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
   return(plot)
 }
+
 

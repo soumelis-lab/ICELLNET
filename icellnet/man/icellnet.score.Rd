@@ -9,7 +9,7 @@ icellnet.score(
   CC.data = CC.data,
   PC.data = PC.data,
   PC = PC,
-  PC.target = PC.target,
+  PC.target = NULL,
   CC.type = c("RNAseq", "Microarray"),
   PC.type = c("RNAseq", "Microarray"),
   db = db
@@ -24,7 +24,7 @@ icellnet.score(
 
 \item{PC}{Vector selecting a list of peripheral cell for the cell-cell communication analysis}
 
-\item{PC.target}{Data.frame of information concerning the PC.data samples}
+\item{PC.target}{data.frame of information concerning the PC.data samples. Set to NULL by default: use only colnames(PC.data) as meaningful level of information.}
 
 \item{CC.type}{Type of transcriptomic data for the central cell (either "RNAseq" or "Microarray")}
 

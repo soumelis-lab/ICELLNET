@@ -36,10 +36,10 @@ icellnet.ind.score = function(direction = c("out", "in"),CC.data = CC.data,
   #check PC.target format
   if (is.null(PC.target$Class)){
     PC.target$Class="NaN"
-    note("PC.target$Class was not defined in input file. Defined in the code as NaN column")}
+    print("PC.target$Class was not defined in input file. Defined in the code as NaN column")}
   if (is.null(PC.target$Cell_type)){
     PC.target$Cell_type="NaN"
-    note("PC.target$Cell_type was not defined in input file. Defined in the code as NaN column")}
+    print("PC.target$Cell_type was not defined in input file. Defined in the code as NaN column")}
 
 
   if (PC.type == "Microarray") {

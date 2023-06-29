@@ -25,7 +25,7 @@ gene.scaling <- function(data = data, n = n, db = db)
 {
   data=as.data.frame(data, row.names = rownames(data))
   #check data format
-  if (is.null(rownames(data))){note(paste0('rownames(data) should be defined with unique Symbol gene name'))}
+  if (is.null(rownames(data))){print(paste0("rownames(data) should be defined with unique Symbol gene name"))}
 
   # select only numeric columns
   data=dplyr::select_if(data, is.numeric)
@@ -33,8 +33,8 @@ gene.scaling <- function(data = data, n = n, db = db)
   int = dplyr::intersect(as.matrix(rownames(data)), as.matrix(db[, 1:5]))
   data = data[which(rownames(data) %in% int), ]
   for (i in 1:length(int)) {
-    sorted = sort(data[i, ], decreasing = TRUE)
-    max = sum(sorted[1, 1:n])/n
+    sorted = sort(as.numeric(data[i, ]), decreasing = TRUE)
+    max = sum(sorted[1:n])/n
     if (max > 0) {
       data[i, ] = data[i, ] /max  * 10
       data[i, which(data[i, ] > 10)] <- 10

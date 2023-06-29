@@ -58,7 +58,7 @@ sc.data.cleaning <- function (object=object, assay="RNA", db = db, filter.perc=N
       }
     }
   }else{
-    note( paste0("Following file used as intermediate statistics table: ", path, "scRNAseq_statsInfo_for_ICELLNET.csv. Use force.file=T to regenerate this file"))
+    print(paste0("Following file used as intermediate statistics table: ", path, "scRNAseq_statsInfo_for_ICELLNET.csv. Use force.file=T to regenerate this file"))
     data.int=utils::read.csv(paste0(path,"scRNAseq_statsInfo_for_ICELLNET.csv" ), header = T)
     data.int=data.int[,-1]
   }
@@ -67,7 +67,7 @@ sc.data.cleaning <- function (object=object, assay="RNA", db = db, filter.perc=N
   if (!is.null(filter.perc)){
     if (max(data.int$Perc_posCell) > filter.perc/100){
       data.int=dplyr::filter(data.int, Perc_posCell > filter.perc/100)
-    }else (print("Note: no gene above filtering threshold"))
+    }else (print("No gene above filtering threshold"))
     print("Filtering done")
   }
   average.cluster=reshape2::dcast(data.int[,-3], formula = Symbol~ Cell_ID, value.var = "Mean_exp", drop = T)

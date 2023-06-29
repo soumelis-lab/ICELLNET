@@ -224,7 +224,7 @@ To load the most recent version of the ligand/receptor database, you should run 
 **For the partner cell (if you don't want to use Human Primary Cell Atlas as partner cells):** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formated (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
 
 ## Target files format
-You should define two dataframes as target files, one corresponding to the central cell, and the other one corresponding to the partner cells. These dataframe usually describes the different samples. 
+You can define a target file. This dataframe usually describes the different samples with known metadata. If not provided, a target file will be automatically generated containing the sample names as the only metadata information available.
 
 **PC.target** should contains at least an 'ID' column including the name of the samples (usually rownames(PC.target) or colnames(PC.data) ), and a 'Class' column corresponding to a classification of your different samples included in PC.target, such as a cell type classification. The different categories included in the 'Class' column will define the different partner cells in the graphs.
 
@@ -236,66 +236,3 @@ You should define two dataframes as target files, one corresponding to the centr
 
 - [Case study 2](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md): Application of ICELLNET pipeline to scRNAseq from a Seurat object to infer intercellular communication between clusters.
 
-
-
-# Software information <a name="Software-information"></a>
-
-```
-session.Info()
-```
-R version 4.1.0 (2021-05-18)
-Platform: x86_64-apple-darwin17.0 (64-bit)
-Running under: macOS Big Sur 11.4
-R version 4.1.0 (2021-05-18)
-Platform: x86_64-apple-darwin17.0 (64-bit)
-Running under: macOS Big Sur 11.4
-
-Matrix products: default
-LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib
-
-locale:
-[1] fr_FR.UTF-8/fr_FR.UTF-8/fr_FR.UTF-8/C/fr_FR.UTF-8/fr_FR.UTF-8
-
-attached base packages:
- [1] grid      stats4    parallel  stats     graphics  grDevices utils     datasets  methods   base     
-
-other attached packages:
- [1] circlize_0.4.12       ComplexHeatmap_2.8.0  SeuratObject_4.0.2    Seurat_4.0.2         
- [5] gridExtra_2.3         icellnet_1.00         dplyr_1.0.7           ggplot2_3.3.5        
- [9] jetset_3.4.0          hgu133plus2.db_3.13.0 org.Hs.eg.db_3.13.0   AnnotationDbi_1.54.1 
-[13] IRanges_2.26.0        S4Vectors_0.30.0      Biobase_2.52.0        BiocGenerics_0.38.0  
-
-loaded via a namespace (and not attached):
-  [1] readxl_1.3.1           plyr_1.8.6             igraph_1.2.6           lazyeval_0.2.2        
-  [5] splines_4.1.0          listenv_0.8.0          scattermore_0.7        GenomeInfoDb_1.28.1   
-  [9] digest_0.6.27          foreach_1.5.1          htmltools_0.5.1.1      fansi_0.5.0           
- [13] magrittr_2.0.1         memoise_2.0.0          doParallel_1.0.16      tensor_1.5            
- [17] cluster_2.1.2          ROCR_1.0-11            globals_0.14.0         Biostrings_2.60.1     
- [21] matrixStats_0.59.0     spatstat.sparse_2.0-0  colorspace_2.0-2       blob_1.2.1            
- [25] ggrepel_0.9.1          crayon_1.4.1           RCurl_1.98-1.3         jsonlite_1.7.2        
- [29] spatstat.data_2.1-0    iterators_1.0.13       survival_3.2-11        zoo_1.8-9             
- [33] glue_1.4.2             polyclip_1.10-0        gtable_0.3.0           zlibbioc_1.38.0       
- [37] XVector_0.32.0         leiden_0.3.8           GetoptLong_1.0.5       shape_1.4.6           
- [41] future.apply_1.7.0     abind_1.4-5            scales_1.1.1           DBI_1.1.1             
- [45] miniUI_0.1.1.1         Rcpp_1.0.7             viridisLite_0.4.0      xtable_1.8-4          
- [49] clue_0.3-59            tmvnsim_1.0-2          reticulate_1.20        spatstat.core_2.1-2   
- [53] bit_4.0.4              htmlwidgets_1.5.3      httr_1.4.2             RColorBrewer_1.1-2    
- [57] ellipsis_0.3.2         ica_1.0-2              pkgconfig_2.0.3        farver_2.1.0          
- [61] uwot_0.1.10            deldir_0.2-10          utf8_1.2.1             tidyselect_1.1.1      
- [65] labeling_0.4.2         rlang_0.4.11           reshape2_1.4.4         later_1.2.0           
- [69] munsell_0.5.0          cellranger_1.1.0       tools_4.1.0            cachem_1.0.5          
- [73] cli_3.0.1              generics_0.1.0         RSQLite_2.2.7          ggridges_0.5.3        
- [77] stringr_1.4.0          fastmap_1.1.0          goftest_1.2-2          bit64_4.0.5           
- [81] fitdistrplus_1.1-5     purrr_0.3.4            RANN_2.6.1             KEGGREST_1.32.0       
- [85] pbapply_1.4-3          future_1.21.0          nlme_3.1-152           mime_0.11             
- [89] compiler_4.1.0         rstudioapi_0.13        plotly_4.9.4           curl_4.3.2            
- [93] png_0.1-7              spatstat.utils_2.1-0   tibble_3.1.2           stringi_1.7.3         
- [97] RSpectra_0.16-0        lattice_0.20-44        Matrix_1.3-4           psych_2.1.6           
-[101] vctrs_0.3.8            pillar_1.6.1           lifecycle_1.0.0        GlobalOptions_0.1.2   
-[105] spatstat.geom_2.1-0    lmtest_0.9-38          RcppAnnoy_0.0.18       data.table_1.14.0     
-[109] cowplot_1.1.1          bitops_1.0-7           irlba_2.3.3            httpuv_1.6.1          
-[113] patchwork_1.1.1        R6_2.5.0               promises_1.2.0.1       KernSmooth_2.23-20    
-[117] parallelly_1.25.0      codetools_0.2-18       MASS_7.3-54            assertthat_0.2.1      
-[121] rjson_0.2.20           withr_2.4.2            sctransform_0.3.2      mnormt_2.0.2          
-[125] GenomeInfoDbData_1.2.6 mgcv_1.8-36            rpart_4.1-15           tidyr_1.1.3           
-[129] Cairo_1.5-12.2         Rtsne_0.15             shiny_1.6.0 

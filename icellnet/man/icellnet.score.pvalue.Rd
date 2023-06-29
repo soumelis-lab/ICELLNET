@@ -10,7 +10,7 @@ icellnet.score.pvalue(
   CC.data2 = NULL,
   PC.data = PC.data,
   PC = PC,
-  PC.target = PC.target,
+  PC.target = NULL,
   CC.type = c("RNAseq", "Microarray"),
   PC.type = c("RNAseq", "Microarray"),
   db = db,

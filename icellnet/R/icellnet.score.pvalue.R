@@ -38,7 +38,7 @@ icellnet.score.pvalue = function(direction = c("out", "in"),
                                  CC.data2=NULL,
                                  PC.data = PC.data,
                                  PC = PC,
-                                 PC.target = PC.target,
+                                 PC.target = NULL,
                                  CC.type = c("RNAseq", "Microarray"),
                                  PC.type = c("RNAseq", "Microarray"),
                                  db = db,
@@ -47,6 +47,16 @@ icellnet.score.pvalue = function(direction = c("out", "in"),
   scores_rep=list()
   scores_rep1=list()
   scores_rep2=list()
+
+  #create PC.target file when not provided
+  if (is.null(PC.target)){
+    if (is.null(colnames(PC.data))){stop("Error:colnames(PC.data) is NULL and should be defined")}
+    else{
+      PC.target=data.frame("ID"=colnames(PC.data), "Cell_type"=colnames(PC.data), "Class"=colnames(PC.data))
+      rownames(PC.target)=PC.target$ID
+    }
+  }
+
 
   if (PC.type == "Microarray") {
     PC.affy.probes = as.data.frame(PC.data[, c(1, 2)])
