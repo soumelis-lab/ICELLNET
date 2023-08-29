@@ -58,6 +58,7 @@ LR.family.score <- function (lr = lr, my.family = my.family, db.couple = as.data
   }
   melted <- reshape2::melt(table)
   melted$Var1 = as.factor(melted$Var1)
+  melted$Var2 = as.factor(melted$Var2)
   if (is.null(family.col)) {
     print("Colors automatically assigned. If you want to assign particular colors for family of molecules, set it as family.col parameter")
     plot <- ggplot2::ggplot(data = melted, ggplot2::aes(x = Var2,
