@@ -5,7 +5,7 @@ This repository hosts the source code corresponding to the method described in [
 
 ---
 ## ICELLNET key features: 
-- Contains a *manually curated ligand-receptor interactions database*: curated exclusively from *human* studies, ICELLNET database takes into account the *multiple* subunits of ligand and receptor complexes (more than 1300 interactions)
+- Contains a *manually curated ligand-receptor interactions database*: curated exclusively from *human* studies, ICELLNET database takes into account the *multiple* subunits of ligand and receptor complexes (more than 1600 interactions)
 - *Versatile* tool applicable on a wide range of transcriptomic technologies (microarray, bulk RNAseq, scRNAseq, spatial transcriptomics)
 - Several visualization modes of cell-cell communication analysis results
 ---
