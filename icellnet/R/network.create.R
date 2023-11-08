@@ -113,16 +113,16 @@ network.create = function(icn.score, scale = c(min(icn.score), max(icn.score)), 
       ) +
       ggplot2::scale_size(
         range = c(1, 6),
-        breaks = c(1, 2, 4, 6, 8, 10),
-        labels = c(1, 2, 4, 6, 8, 10),
+        breaks = c(round(min(scale)), round((max(scale)-min(scale))/2), round(max(scale))),
+        labels = c(round(min(scale)), round((max(scale)-min(scale))/2), round(max(scale))),
         limits = scale
       ) +
       ggplot2::geom_point(color = "black",
                  size = 31,
                  shape = 1) +
       geom_nodes(ggplot2::aes(color = Cell_type), size = 30) +
-      ggplot2::scale_color_manual(values = my_pal, guide = F) +
-      ggplot2::scale_fill_manual(values = my_pal, guide = F) +
+      ggplot2::scale_color_manual(values = my_pal, guide = "none") +
+      ggplot2::scale_fill_manual(values = my_pal, guide = "none") +
       geom_node_label(ggplot2::aes(label = Cell_type, fill = Cell_type),
                       size = ggplot2::rel(6),
                       fontface = "bold") +
@@ -158,16 +158,16 @@ network.create = function(icn.score, scale = c(min(icn.score), max(icn.score)), 
       ) +
       ggplot2::scale_size(
         range = c(1, 6),
-        breaks = c(1, 2, 4, 6, 8, 10),
-        labels = c(1, 2, 4, 6, 8, 10),
+        breaks = c(round(min(scale)), round((max(scale)-min(scale))/2), round(max(scale))),
+        labels = c(round(min(scale)), round((max(scale)-min(scale))/2), round(max(scale))),
         limits = scale
       ) +
       ggplot2::geom_point(color = "black",
                  size = 31,
                  shape = 1) +
       geom_nodes(ggplot2::aes(color = Cell_type), size = 30) +
-      ggplot2::scale_color_manual(values = my_pal, guide = F) +
-      ggplot2::scale_fill_manual(values = my_pal, guide = F) +
+      ggplot2::scale_color_manual(values = my_pal, guide = "none") +
+      ggplot2::scale_fill_manual(values = my_pal, guide = "none") +
       geom_node_label(ggplot2::aes(label = Cell_type, fill = Cell_type),
                       size = ggplot2::rel(6),
                       fontface = "bold") +

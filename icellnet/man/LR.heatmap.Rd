@@ -9,7 +9,7 @@ LR.heatmap(
   thresh = 0,
   topn = NULL,
   sort.by = "sum",
-  db.name.couple = db.name.couple,
+  db.couple = NULL,
   title = title,
   value_display = NA
 )
@@ -23,7 +23,7 @@ LR.heatmap(
 
 \item{sort.by}{character, "sum" or "var", "sum" as default. In combination with topn parameter, allows to sort L/R pairs according to the most contributing ("sum"), or the most different among conditions ("var")}
 
-\item{db.name.couple}{output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default}
+\item{db.couple}{output of the name.lr.couple() function. name.lr.couple(db, "Family") is used as default}
 
 \item{title}{Title of the heatmap}
 
@@ -33,7 +33,7 @@ LR.heatmap(
 Display the individual communication scores of ligand/receptor pairs that contributes with a score superior to a threshold and/or the top n interactions contributing to the score. Return a ggplot object.
 }
 \examples{
-\dontrun{LR.heatmap(lr = lr1, topn = 30, sort.by = "sum", db.name.couple = db.name.couple)
+\dontrun{LR.heatmap(lr = lr1, topn = 30, sort.by = "sum")
 }
 
 }

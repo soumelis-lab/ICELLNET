@@ -4,13 +4,7 @@
 \alias{LR.selection}
 \title{Filter the lr matrix (output from icellnet.score function) to select only the most contributing / differing interactions of the communications scores.}
 \usage{
-LR.selection(
-  lr = lr,
-  thresh = 0,
-  topn = NULL,
-  sort.by = "sum",
-  db.name.couple = db.name.couple
-)
+LR.selection(lr = lr, thresh = 0, topn = NULL, sort.by = "sum")
 }
 \arguments{
 \item{lr}{Matrix of individual communication scores}
@@ -20,13 +14,11 @@ LR.selection(
 \item{topn}{Value set as top n interactions to display}
 
 \item{sort.by}{character, "sum" or "var", "sum" as default. In combination with topn parameter, allows to sort L/R pairs according to the most contributing ("sum"), or the most different among conditions ("var")}
-
-\item{db.name.couple}{output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default}
 }
 \description{
 Filter the lr matrix (output from icellnet.score function) to select only the most contributing / differing interactions of the communications scores : contributes with a score superior to a threshold and/or the top n interactions contributing to the score. Return a matrix, with interactions in rows and communication scores of communicating cell pairs in columns.
 }
 \examples{
-\dontrun{LR.selection(lr = lr1, topn = 10, sort.by = "sum", db.name.couple=db.name.couple))}
+\dontrun{LR.selection(lr = lr1, topn = 10, sort.by = "sum"))}
 
 }

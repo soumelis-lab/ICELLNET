@@ -27,7 +27,7 @@ geom_nodes(
 
 \item{inherit.aes}{inherit.aes}
 
-\item{...}{}
+\item{...}{other arguments passed to specific methods}
 }
 \description{
 Display the nodes in the ICELLNET network.

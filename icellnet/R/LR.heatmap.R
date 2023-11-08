@@ -6,7 +6,7 @@
 #' @param lr Matrix of individual communication scores
 #' @param thresh Value set as a threshold to display the L/R pairs contributing with a score superior to this threshold
 #' @param topn Value set as top n interactions to display
-#' @param db.name.couple output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default
+#' @param db.couple output of the name.lr.couple() function. name.lr.couple(db, "Family") is used as default
 #' @param sort.by character, "sum" or "var", "sum" as default. In combination with topn parameter, allows to sort L/R pairs according to the most contributing ("sum"), or the most different among conditions ("var")
 #' @param title Title of the heatmap
 #' @param value_display Numerical value, used as a threshold value to add numerical values to the heatmap above this value.
@@ -14,13 +14,16 @@
 #'
 #' @export
 #' @examples
-#' \dontrun{LR.heatmap(lr = lr1, topn = 30, sort.by = "sum", db.name.couple = db.name.couple)
+#' \dontrun{LR.heatmap(lr = lr1, topn = 30, sort.by = "sum")
 #' }
 #'
 
 
 LR.heatmap <- function (lr = lr, thresh = 0, topn = NULL, sort.by = "sum",
-                        db.name.couple = db.name.couple, title = title, value_display=NA) {
+                         db.couple = NULL, title = title, value_display=NA) {
+  if (is.null(db.couple)){
+    db.couple=name.lr.couple(db, "Family")
+  }
   interactions = rownames(lr)
   lr = as.data.frame(lr)
   lr$Pair = interactions
@@ -31,7 +34,7 @@ LR.heatmap <- function (lr = lr, thresh = 0, topn = NULL, sort.by = "sum",
   if (!is.null(topn)) {
     if (topn > dim(lr)[1]) {
       note(paste0("lr contains only ", dim(lr)[1], " after filtering interaction highest than theshold"))
-      lr = dplyr::left_join(lr, as.data.frame(db.name.couple),
+      lr = dplyr::left_join(lr, as.data.frame(db.couple),
                             by = "Pair")
     }
     else {
@@ -39,7 +42,7 @@ LR.heatmap <- function (lr = lr, thresh = 0, topn = NULL, sort.by = "sum",
         lr = lr %>% dplyr::mutate(sum = rowSums(dplyr::across(where(is.numeric)))) %>%
           dplyr::arrange(dplyr::desc(sum)) %>% dplyr::top_n(topn,
                                                             sum)
-        lr = dplyr::left_join(lr, as.data.frame(db.name.couple),
+        lr = dplyr::left_join(lr, as.data.frame(db.couple),
                               by = "Pair") %>% dplyr::select(-sum)
       }
       else if (sort.by == "var") {
@@ -47,14 +50,14 @@ LR.heatmap <- function (lr = lr, thresh = 0, topn = NULL, sort.by = "sum",
                             1, var, na.rm = TRUE)
         lr = lr %>% dplyr::arrange(dplyr::desc(variance)) %>%
           dplyr::top_n(topn, variance)
-        lr = dplyr::left_join(lr, as.data.frame(db.name.couple),
+        lr = dplyr::left_join(lr, as.data.frame(db.couple),
                               by = "Pair") %>% dplyr::select(-variance)
       }
       else stop("sort.by argument should be fixed on var or sum")
     }
   }
   else {
-    lr = dplyr::left_join(lr, as.data.frame(db.name.couple),
+    lr = dplyr::left_join(lr, as.data.frame(db.couple),
                           by = "Pair")
   }
   if (!(is.null(lr$Subfamily))) {
@@ -80,3 +83,4 @@ LR.heatmap <- function (lr = lr, thresh = 0, topn = NULL, sort.by = "sum",
   }
   return(plot)
 }
+

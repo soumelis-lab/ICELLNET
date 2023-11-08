@@ -27,7 +27,7 @@ geom_node_label(
 
 \item{position}{position}
 
-\item{...}{}
+\item{...}{other arguments passed to specific methods}
 
 \item{parse}{parse}
 

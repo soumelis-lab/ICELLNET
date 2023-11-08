@@ -43,7 +43,7 @@ sc.data.cleaning <- function (object=object, assay="RNA", db = db, filter.perc=N
       data.int[i,3:4]=Perc_exp_infos(object = object, assay=assay, gene=data.int[i,1], cell_id = data.int[i,2])
     }
 
-    #Save matrix and histogramm of Perc_pos_cell
+    #Save matrix and histogram of Perc_pos_cell
     if (save_file==TRUE){
       if (is.null(path)){
         path=getwd()

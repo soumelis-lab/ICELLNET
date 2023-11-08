@@ -9,7 +9,7 @@ icellnet.ind.score(
   CC.data = CC.data,
   PC.data = PC.data,
   PC = PC,
-  PC.target = PC.target,
+  PC.target = NULL,
   cell = cell,
   CC.type = c("RNAseq", "Microarray"),
   PC.type = c("RNAseq", "Microarray"),

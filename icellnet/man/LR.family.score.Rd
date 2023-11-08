@@ -6,20 +6,22 @@
 \usage{
 LR.family.score(
   lr = lr,
-  my.family = my.family,
+  family = NULL,
   db.couple = as.data.frame(db.couple),
   plot = F,
   title = NULL,
   ymax = NULL,
-  family.col = NULL
+  family.col = NULL,
+  cluster_rows = T,
+  cluster_columns = T
 )
 }
 \arguments{
 \item{lr}{Matrix of individual communication scores (sum on each column should be equal to the global communication score)}
 
-\item{my.family}{Vector selecting family or subfamilies of molecules for the analysis}
+\item{family}{Vector selecting family or subfamilies of molecules for the analysis}
 
-\item{db.couple}{Output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default}
+\item{db.couple}{output of the name.lr.couple() function. name.lr.couple(db) is used by default}
 
 \item{plot}{Logical, by default plot=F. If plot=T, function returns a ggplot object}
 
@@ -27,14 +29,18 @@ LR.family.score(
 
 \item{ymax}{Value as limit of the yaxis. If ymax=NULL, ymax takes the maximum value of the table}
 
-\item{family.col}{Color vector for the family of molecules c("family1"= "color1", "family2"="color2").}
+\item{family.col}{Color vector for the family of molecules c("family1"= "color1", "family2"="color2"). NULL by default}
+
+\item{cluster_rows}{Argument for ComplexHeatmap heatmap}
+
+\item{cluster_columns}{Argument for ComplexHeatmap heatmap}
 }
 \description{
 Computes the contribution of families or subfamilies of molecules (included in my.selection) to the global communication scores.
 If plot=FALSE, the function returns a table. If plot=T, returns a ggplot object, barplot representing contribution of families of molecules to the communication scores.
 }
 \examples{
-\dontrun{LR.family.score(lr=lr, my.family=my.family, db.couple=db.name.couple, plot=F)}
+\dontrun{LR.family.score(lr=lr, plot=F)}
 
 
 }

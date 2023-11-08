@@ -39,7 +39,7 @@ geom_edges(
 
 \item{inherit.aes}{inherit.aes}
 
-\item{...}{}
+\item{...}{other arguments passed to specific methods}
 }
 \description{
 Display the edges in the ICELLNET network.

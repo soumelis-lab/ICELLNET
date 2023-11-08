@@ -77,23 +77,22 @@ icellnet.score <- function (direction = c("out", "in"), CC.data = CC.data, PC.da
       }
       else {
         if (PC.type == "Microarray") {
-          rc.PC = receptor.average.MA(db = PC_Probes_to_symbol,
+          rc.PC = receptor.average(db = PC_Probes_to_symbol,
                                       data = as.data.frame(PC.data[, cell.IDs],
                                                            row.names = rownames(PC.data)))
         }
         else if (PC.type == "RNAseq") {
-          rc.PC = receptor.average.RNAseq(db = db, data = as.data.frame(PC.data[,
-                                                                                cell.IDs], row.names = rownames(PC.data)))
+          rc.PC = receptor.average(db = db, data = as.data.frame(PC.data[, cell.IDs], row.names = rownames(PC.data)))
         }
         else {
           stop("Error: PC.type must be displayed (\"Microarray\" or \"RNAseq\").")
         }
         if (CC.type == "Microarray") {
-          lg.CC = ligand.average.MA(db = CC_Probes_to_symbol,
+          lg.CC = ligand.average(db = CC_Probes_to_symbol,
                                     data = CC.data)
         }
         else if (CC.type == "RNAseq") {
-          lg.CC = ligand.average.RNAseq(db = db, data = CC.data)
+          lg.CC = ligand.average(db = db, data = CC.data)
         }
         else {
           stop("Error: CC.type must be displayed (\"Microarray\" or \"RNAseq\").")
@@ -112,23 +111,22 @@ icellnet.score <- function (direction = c("out", "in"), CC.data = CC.data, PC.da
       }
       else {
         if (PC.type == "Microarray") {
-          lg.PC = ligand.average.MA(db = PC_Probes_to_symbol,
+          lg.PC = ligand.average(db = PC_Probes_to_symbol,
                                     data = as.data.frame(PC.data[, cell.IDs],
                                                          row.names = rownames(PC.data)))
         }
         else if (PC.type == "RNAseq") {
-          lg.PC = ligand.average.RNAseq(db = db, data = as.data.frame(PC.data[,
-                                                                              cell.IDs], row.names = rownames(PC.data)))
+          lg.PC = ligand.average(db = db, data = as.data.frame(PC.data[, cell.IDs], row.names = rownames(PC.data)))
         }
         else {
           stop("Error: PC.type must be displayed (\"Microarray\" or \"RNAseq\").")
         }
         if (CC.type == "Microarray") {
-          rc.CC = receptor.average.MA(db = CC_Probes_to_symbol,
+          rc.CC = receptor.average(db = CC_Probes_to_symbol,
                                       data = CC.data)
         }
         else if (CC.type == "RNAseq") {
-          rc.CC = receptor.average.RNAseq(db = db, data = CC.data)
+          rc.CC = receptor.average(db = db, data = CC.data)
         }
         else {
           stop("Error: CC.type must be displayed (\"Microarray\" or \"RNAseq\").")

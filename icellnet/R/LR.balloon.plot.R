@@ -6,7 +6,7 @@
 #' @param lr Matrix of individual communication scores
 #' @param thresh Value set as a threshold to display the L/R pairs contributing with a score superior to this threshold
 #' @param topn Value set as top n interactions to display
-#' @param db.name.couple output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default
+#' @param db.name.couple output of the name.lr.couple() function. name.lr.couple(db, "Family") is used as default
 #' @param sort.by character, "sum" or "var", "sum" as default. In combination with topn parameter, allows to sort L/R pairs according to the most contributing ("sum"), or the most different among conditions ("var")
 #' @param title Title of the balloon plot
 #' @param family.col Color vector for the family of molecules c("family1"= "color1", "family2"="color2")
@@ -22,9 +22,12 @@
 #'
 #'
 LR.balloon.plot <- function (lr = lr, thresh = 0, topn = NULL, sort.by= "sum",
-                             db.name.couple = db.name.couple,
+                             db.name.couple = NULL,
                              title = title, family.col = family.col)
 {
+  if (is.null(db.name.couple)){
+    db.name.couple=name.lr.couple(db, "Family")
+  }
   interactions = rownames(lr)
   lr = as.data.frame(lr)
   lr$Pair = interactions

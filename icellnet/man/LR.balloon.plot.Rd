@@ -9,7 +9,7 @@ LR.balloon.plot(
   thresh = 0,
   topn = NULL,
   sort.by = "sum",
-  db.name.couple = db.name.couple,
+  db.name.couple = NULL,
   title = title,
   family.col = family.col
 )
@@ -23,7 +23,7 @@ LR.balloon.plot(
 
 \item{sort.by}{character, "sum" or "var", "sum" as default. In combination with topn parameter, allows to sort L/R pairs according to the most contributing ("sum"), or the most different among conditions ("var")}
 
-\item{db.name.couple}{output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default}
+\item{db.name.couple}{output of the name.lr.couple() function. name.lr.couple(db, "Family") is used as default}
 
 \item{title}{Title of the balloon plot}
 

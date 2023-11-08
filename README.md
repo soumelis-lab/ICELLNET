@@ -1,13 +1,38 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Dissection of intercellular communication using the transcriptome-based framework ICELLNET
----
-Floriane Noël and Lucile Massenet-Regad 
----
 
 This repository hosts the source code corresponding to the method described in [Noël, F., Massenet-Regad, L., Carmi-Levy, I. et al. ](https://www.nature.com/articles/s41467-021-21244-x) to infer intercellular communication networks and dissect intercellular communication between multiples cell types based on their transcriptomic profiles.
 
-## Package installation
+---
+## ICELLNET key features: 
+- Contains a *manually curated ligand-receptor interactions database*: curated exclusively from *human* studies, ICELLNET database takes into account the *multiple* subunits of ligand and receptor complexes (more than 1300 interactions)
+- *Versatile* tool applicable on a wide range of transcriptomic technologies (microarray, bulk RNAseq, scRNAseq, spatial transcriptomics)
+- Several visualization modes of cell-cell communication analysis results
+---
 
-To install it, the easiest way is to use the `R` package `devtools` and its function `install_github`. If you don't have all the dependancies needed to use ICELLNET package, run the commands below:  
+## New on ICELLNET v2.0.0 
+- New structure and extension of ICELLNET database up to 1669 interactions.
+- Possibility to ICELLNET analysis using other databases such as CellPhoneDB as input
+- Updates of several functions to match the new structure of ICELLNET database.
+
+Additional details and previous updates can be found [here](https://github.com/soumelis-lab/ICELLNET/blob/master/UPDATES.md).
+
+## Information related to ICELLNET and tutorials
+
+- [Detailed documentation](https://github.com/soumelis-lab/ICELLNET/blob/master/Vignette.md)
+- ICELLNET analysis on scRNAseq data: [Tutorial](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) 
+- ICELLNET analysis on sorted cell-population transcriptomic data: 
+  - [Script](https://github.com/soumelis-lab/ICELLNET/issues/12): analyze cell-cell communication between different cell populations from the same sample
+  - [Tutorial](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple1_CAF.md):  infer cell-cell communication from the transcriptome of a single cell type of interest with the Primary Cell Atlas (Database of reference transcriptome of 33 cell types). 
+  
+
+## Installation
+
+### Installation of dependencies:
 
     install.packages(c("devtools", "jetset", "readxl", "psych", "GGally", "gplots", "ggplot2", "RColorBrewer", "data.table", "grid", "gridExtra", "ggthemes", "scales","rlist")) ##Installs devtools and the icellnet CRAN dependancies
 
@@ -15,32 +40,17 @@ To install it, the easiest way is to use the `R` package `devtools` and its func
         install.packages("BiocManager")
     BiocManager::install(c("BiocGenerics", "org.Hs.eg.db", "hgu133plus2.db", "annotate"))
     
-Then you just have to load `devtools` package and run the command below:
+### Installation of ICELLNET package:
 
     library(devtools)
     install_github("soumelis-lab/ICELLNET",ref="master", subdir="icellnet")
 
 Once all the dependencies are downloaded and loaded, you can load the ‘icellnet’ package.    
-Examples on how to use `icellnet` package functions can be found in the Vignette.
 
-## ICELLNET news:
-Last package update: 2023-06-29 (v1.3.0)
 
-Last ligand-receptor database update: 2022-06-15
+## Citation
+If you use our human curated ligand-receptor interaction database or the ICELLNET method, please cite our paper: 
 
-**New on ICELLNET (v1.2.0) - 2023-02-05:**
-ICELLNET can now handle spatial transcriptomic data!
-
-**New on ICELLNET - 2022-06-15:**
-ICELLNET database has been expanded to **1034 interactions**, focusing on adding **tumor microenvironment** related interactions.
-
-**New on ICELLNET (v1.0.0) - 2021-07-21:**
-- ICELLNET ligand/receptor database include now **752 human ligand/receptor interactions**, manually curated. In addition to immune checkpoints, cytokines, and chemokines, it now includes additional interactions from classified in an additional family "extracellular matrix", among others added interactions.
-- New release (version 1.0.0): New graphical representations to handle cell-cell communication studies from single-cell RNAseq datasets. See [Exemple2_scRNAseq.md](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) for details.
-
-**New on ICELLNET - 2021-03-30:**
-- ICELLNET ligand/receptor database include now **543 human ligand/receptor interactions** manually curated, with a particular interest on immune checkpoints, cytokines, and chemokines.
-- ICELLNET includes now new features to handle cell-cell communication studies from single-cell RNAseq datasets. See [Vignette](https://github.com/soumelis-lab/ICELLNET/blob/master/Vignette.md) and use case [Exemple2_scRNAseq.md](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) for details.
-
+Noël, F., Massenet-Regad, L., Carmi-Levy, I. et al. Dissection of intercellular communication using the transcriptome-based framework ICELLNET. Nat Commun 12, 1089 (2021). https://doi.org/10.1038/s41467-021-21244-x [link](https://www.nature.com/articles/s41467-021-21244-x)
 
 

@@ -8,7 +8,7 @@
 #' @param na.rm na.rm
 #' @param show.legend to show the legend or not
 #' @param inherit.aes  inherit.aes
-#' @param ...
+#' @param ... other arguments passed to specific methods
 #'
 #' @examples
 #' \dontrun{geom_nodes(aes(color = Cell_type), size = 30) }

@@ -14,7 +14,7 @@
 #' @param na.rm na.rm
 #' @param show.legend to show the legend or not
 #' @param inherit.aes  inherit.aes
-#' @param ...
+#' @param ... other arguments passed to specific methods
 #'
 #' @examples
 #' \dontrun{geom_node_label(aes(label = Cell_type, fill = Cell_type), size = rel(6), fontface = "bold") }

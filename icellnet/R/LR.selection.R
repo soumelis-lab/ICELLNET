@@ -5,14 +5,13 @@
 #' @param lr Matrix of individual communication scores
 #' @param thresh Value set as a threshold to display the L/R pairs contributing with a score superior to this threshold
 #' @param topn Value set as top n interactions to display
-#' @param db.name.couple output of the name.lr.couple() function. name.lr.couple(db, "Family") is set as a default
 #' @param sort.by character, "sum" or "var", "sum" as default. In combination with topn parameter, allows to sort L/R pairs according to the most contributing ("sum"), or the most different among conditions ("var")
 #
 #' @export
 #' @examples
-#' \dontrun{LR.selection(lr = lr1, topn = 10, sort.by = "sum", db.name.couple=db.name.couple))}
+#' \dontrun{LR.selection(lr = lr1, topn = 10, sort.by = "sum"))}
 #'
-LR.selection <- function (lr = lr, thresh = 0, topn = NULL, sort.by = "sum", db.name.couple=db.name.couple) {
+LR.selection <- function (lr = lr, thresh = 0, topn = NULL, sort.by = "sum") {
   interactions = rownames(lr)
   lr = as.data.frame(lr)
   lr$Pair = interactions

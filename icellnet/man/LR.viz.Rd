@@ -4,12 +4,14 @@
 \alias{LR.viz}
 \title{Plot individual communication scores of a specific L/R interactions for all cell pairs.}
 \usage{
-LR.viz(data = data, couple = couple, db = db, plot = TRUE)
+LR.viz(data = data, int = NULL, family = NULL, db = db, plot = TRUE)
 }
 \arguments{
 \item{data}{A dataframe of transcriptomic profiles with gene names as rownames}
 
-\item{couple}{character, name of a interaction "L / R". If several subunits, refer to output of name.lr.couple() function for interaction names.}
+\item{int}{Vector of characters corresponding to  "L / R" interactions. If several subunits, refer to output of name.lr.couple() function for interaction names.}
+
+\item{family}{Vector of characters corresponding to family names included in ICELLNET DB.}
 
 \item{db}{Ligand/receptor database}
 
@@ -20,5 +22,6 @@ Plot individual communication scores of a specific L/R interactions for all cell
 }
 \examples{
 \dontrun{LR.viz(data=data.icell , couple=couple, db=db , plot=TRUE)}
+
 
 }
