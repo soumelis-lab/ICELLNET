@@ -1,9 +1,9 @@
 #ICELLNET news:
-Last package update: 2023-11-8
-Last ligand-receptor database update: 2023-11-8
+Last package update: 2023-11-08
+Last ligand-receptor interactions database update: 2023-11-08
 
 
-**ICELLNET v2.0.0 (2023-11-08) **
+## ICELLNET v2.0.0 (2023-11-08): 
 - New structure and extension of ICELLNET database to consider more subunits of ligand and receptors (enable 4 ligand subunits and 5 receptor subunits)  - now contains 1669 interactions;
 - New classification of ICELLNET database: "Antigen binding" family renamed "HLA recognition"; "Adhesion molecules" renamed "Cell adhesion". New families includes "Wnt pathway" and "Innate immune".
 - Formatting functions provided to use CellphoneDB, matching the structure of ICELLNET databases: `CellPhoneDB_convert()` 
@@ -17,22 +17,22 @@ Last ligand-receptor database update: 2023-11-8
     - `network.create()`: not necessary anymore to rescale communication score from 1 to 10. 
 
 
-**ICELLNET v1.3.0 (2023-06-29) **
+## ICELLNET v1.3.0 (2023-06-29):
 Updated functions with minor changes:  Correction in `gene.scaling()` function. note() removed in sc_data_cleaning function. Correction of LR.family.score function when considering only one cell type. Vignette update.
 New package release. 
 
-**ICELLNET v1.2.0 (2023-02-05):**
+## ICELLNET v1.2.0 (2023-02-05):
 ICELLNET can now handle spatial transcriptomic data!
 Allow to use other assay than "RNA" assay in Seurat objects, such as "SCT" or "Spatial" assays.
 
-** Update of ICELLNET database - 2022-06-15:**
+## Update of ICELLNET database (2022-06-15):
 ICELLNET database has been expanded to **1034 interactions**, focusing on adding **tumor microenvironment** related interactions.
 
-** ICELLNET (v1.0.0) - 2021-07-21:**
+## ICELLNET v1.0.0 - 2021-07-21:
 - ICELLNET ligand/receptor database include now **752 human ligand/receptor interactions**, manually curated. In addition to immune checkpoints, cytokines, and chemokines, it now includes additional interactions from classified in an additional family "extracellular matrix", among others added interactions.
 - New release (version 1.0.0): New graphical representations to handle cell-cell communication studies from single-cell RNAseq datasets. See [Exemple2_scRNAseq.md](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) for details.
 
-**First ICELLNET version - 2021-03-30:**
+## First ICELLNET version - 2021-03-30:
 - ICELLNET ligand/receptor database include now **543 human ligand/receptor interactions** manually curated, with a particular interest on immune checkpoints, cytokines, and chemokines.
 - ICELLNET includes now new features to handle cell-cell communication studies from single-cell RNAseq datasets. See [Vignette](https://github.com/soumelis-lab/ICELLNET/blob/master/Vignette.md) and use case [Exemple2_scRNAseq.md](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) for details.
 

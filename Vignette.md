@@ -46,27 +46,26 @@ You can use either all the database or restrict it by selecting some specific cl
 
 ```{r, echo=T}
 summary(as.factor(db$Family)) # list of the different family of molecules considered in the database
-db$Subfamily=db$Cytokine
 summary(as.factor(db$Subfamily[which(db$Family=="Cytokine")])) # list of the different subfamily of cytokines considered in the database
 
 #Restrict the database to some family of molecules 
 my.selection.LR=c("Cytokine", "Chemokine", "Checkpoint")
-db2 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Classifications),] 
+db2 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Family),] 
 db.name.couple=name.lr.couple(db2, type="Family")
 head(db.name.couple)
 
 #Restrict the database to cytokines and consider the subfamilies of cytokines
 my.selection.LR=c("Cytokine")
-db3 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Classifications),] #if you want to use all the database, do instead : db2=db
+db3 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Family),] #if you want to use all the database, do instead : db2=db
 db.name.couple=name.lr.couple(db3, type="Subfamily")
 head(db.name.couple)
 ```
-Instead of using the ICELLNET database, it is also possible to use its own database as long as it is correctly formatted with specific columns as below. The Family and Subfamily colums correspond to two independant classifications (per family of molecules, or other) of your choice, but each interaction should fit only in one category of the classification (for example, an interaction cannot be classified in "type 1" and also "type 2" cytokines in the ICELLNET database). In the Classifications category, you should add all the terms used to classify the interaction : the one of Family, Subfamily, but also other words that can be used to select some specific interactions (for example "interleukin" in ICELLNET database).
+Instead of using the ICELLNET database, it is also possible to use its own database as long as it is correctly formatted with specific columns as below. The Family and Subfamily colums correspond to two independant classifications (per family of molecules, or other) of your choice, but each interaction should fit only in one category of the classification (for example, an interaction cannot be classified in "type 1" and also "type 2" cytokines in the ICELLNET database).
 
-|  Ligand 1 | Ligand 2  | Receptor 1  | Receptor 2  | Receptor 3  | Family | Subfamily | Classifications |
-|---|---|---|---|---|---|---|---|
-|   |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |   |
+|  Ligand 1 | Ligand 2  | Ligand 3  | Ligand 4  | Receptor 1  | Receptor 2  | Receptor 3  |  Receptor 4  |  Receptor 5  | Family | Subfamily | Other family |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+|   |   |   |   |   |   |   |   |   |   |   |   |
+|   |   |   |   |   |   |   |   |   |   |   |   |
 
 
 # Input data <a name="Input-data"></a>
@@ -105,7 +104,7 @@ Here we describe the different stages of the ICELLNET package to compute interce
 
 4. Display different visualization modes to dissect intercellular communication scores 
 
-![](pictures/ICELLNET_Figure2_V10.png)
+![](examples_tutorials/pictures/ICELLNET_Figure2_V10.png)
 
 
 # How is the intercellular communication score computed? <a name="How-is-the-intercellular-communication-score-computed?"></a>
@@ -228,11 +227,12 @@ You can define a target file. This dataframe usually describes the different sam
 
 **PC.target** should contains at least an 'ID' column including the name of the samples (usually rownames(PC.target) or colnames(PC.data) ), and a 'Class' column corresponding to a classification of your different samples included in PC.target, such as a cell type classification. The different categories included in the 'Class' column will define the different partner cells in the graphs.
 
+If not provided for `icellnet.score` function, the column names of the expression matrix will be used as default to create a PC.target file.
 
 # Use cases exemples <a name="Use-cases-exemples"></a>
 
 
-- [Case study 1](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple1_CAF.md): dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
+- [Case study 1](https://github.com/soumelis-lab/ICELLNET/blob/master/examples_tutorials/Exemple1_CAF.md): dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
 
-- [Case study 2](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md): Application of ICELLNET pipeline to scRNAseq from a Seurat object to infer intercellular communication between clusters.
+- [Case study 2](https://github.com/soumelis-lab/ICELLNET/blob/master/examples_tutorials/Exemple2_scRNAseq.md): Application of ICELLNET pipeline to scRNAseq from a Seurat object to infer intercellular communication between clusters.
 

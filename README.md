@@ -24,10 +24,10 @@ Additional details and previous updates can be found [here](https://github.com/s
 ## Information related to ICELLNET and tutorials
 
 - [Detailed documentation](https://github.com/soumelis-lab/ICELLNET/blob/master/Vignette.md)
-- ICELLNET analysis on scRNAseq data: [Tutorial](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple2_scRNAseq.md) 
+- ICELLNET analysis on scRNAseq data: [Tutorial](https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/Exemple2_scRNAseq.md) 
 - ICELLNET analysis on sorted cell-population transcriptomic data: 
   - [Script](https://github.com/soumelis-lab/ICELLNET/issues/12): analyze cell-cell communication between different cell populations from the same sample
-  - [Tutorial](https://github.com/soumelis-lab/ICELLNET/blob/master/Exemple1_CAF.md):  infer cell-cell communication from the transcriptome of a single cell type of interest with the Primary Cell Atlas (Database of reference transcriptome of 33 cell types). 
+  - [Tutorial](https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/Exemple1_CAF.md):  infer cell-cell communication from the transcriptome of a single cell type of interest with the Primary Cell Atlas (Database of reference transcriptome of 33 cell types). 
   
 
 ## Installation
