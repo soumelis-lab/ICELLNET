@@ -1,15 +1,11 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
+
 # Dissection of intercellular communication using the transcriptome-based framework ICELLNET
 
 This repository hosts the source code corresponding to the method described in [Noël, F., Massenet-Regad, L., Carmi-Levy, I. et al. ](https://www.nature.com/articles/s41467-021-21244-x) to infer intercellular communication networks and dissect intercellular communication between multiples cell types based on their transcriptomic profiles.
 
 ---
 ## ICELLNET key features: 
-- Contains a *manually curated ligand-receptor interactions database*: curated exclusively from *human* studies, ICELLNET database takes into account the *multiple* subunits of ligand and receptor complexes (more than 1300 interactions)
+- Contains a *manually curated ligand-receptor interactions database*: curated exclusively from *human* studies, ICELLNET database takes into account the *multiple* subunits of ligand and receptor complexes (more than 1600 interactions)
 - *Versatile* tool applicable on a wide range of transcriptomic technologies (microarray, bulk RNAseq, scRNAseq, spatial transcriptomics)
 - Several visualization modes of cell-cell communication analysis results
 ---
