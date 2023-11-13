@@ -146,7 +146,7 @@ LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="sum",  title="Most contribu
 colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
 LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  title="Most different interactions")
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_heatmap_spe.png" width=50% height=50%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_heatmap_spe.png" width=100% height=100%>
 
 ### Remarks on biological interpretation: 
 
@@ -185,7 +185,8 @@ Similar to `LR.balloon.plot`, the goal is to easily visualize specific interacti
 LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  title="Most different interactions")
 LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="sum",  title="Most contributing interactions")
 ```
-![](exemples_tutorials/pictures/ICELLNET_scRNAseq_heatmap.png)
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_heatmap.png" width=50% height=50%>
+
 
 It is also possible to select the same interactions with the `LR.selection()` function and use other package for visualization such as *ComplexHeatmap package* that provides clustering of interaction and cell types. See exemple below.
 
@@ -220,7 +221,8 @@ LR.viz(data=data.icell, db = db, int=c("CD86 / CD28", "TNFSF15 / TNFRSF25"), plo
 LR.viz(data=data.icell, db = db, family = "Checkpoint", plot=T)
 ```
 
-![](exemples_tutorials/pictures/ICELLNET_scRNAseq_spe_3.png)
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_spe_3.png" width=50% height=50%>
+
 
 
 
