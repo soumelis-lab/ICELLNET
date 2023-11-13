@@ -21,8 +21,7 @@ library(gridExtra)
 db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/ICELLNETdb.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
                
 my.selection.LR=c("Cytokine")
-db2 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Classifications),] #if you want to use all the database, do instead : db2=db
-db2$Subfamily=db2$Cytokines # to define subfamily of interest as cytokines. 
+db2 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Family),] #if you want to use all the database, do instead : db2=db
 db.name.couple=name.lr.couple(db2, type="Subfamily")
 head(db.name.couple)
 ```
@@ -116,18 +115,15 @@ score1 and score2 correspond to global scores, that are just the sum of the indi
 
 ####  Intercellular communication network representation
 
-The scores matrix is first rescaled ranging from 0 to 10 to facilitate the visualization of the network and the interpretation of the arrows.
 
 ```{r, echo=T, warning=FALSE, fig.height=7, fig.width=15}
-#Score scaling
-Scores.norm=(Scores-min(Scores))/(max(Scores)-min(Scores))*9+1
 # Display intercellular communication networks
 PC.col = c("Epith"="#C37B90", "Muscle_cell"="#c100b9","Fblast_B"="#88b04b", "Fblast"="#88b04b","Endoth"="#88b04b",
            "Mono"="#ff962c","Macroph"="#ff962c","moDC"="#ff962c","DC1"="#ff962c","DC2"="#ff962c","pDC"="#ff962c","NK"="#ff962c","Neutrop"="#ff962c",
            "CD4 T cell"="#5EA9C3","CD8 T cell"="#5EA9C3","Treg"="#5EA9C3","B cell"="#5EA9C3")
 
-network.plot1 = network.create(icn.score = Scores.norm[1], scale = c(round(min(Scores.norm)),round(max(Scores.norm))), direction = "out", PC.col)
-network.plot2 = network.create(icn.score =Scores.norm[2], scale = c(round(min(Scores.norm)),round(max(Scores.norm))), direction = "out",PC.col)
+network.plot1 = network.create(icn.score = Scores[1], scale = c(round(min(Scores)-1),round(max(Scores))+1), direction = "out", PC.col)
+network.plot2 = network.create(icn.score =Scores[2], scale = c(round(min(Scores)-1),round(max(Scores))+1), direction = "out",PC.col)
 gridExtra::grid.arrange(network.plot1, network.plot2, ncol=2, nrow=1)
 ```
 
@@ -143,24 +139,24 @@ Display contribution of each family of moleucles to the scores, with a barplot (
 ## Label and range definition
 
     ## label and color label if you are working families of molecules already present in the database
-# my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","Antigen binding") 
+# my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","HLA recognition") 
 # family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"= "#1D1D18"  ,
-#             "Cytokine"="#156399", "Notch family" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
+#             "Cytokine"="#156399", "Notch family" ="#676766", "HLA recognition" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
      
     ## label and color label if you are working with subfamilies of cytokines
-my.family=c("type 1", "type 2", "IL1.", "IL17", "TNF","TGF","RTK")
-family.col = c( "type 1"=  "#A8CF90", "type 2"= "#676766", "IL1."= "#1D1D18" ,
-            "IL17" ="#66ABDF", "TNF" ="#12A039", "TGF" = "#156399", "RTK"="#AECBE3", "other" = "#908F90","NA"="#908F90")
+my.family=c("type 1", "type 2", "IL1 family", "IL17 family", "TNF","TGF","RTK")
+family.col = c( "type 1"=  "#A8CF90", "type 2"= "#676766", "IL1 family"= "#1D1D18" ,
+            "IL17 family" ="#66ABDF", "TNF" ="#12A039", "TGF" = "#156399", "RTK"="#AECBE3", "other" = "#908F90","NA"="#908F90")
 
 ymax=round(max(Scores))+1 #to define the y axis range of the barplot
 
 #Compute the contribution of each family of molecules to the global communication scores + barplot (plot=T)
-contrib.family.1= LR.family.score(lr=lr1, my.family=my.family, db.couple=db.name.couple, plot= T, family.col=family.col, title="CAF-S1")
-contrib.family.2= LR.family.score(lr=lr2, my.family=my.family, db.couple=db.name.couple, plot= T, family.col=family.col, title="CAF-S4")
+contrib.family.1= LR.family.score(lr=lr1, family=my.family, db.couple=db.name.couple, plot= T, family.col=family.col, title="CAF-S1", cluster_rows = F, cluster_columns = F, ymax=ymax)
+contrib.family.2= LR.family.score(lr=lr2, family=my.family, db.couple=db.name.couple, ymax=ymax,  plot= T, family.col=family.col, title="CAF-S4", cluster_rows = F, cluster_columns = F)
 
-grid.arrange(contrib.family.1, contrib.family.2, ncol=2, nrow=1)
+contrib.family.1 
+contrib.family.2
 ```
-![](pictures/ICELLNET_CAF_barplots.png)
 
 
 #### Individual communication scores distribution - ballon plot representation
@@ -168,7 +164,7 @@ Here we show how to plot specific interactions between CAF
 ```{r, echo=T, warning=F}
 lr_ind=cbind(lr1[,"Fblast_B"],lr2[,"Fblast_B"])
 colnames(lr_ind)=c("S1_Fblast", "S4_Fblast")
-balloon=icellnet::LR.balloon.plot(lr = lr_ind, thresh = 25, topn=15, db.name.couple=db.name.couple, title="Fblast", family.col=family.col)
+balloon=icellnet::LR.balloon.plot(lr = lr_ind, sort.by="var", thresh = 25, topn=15, db.name.couple=db.name.couple, title="Fblast", family.col=family.col)
 balloon
 ```
 ![](pictures/ICELLNET_CAF_balloon.png)
@@ -192,11 +188,3 @@ pvalue.plot1
 
 ![](pictures/ICELLNET_CAF_pvalueplot.png)
 
-```{r, warning=F, message=F, echo=T}
-# Comparison of the communication scores obtained from the CAF-S1 and from the CAF-S4 with the peripheral cells
-pvalue.cond=icellnet.score.pvalue(direction="out", PC.data=PC.data, CC.data= CC.data.selection.S1, CC.data2= CC.data.selection.S2,
-                                  PC.target = PC.target,PC=my.selection, CC.type = "RNAseq", PC.type = "Microarray",
-                                  db = db2, between="conditions", method="BH")[[1]]
-pvalue.cond 
-```
-In this case, for almost all cell types, pvalue= 0.63. We do not have considered enough biological replicates, this is why the pvalue cannot be significant in this particular case study. 
