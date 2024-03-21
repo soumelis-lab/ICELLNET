@@ -15,8 +15,8 @@
 #' @param PC.data Data.frame of transcriptomic profiles corresponding to the peripheral cells
 #' @param PC Vector selecting a list of peripheral cell for the cell-cell communication analysis
 #' @param PC.target data.frame of information concerning the PC.data samples. Set to NULL by default: use only colnames(PC.data) as meaningful level of information.
-#' @param CC.type Type of transcriptomic data for the central cell (either "RNAseq" or "Microarray")
-#' @param PC.type Type of transcriptomic data for the peripheral (either "RNAseq" or "Microarray")
+#' @param CC.type Type of transcriptomic data for the central cell (either "RNAseq" or "Microarray"). "RNAseq" by default.
+#' @param PC.type Type of transcriptomic data for the peripheral (either "RNAseq" or "Microarray"). "RNAseq" by default.
 #' @param direction Direction of the communication (either "out" or "in")
 #' @param db Database of ligand/receptors interactions
 #'
@@ -28,8 +28,8 @@
 #'
 #'
 icellnet.score <- function (direction = c("out", "in"), CC.data = CC.data, PC.data = PC.data,
-                         PC = PC, PC.target = NULL, CC.type = c("RNAseq", "Microarray"),
-                         PC.type = c("RNAseq", "Microarray"), db = db) {
+                         PC = PC, PC.target = NULL, CC.type = "RNAseq",
+                         PC.type = "RNAseq", db = db) {
 
   if (dim(CC.data)[2] == 1 | dim(PC.data)[2] == 1) {
     warning("Check that PC.data and/or CC.data contains rownames. Ignore this if it is the case")

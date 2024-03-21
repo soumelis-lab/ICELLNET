@@ -4,7 +4,7 @@
 \alias{gene.scaling}
 \title{Gene scaling}
 \usage{
-gene.scaling(data = data, n = n, db = db)
+gene.scaling(data = data, n = 1, db = db)
 }
 \arguments{
 \item{data}{Matrix or dataframe transcriptomic profiles with gene name symbol as rownames.}

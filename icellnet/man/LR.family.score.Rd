@@ -8,7 +8,7 @@ LR.family.score(
   lr = lr,
   family = NULL,
   db.couple = as.data.frame(db.couple),
-  plot = F,
+  plot = NULL,
   title = NULL,
   ymax = NULL,
   family.col = NULL,
@@ -23,13 +23,13 @@ LR.family.score(
 
 \item{db.couple}{output of the name.lr.couple() function. name.lr.couple(db) is used by default}
 
-\item{plot}{Logical, by default plot=F. If plot=T, function returns a ggplot object}
+\item{plot}{NULL, "heatmap" or "barplot". If NULL (default), returns a table with numerical values. It returns a ggplot object otherwise.}
 
 \item{title}{Title of the barplot (character)}
 
 \item{ymax}{Value as limit of the yaxis. If ymax=NULL, ymax takes the maximum value of the table}
 
-\item{family.col}{Color vector for the family of molecules c("family1"= "color1", "family2"="color2"). NULL by default}
+\item{family.col}{Color vector for the family of molecules c("family1"= "color1", "family2"="color2"). Used only for the barplot representation, NULL by default.}
 
 \item{cluster_rows}{Argument for ComplexHeatmap heatmap}
 

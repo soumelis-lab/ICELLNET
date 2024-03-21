@@ -38,7 +38,7 @@ The function will also generate a statistic file (csv format) displaying for eac
 1) the percentage of cells expressing the gene for this specific cluster
 2) the gene average expression value, considering all cells from the cluster.
 If this file is already computed by a previous use of the function, it will be used automatically. To regenerate the file agan, set force.file=TRUE.
-If filter.perc is not NULL and set to 5, the gene expression matrix will be filtered to keep only gene filtering of the genes expressed in less than 5% of the cells at the cluster level. Other genes (filtered) will be set at 0 for the corresponding cluster(s).
+If filter.perc is not NULL and set to 5, the gene expression matrix will be filtered to keep only genes expressed by at least 5% of the cells at the cluster level. Other genes (filtered) will be set at 0 for the corresponding cluster(s).
 }
 \examples{
 \dontrun{

@@ -15,9 +15,19 @@
 #'
 
 
-Perc_exp_infos <-function(object=object, assay="RNA", gene=gene, cell_id=cell_id){
-  WhichCells=colnames(object)[which(Idents(object)==cell_id)]
-  value.pos=sum(object[[assay]]@counts[gene,WhichCells]>0)/length(WhichCells)
-  value.exp=mean(object[[assay]]@data[gene,WhichCells])
+Perc_exp_infos <- function (object = object, assay = "RNA", gene = gene, cell_id = cell_id){
+  WhichCells = colnames(object)[which(Idents(object) == cell_id)]
+  if (class(object[[assay]])=="Assay5"){
+    data = object[[assay]]@layers$data
+    rownames(data)=rownames(object)
+    colnames(data)=colnames(object)
+    value.pos = sum(data[gene, WhichCells] >
+                      0)/length(WhichCells)
+    value.exp = mean(data[gene, WhichCells])
+  }else{
+    value.pos = sum(object[[assay]]@counts[gene, WhichCells] >
+                      0)/length(WhichCells)
+    value.exp = mean(object[[assay]]@data[gene, WhichCells])
+  }
   return(c(value.pos, value.exp))
 }

@@ -1,7 +1,6 @@
- 
 This vignette explains the use of the ICELLNET package and demonstrates typical workflows to dissect intercellular communication between multiple cell types, based on transcriptomic profiles.
 
----
+----
 # Table of content
 
 - [Introduction to ICELLNET R package](#Introduction-to-ICELLNET-R-package)
@@ -20,7 +19,7 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 - [Software information](#Software-information)
 
 <!-- toc -->
----
+----
 
 
 # Introduction to ICELLNET R package  <a name="Introduction-to-ICELLNET-R-package"></a>
@@ -31,7 +30,7 @@ We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell co
 
 # ICELLNET ligand/receptor interaction database <a name="ICELLNET-ligand/receptor-interaction-database"></a>
 
-We curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch family, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: **type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines**. 
+We curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch family, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines. 
 
 Other interactions and classifications of molecules will be implemented.
 The most recent version of ligand-receptor interaction database can always be downloaded [here](https://github.com/soumelis-lab/ICELLNET/blob/master/data/ICELLNETdb.tsv).
@@ -60,7 +59,7 @@ db3 <- db[grepl(paste(my.selection.LR, collapse="|"),db$Family),] #if you want t
 db.name.couple=name.lr.couple(db3, type="Subfamily")
 head(db.name.couple)
 ```
-Instead of using the ICELLNET database, it is also possible to use its own database as long as it is correctly formatted with specific columns as below. The Family and Subfamily colums correspond to two independant classifications (per family of molecules, or other) of your choice, but each interaction should fit only in one category of the classification (for example, an interaction cannot be classified in "type 1" and also "type 2" cytokines in the ICELLNET database).
+Instead of using the ICELLNET database, it is also possible to use its own database as long as it is correctly formatted with specific columns as below. The Family and Subfamily colums correspond to two independant classifications (per family of molecules, or other) of your choice, but each interaction should fit only in one category of the classification (for exemple, an interaction cannot be classified in "type 1" and also "type 2" cytokines in the ICELLNET database).
 
 |  Ligand 1 | Ligand 2  | Ligand 3  | Ligand 4  | Receptor 1  | Receptor 2  | Receptor 3  |  Receptor 4  |  Receptor 5  | Family | Subfamily | Other family |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -104,7 +103,7 @@ Here we describe the different stages of the ICELLNET package to compute interce
 
 4. Display different visualization modes to dissect intercellular communication scores 
 
-![](examples_tutorials/pictures/ICELLNET_Figure2_V10.png)
+![](exemples_tutorials/pictures/ICELLNET_Figure2_V10.png)
 
 
 # How is the intercellular communication score computed? <a name="How-is-the-intercellular-communication-score-computed?"></a>
@@ -220,7 +219,7 @@ To load the most recent version of the ligand/receptor database, you should run 
 **For the central cell:** It can be any transcriptomic profile data of one cell type. For **RNA-seq data**, the dataset should be a datframe annotated with gene symbol as rownames. For **microarray data**, the ICELLNET functions are adapted to handle Affymetrix Human Genome U133 Plus 2.0 Array annotation. Nevertherless, if the dataset have been generated with an other Affymetrix technology, you have 2 possibilities to adapt the tool : a) Annotate your data with gene symbol before using ICELLNET and then consider your data as "RNA-Seq" for CC.type argument. b) adapt the R code of the `db.hgu133plus2()` function to have the adapted annotation conversion when using ICELLNET. Gene annotations should be set as rownames. 
 
 
-**For the partner cell (if you don't want to use Human Primary Cell Atlas as partner cells):** This can be interesting for example if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formated (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
+**For the partner cell (if you don't want to use Human Primary Cell Atlas as partner cells):** This can be interesting for exemple if you possess transcriptomic data of several cell types of the same sample, to see how they interact together. As for the central cell, the transcriptomic profiles should be correctly formated (see previous paragraph above for more information). If your transcriptomic profiles are annotated with gene symbol, PC.type should be set to "RNA-seq" (even if your data come from microarray technology). 
 
 ## Target files format
 You can define a target file. This dataframe usually describes the different samples with known metadata. If not provided, a target file will be automatically generated containing the sample names as the only metadata information available.
@@ -232,7 +231,7 @@ If not provided for `icellnet.score` function, the column names of the expressio
 # Use cases exemples <a name="Use-cases-exemples"></a>
 
 
-- [Case study 1](https://github.com/soumelis-lab/ICELLNET/blob/master/examples_tutorials/Exemple1_CAF.md): dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
+- [Case study 1](https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/Exemple1_CAF.md): dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
 
-- [Case study 2](https://github.com/soumelis-lab/ICELLNET/blob/master/examples_tutorials/Exemple2_scRNAseq.md): Application of ICELLNET pipeline to scRNAseq from a Seurat object to infer intercellular communication between clusters.
+- [Case study 2](https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/Exemple2_scRNAseq.md): Application of ICELLNET pipeline to scRNAseq from a Seurat object to infer intercellular communication between clusters.
 

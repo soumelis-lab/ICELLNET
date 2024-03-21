@@ -21,7 +21,7 @@
 #' }
 #'
 
-gene.scaling <- function(data = data, n = n, db = db)
+gene.scaling <- function(data = data, n = 1, db = db)
 {
   data=as.data.frame(data, row.names = rownames(data))
   #check data format

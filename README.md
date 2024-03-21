@@ -5,14 +5,14 @@ This repository hosts the source code corresponding to the method described in [
 
 ---
 ## ICELLNET key features: 
-- Contains a *manually curated ligand-receptor interactions database*: curated exclusively from *human* studies, ICELLNET database takes into account the *multiple* subunits of ligand and receptor complexes (more than 1600 interactions)
-- *Versatile* tool applicable on a wide range of transcriptomic technologies (microarray, bulk RNAseq, scRNAseq, spatial transcriptomics)
+- Contains a **manually curated ligand-receptor interactions database**: curated exclusively from **human** studies, ICELLNET database takes into account the **multiple** subunits of ligand and receptor complexes (more than 1600 interactions)
+- **Versatile** tool applicable on a wide range of transcriptomic technologies (microarray, bulk RNAseq, scRNAseq, spatial transcriptomics)
 - Several visualization modes of cell-cell communication analysis results
 ---
 
 ## New on ICELLNET v2.0.0 
 - New structure and extension of ICELLNET database up to 1669 interactions.
-- Possibility to ICELLNET analysis using other databases such as CellPhoneDB as input
+- Possibility to ICELLNET analysis using other databases such as CellPhoneDB as input.
 - Updates of several functions to match the new structure of ICELLNET database.
 
 Additional details and previous updates can be found [here](https://github.com/soumelis-lab/ICELLNET/blob/master/UPDATES.md).
@@ -45,8 +45,10 @@ Once all the dependencies are downloaded and loaded, you can load the ‘icellne
 
 
 ## Citation
-If you use our human curated ligand-receptor interaction database or the ICELLNET method, please cite our paper: 
+If you use our human curated ligand-receptor interaction database or the ICELLNET method, please cite our papers: 
 
 Noël, F., Massenet-Regad, L., Carmi-Levy, I. et al. Dissection of intercellular communication using the transcriptome-based framework ICELLNET. Nat Commun 12, 1089 (2021). https://doi.org/10.1038/s41467-021-21244-x [link](https://www.nature.com/articles/s41467-021-21244-x)
+
+Massenet-Regad L, Soumelis V. ICELLNET v2: a versatile method for cell-cell communication analysis from human transcriptomic data. Bioinformatics. 2024 Mar 4;40(3):btae089. doi: 10.1093/bioinformatics/btae089. PMID: 38490248. [link](https://pubmed.ncbi.nlm.nih.gov/38490248/)
 
 

@@ -10,8 +10,8 @@ icellnet.score(
   PC.data = PC.data,
   PC = PC,
   PC.target = NULL,
-  CC.type = c("RNAseq", "Microarray"),
-  PC.type = c("RNAseq", "Microarray"),
+  CC.type = "RNAseq",
+  PC.type = "RNAseq",
   db = db
 )
 }
@@ -26,9 +26,9 @@ icellnet.score(
 
 \item{PC.target}{data.frame of information concerning the PC.data samples. Set to NULL by default: use only colnames(PC.data) as meaningful level of information.}
 
-\item{CC.type}{Type of transcriptomic data for the central cell (either "RNAseq" or "Microarray")}
+\item{CC.type}{Type of transcriptomic data for the central cell (either "RNAseq" or "Microarray"). "RNAseq" by default.}
 
-\item{PC.type}{Type of transcriptomic data for the peripheral (either "RNAseq" or "Microarray")}
+\item{PC.type}{Type of transcriptomic data for the peripheral (either "RNAseq" or "Microarray"). "RNAseq" by default.}
 
 \item{db}{Database of ligand/receptors interactions}
 }
