@@ -66,13 +66,12 @@ LR.family.score <- function (lr = lr, family = NULL, db.couple = as.data.frame(d
       melted$Var1 = as.factor(melted$Var1)
       melted$Var2 = as.factor(melted$Var2)
       if (is.null(family.col)) {
-        print("Colors automatically assigned. If you want to assign particular colors for family of molecules, set it as family.col parameter")
+        print("Colors automatically assigned. If you want to assign particular colors for family of molecules, set it manually (family.col argument) or add colors as for ggplot objects.")
         plot <- ggplot2::ggplot(data = melted, ggplot2::aes(x = Var2,
                                                             y = value, fill = Var1)) + ggplot2::geom_bar(stat = "identity") +
-          ggplot2::scale_fill_brewer() + ggplot2::labs(x = NULL,
-                                                       y = "score", fill = NULL, title = title) + ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
+          ggplot2::labs(x = NULL, y = "score", fill = NULL, title = title) + ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
           ggplot2::theme_classic() + ggplot2::ylim(0, ymax) +
-          ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
+          ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5))
       }else
         plot <- ggplot2::ggplot(data = melted, ggplot2::aes(x = Var2, y = value, fill = Var1)) +
         ggplot2::geom_bar(stat = "identity") +

@@ -67,9 +67,9 @@ LR.balloon.plot <- function (lr = lr, thresh = 0, topn = NULL, sort.by= "sum",
   melted <- reshape2::melt(lr, id.vars = c("Pair", "Family"))
   melted$Family[is.na(melted$Family)] <- "NA"
   melted = melted %>% dplyr::arrange(Family, variable)
-  melted <- melted %>% dplyr::mutate(row = group_indices_(melted,
+  melted <- melted %>% dplyr::mutate(row = dplyr::group_indices(melted,
                                                           .dots = c("Family", "Pair")))
-  melted <- melted %>% dplyr::mutate(col = group_indices_(melted,
+  melted <- melted %>% dplyr::mutate(col = dplyr::group_indices(melted,
                                                           .dots = c("variable")))
   vars_x_axis <- c(melted %>% dplyr::arrange(col) %>% dplyr::select(variable) %>%
                      dplyr::distinct())$variable

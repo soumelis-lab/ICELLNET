@@ -2,7 +2,7 @@ Package: icellnet
 Type: Package
 Title: Dissection of intercellular communication using the
         transcriptome-based framework ICELLNET
-Version: 2.1.0
+Version: 2.1.1
 Author: c(person(given = "Lucile",
            family = "Massenet-Regad",
            role = "cre", 
@@ -20,4 +20,4 @@ Depends: dplyr, ggplot2,
 Imports: stats, dplyr, data.table, jetset, psych, reshape2, rlist,
         AnnotationDbi, hgu133plus2.db, ComplexHeatmap, circlize
 NeedsCompilation: no
-Packaged: 2024-03-21 22:22:44 UTC; travail
+Packaged: 2024-03-23 19:06:08 UTC; travail

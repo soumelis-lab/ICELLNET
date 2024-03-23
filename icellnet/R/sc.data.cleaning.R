@@ -47,8 +47,8 @@ sc.data.cleaning <- function (object = object, assay = "RNA", db = db, filter.pe
     print("Filling in intermediate table: percentage of expressing cell per cluster per gene, and mean of expression")
     for (i in seq(1, dim(data.int)[1])) {
       data.int[i, 3:4] = Perc_exp_infos(object = seurat.tum,
-                                         assay = assay, gene = as.character(data.int[i, 1]), cell_id = as.character(data.int[i,
-                                                                                                                             2]))
+                                         assay = assay, gene = as.character(data.int[i, 1]),
+                                        cell_id = as.character(data.int[i,2]))
     }
     if (save_file == TRUE) {
       if (is.null(path)) {
