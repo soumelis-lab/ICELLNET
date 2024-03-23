@@ -10,12 +10,14 @@ This repository hosts the source code corresponding to the method described in [
 - Several visualization modes of cell-cell communication analysis results
 ---
 
-## New on ICELLNET v2.0.0 
+## New on ICELLNET v2 - corresponding paper [link](https://pubmed.ncbi.nlm.nih.gov/38490248/)
 - New structure and extension of ICELLNET database up to 1669 interactions.
 - Possibility to ICELLNET analysis using other databases such as CellPhoneDB as input.
 - Updates of several functions to match the new structure of ICELLNET database.
 
-Additional details and previous updates can be found [here](https://github.com/soumelis-lab/ICELLNET/blob/master/UPDATES.md).
+Additional details on updates and previous versions can be found [here](https://github.com/soumelis-lab/ICELLNET/blob/master/UPDATES.md).
+
+*Remark: ICELLNET v2.0.0 requires R version < 4.1. For latest R versions (> 4.1.x), please use ICELLNET v2.1.x.*
 
 ## Information related to ICELLNET and tutorials
 

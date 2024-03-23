@@ -125,9 +125,9 @@ family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"
 
 ymax=round(max(score1))+1 #to define the y axis range of the barplot
 
-LR.family.score(lr=lr1, db.couple=db.name.couple, plot=F) # table of contribution of each family of molecule to the scores
+LR.family.score(lr=lr1, db.couple=db.name.couple, plot=NULL) # table of contribution of each family of molecule to the scores
 
-LR.family.score(lr=lr1, db.couple=db.name.couple, plot=T, title="DC-T comm") #display heatmap
+LR.family.score(lr=lr1, db.couple=db.name.couple, plot="heatmap", title="DC-T comm") #display heatmap
 ```
 
 <img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_barplot.png" width=50% height=50%>
@@ -154,7 +154,7 @@ LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  title="Most differen
 
 - This means that high interaction scores does not mean high expression. You **should come back to the initial SeuratObject to look at individual gene expression**, and that the ligand/receptor of interest if effectively expressed by the cluster.
 
-- **Filtering of genes expressed by each cluster according to cell percentage expressing the gene (= with counts >0) for each cluster can be an option to remove false-negative interactions scores.**  This can be done with the sc.data.clean function, by setting filter.perc to a defined value (2 for 2%, 5 for 5% etc...). Filtered genes (expressed by a number of cells among the cluster below the percentage) will be set to 0. 
+- **Filtering of genes expressed by each cluster according to cell percentage expressing the gene (= with counts >0) for each cluster can be an option to remove false-negative interactions scores.**  This can be done with the `sc.data.cleaning()` function, by setting filter.perc to a defined value (2 for 2%, 5 for 5% etc...). Filtered genes (expressed by a number of cells among the cluster below the percentage) will be set to 0. 
 
 
 # Broader cell-cell communication analysis and prioritisation strategies

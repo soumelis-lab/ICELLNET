@@ -1,6 +1,18 @@
 #ICELLNET news:
-Last package update: 2023-11-08
+Last package update: 2024-03-21
 Last ligand-receptor interactions database update: 2023-11-08
+
+
+## ICELLNET v2.1.0 (2023-11-08):
+- Compatibility of ICELLNET functions with Seurat v5 and latest R versions (R> 4.1.x).
+- Update of `LR.family.score()` to reintroduce the "barplot" vizualisation option.
+- New use case study, showing how to identify cell type-specific interactions based on scRNAseq data.
+
+- Specific functions modifications:
+  - `sc.data.cleaning()` and  `Perc_exp_infos()` functions were adapted to work with Seurat v5 and latest R versions. 
+  - `LR.family.score()`: plot argument (previously TRUE or FALSE) can take NULL (no plot, returns a table), "heatmap" or "barplot" values, in order to provide corresponding vizualisations.
+  - n=1 argument was set as default in `gene.scaling()` function. 
+  - CC.type and PC.type were set to "RNAseq"" as default in `icellnet.score()` function
 
 
 ## ICELLNET v2.0.0 (2023-11-08): 

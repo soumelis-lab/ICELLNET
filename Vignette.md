@@ -30,10 +30,11 @@ We developed **ICELLNET**, a transcriptomic-based framework to **dissect cell co
 
 # ICELLNET ligand/receptor interaction database <a name="ICELLNET-ligand/receptor-interaction-database"></a>
 
-We curated a comprehensive database of ligand-receptor interactions from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 6 families of communication molecules, with strong implication in inflammatory and immune processes: **Growth factors, Cytokines, Chemokines, Checkpoints, Notch family, Antigen binding**. Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines. 
+We curated a comprehensive database of **1669 ligand-receptor interactions** from the literature and public databases. This database takes into account the **multiple subunits** of the ligands and the receptors. Interactions have been classified into 10 families of communication molecules: **Cytokine, Chemokine, Checkpoint, Notch pathway, HLA recognition, Innate immune, Wnt pathway, Growth factor, Cell adhesion and ECM interaction**. 
 
-Other interactions and classifications of molecules will be implemented.
-The most recent version of ligand-receptor interaction database can always be downloaded [here](https://github.com/soumelis-lab/ICELLNET/blob/master/data/ICELLNETdb.tsv).
+Cytokines have been further classified into 7 subfamilies according to reference classifications essentially based on structural protein motifs: type 1 cytokines, type 2 cytokines, IL-1 family, IL-17 family, TNF family, TGFb family and RTK cytokines. 
+
+Other interactions and classifications of molecules will be implemented. The most recent version of ligand-receptor interaction database can always be downloaded [here](https://github.com/soumelis-lab/ICELLNET/blob/master/data/ICELLNETdb.tsv).
 In R, you can visualize ICELLNET database and its structure: 
 
 ```{r db, echo=T}
@@ -44,8 +45,11 @@ head(db)
 You can use either all the database or restrict it by selecting some specific class of molecules (Cytokines, Growth factor etc..). Below, we show you how to restrict the study to cytokines, chemokines, and checkpoints, and how you can take into consideration subfamily of molecules.
 
 ```{r, echo=T}
-summary(as.factor(db$Family)) # list of the different family of molecules considered in the database
-summary(as.factor(db$Subfamily[which(db$Family=="Cytokine")])) # list of the different subfamily of cytokines considered in the database
+#list of the different family of molecules considered in the database
+table(db$Family)
+
+#list of the different subfamily of cytokines considered in the database
+table(db$Subfamily[which(db$Family=="Cytokine")])
 
 #Restrict the database to some family of molecules 
 my.selection.LR=c("Cytokine", "Chemokine", "Checkpoint")
@@ -72,7 +76,7 @@ Instead of using the ICELLNET database, it is also possible to use its own datab
 ICELLNET pipeline considers transcriptomic profiles of a defined "central cell", that can correspond for exemple to a cell type in several biological conditions. ICELLNET will then allow to compare the communication channels used by the central cells in these different conditions with partner cells.
 As partner cells, we can use Human Primary Cell Atlas, a public datasets of 745 transcriptomic profiles among 31 cell types generated with the same technology (Affymetrix microarray, hgu133plus2 platform), already processed. 
 
-As partner cells, the user can also use other transcriptomic profiles instead of Human Primary Cell Atlas (see section  [How to format your own data to use ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?)for format details).
+As partner cells, the user can also use other transcriptomic profiles instead of Human Primary Cell Atlas (see section  [How to format your own data to use ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?) for format details).
 
 ```{r,echo=T}
 #download PC.data.all and PC.target.all objects from the github and open them on your Rstudio session - adapt path if needed
@@ -93,17 +97,16 @@ table(PC.target.all$Class)
 
 # Typical workflow <a name="Typical-workflow"></a>
  
-Here we describe the different stages of the ICELLNET package to compute intercellular communication scores: 
+Here we describe the different steps of the ICELLNET package to analyze cell-cell communication: 
 
 1. Selection of the genes coding for the ligands and the receptors in our database from the transcriptomic profiles of the central cell and the partner cells. 
 
 2. Rescale gene expression to avoid communication score to be driven only by highly expressed genes.
 
-3. Compute ICELLNET communication scores (`direction="out"` for outward communication, `direction="out"` for inward communication, see [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?) for more details)
+3. Compute ICELLNET communication scores (`direction="out"` for outward communication, `direction="in"` for inward communication, see [How is the intercellular communication score computed?](##How-is-the-intercellular-communication-score-computed?) for more details)
 
-4. Display different visualization modes to dissect intercellular communication scores 
+4. Display different visualization modes to dissect intercellular communication scores
 
-![](exemples_tutorials/pictures/ICELLNET_Figure2_V10.png)
 
 
 # How is the intercellular communication score computed? <a name="How-is-the-intercellular-communication-score-computed?"></a>
@@ -127,6 +130,9 @@ lr1=score.computation.1[[2]] # detail of the ligand/receptor interactions scores
 
 # Visualization modes <a name="Visualization-modes"></a>
 
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_visualisations.png" width=100% height=100%>
+
+
 ### Intercellular communication network representation
 
 This allows to visualize intercellular communication networks in a global manner through the function `network.create()`. In these directed graphs, nodes represent cell types, the width of the edges connecting two cell types is proportional to a global measure of the intensity of the communication between them and the arrows indicate the direction of communication. 
@@ -134,22 +140,8 @@ This allows to visualize intercellular communication networks in a global manner
 
 ### Communication molecules distribution
 
-The barplot representation (`LR.family.score()` function (with plot=T) allows to dissect the global scores at a level of class of molecules, and allows to identify patterns of co-expressed molecules from the same family. This layer of analysis helps the interpretation on a qualitative level.
-
-Color legends for these functions can be found below (easy to adapt to study other family of molecules):
-
-```{r, echo=T, warning=F,  fig.height=5, fig.width=12 }
-    ## label and color label if you are working families of molecules already present in the database
-# my.family=c("Growth factor","Chemokine","Checkpoint","Cytokine","Notch family","Antigen binding") 
-# family.col = c( "Growth factor"= "#AECBE3", "Chemokine"= "#66ABDF", "Checkpoint"= "#1D1D18"  ,
-#             "Cytokine"="#156399", "Notch family" ="#676766", "Antigen binding" = "#12A039",  "other" = "#908F90",  "NA"="#908F90")
-     
-    ## label and color label if you are working with subfamilies of cytokines
-my.family=c("type 1", "type 2", "IL1.", "IL17", "TNF","TGF","RTK")
-family.col = c( "type 1"=  "#A8CF90", "type 2"= "#676766", "IL1."= "#1D1D18" ,
-            "IL17" ="#66ABDF", "TNF" ="#12A039", "TGF" = "#156399", "RTK"="#AECBE3", "other" = "#908F90","NA"="#908F90")
-
-```
+`LR.family.score()` allows to dissect the global scores at a level of class of molecules, and allows to identify patterns of co-expressed molecules from the same family. This layer of analysis helps the interpretation on a qualitative level. 
+The contribution of each family of molecules to the communication scores can be displayed as a heatmap (when setting plot="heatmap"), or as a barplot (when setting plot="barplot") 
 
 ### Individual communication scores distribution
 
@@ -157,9 +149,6 @@ The balloon plot (`LR.balloon.plot()` function) and heatmap (`LR.heatmap()` func
 *topn* parameter set the top n highest interactions to display (ex: `topn=10` means display the 10 highest contribution of specific interactions to the communication scores)
 *thresh* parameter allows to set a threshold, in order to display interaction contributing to communication scores only above this value. (ex: thresh=20, only interactions with an individual score above 20 will be visualized). Looking at individual scores distribution is helpful to identify relevant threshold values for you case.
 *sort.by* parameter ("sum" as default, can be set to "var") to ran the interactions either as the most contributing interactions in all conditions ("sum"), or the most different interactions among conditions ("var", ranking by computing the variance among scores for each interaction)
-
-Same color legend used as `LR.family.score()` function above.
-
 
 
 ### Specificity of an interaction (for single cell dataset only)
@@ -208,7 +197,7 @@ Then load the dependancies below and `icellnet` package.
     library(icellnet)
 
 
-To load the most recent version of the ligand/receptor database, you should run the command below (last updated:  28/01/2021): 
+To load the most recent version of the ligand/receptor database, you should run the command below: 
 
     db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/ICELLNETdb.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
 
@@ -226,12 +215,12 @@ You can define a target file. This dataframe usually describes the different sam
 
 **PC.target** should contains at least an 'ID' column including the name of the samples (usually rownames(PC.target) or colnames(PC.data) ), and a 'Class' column corresponding to a classification of your different samples included in PC.target, such as a cell type classification. The different categories included in the 'Class' column will define the different partner cells in the graphs.
 
-If not provided for `icellnet.score` function, the column names of the expression matrix will be used as default to create a PC.target file.
+If not provided for `icellnet.score()` function, the column names of the expression matrix will be used as default to create a PC.target file.
 
 # Use cases exemples <a name="Use-cases-exemples"></a>
-
 
 - [Case study 1](https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/Exemple1_CAF.md): dissect intercellular commmunication of Cancer Associated Fibroblasts subsets. Show how to apply ICELLNET pipeline on transcriptomic profiles from 2 CAF-subsets, and how to restrict use of icellnet database to cytokines only (or other family of molecules).
 
 - [Case study 2](https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/Exemple2_scRNAseq.md): Application of ICELLNET pipeline to scRNAseq from a Seurat object to infer intercellular communication between clusters.
 
+- [Case study 3](https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/Exemple3_scRNAseq_TME.md): Application of ICELLNET to identify cancer cell-specific communication channels within TME from scRNAseq data.
