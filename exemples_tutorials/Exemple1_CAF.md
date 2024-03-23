@@ -138,7 +138,7 @@ To assess the differences between scores in a quantitative manner, a statistical
 
 #### Communication molecules distribution - barplot representation 
 
-Display contribution of each family of moleucles to the scores, as a table (if plot=NULL), a barplot (if plot="barplot"), or a heatmap (plot="heatmap")
+Display contribution of each family of molecules to the scores, as a table (if plot=NULL), a barplot (if plot="barplot"), or a heatmap (plot="heatmap")
 
 ```{r, echo=T, warning=F,  fig.height=5, fig.width=12 }
 ## Label and range definition
@@ -158,7 +158,7 @@ contrib.family2= LR.family.score(lr=lr2, family=my.family, db.couple=db.name.cou
 
 gridExtra::grid.arrange(contrib.family1, contrib.family2, ncol=2, nrow=1)
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_barplots.png" width=50% height=50%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_barplots.png" width=100% height=100%>
 
 #### Individual communication scores distribution - balloon plot representation
 Here we show how to plot specific interactions between CAF
@@ -173,7 +173,7 @@ balloon
 #### Pvalue computation to compare communication scores
 
 
-It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the pvalue.plot() function. This allows to interpret the difference of communication score in a quantitative manner.
+It returns the pvalue matrix of statistical tests, that can be visualize as a heatmap with the `pvalue.plot()` function. This allows to interpret the difference of communication score in a quantitative manner.
 
 
 ```{r, warning=F, message=F, echo=T}

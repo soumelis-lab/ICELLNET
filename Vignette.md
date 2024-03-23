@@ -16,8 +16,6 @@ This vignette explains the use of the ICELLNET package and demonstrates typical 
 - [How to format your own data to ue ICELLNET package?](#How-to-format-your-own-data-to-use-ICELLNET-package?)
 - [Use cases exemples](#Use-cases-exemples)
 
-- [Software information](#Software-information)
-
 <!-- toc -->
 ----
 

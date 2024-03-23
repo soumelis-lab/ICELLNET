@@ -106,7 +106,7 @@ LR.family.score(lr=lr1, db.couple=db.name.couple, plot="heatmap")
 colors=grDevices::colorRampPalette(RColorBrewer::brewer.pal(8,"Set2"))(length(unique(db$Family)))
 LR.family.score(lr=lr1, db.couple=db.name.couple, plot="barplot", family.col=colors)  
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/TME_heatmap_all.png" width=50% height=50%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/TME_heatmap_all.png" width=100% height=100%>
 
 **Remarks on biological interpretation:**
 
@@ -170,6 +170,10 @@ specific_ccRCC2=int.spe(global_LR, cell="ccRCC2", thresh=thresh)
 #plot the ccRCC2 specific interactions
 LR.heatmap(lr = lr2[rownames(specific_ccRCC2),], thresh = 0 , topn= dim(specific_ccRCC2)[1], sort.by="var",  title="ccRCC2 specific interactions")
 ```
+
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/TME_spe_ccRCC2_heatmap.png" width=50% height=50%>
+
+
 The plot above show all interactions specifically used by ccRCC2 to interact with the other cell types of the TME. To check the specificity of the interactions, LR.viz function can be used:
 
 ```{r, warning=F, echo=T}
@@ -178,7 +182,7 @@ spe2=LR.viz(data=data.icell, db = db, int="CD70 / CD27", plot=T)
 spe3=LR.viz(data=data.icell, db = db, int="VEGFA / NRP1", plot=T)
 ```
 
-
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/TME_spe_single.png" width=100% height=100%>
 
 
 
