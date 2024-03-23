@@ -132,7 +132,7 @@ network.plot1 = network.create(icn.score = Scores[1], scale = c(round(min(Scores
 network.plot2 = network.create(icn.score =Scores[2], scale = c(round(min(Scores)-1),round(max(Scores))+1), direction = "out",PC.col)
 gridExtra::grid.arrange(network.plot1, network.plot2, ncol=2, nrow=1)
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_networks.png)" width=100% height=100%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_networks2.png)" width=100% height=100%>
 
 To assess the differences between scores in a quantitative manner, a statistical test can be performed (see "Compute pvalue to compare communication scores" section)
 
