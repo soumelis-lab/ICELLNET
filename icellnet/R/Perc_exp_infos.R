@@ -17,12 +17,13 @@
 
 Perc_exp_infos <- function (object = object, assay = "RNA", gene = gene, cell_id = cell_id){
   WhichCells = colnames(object)[which(Idents(object) == cell_id)]
-  if (class(object[[assay]])=="Assay5"){
-    data = object[[assay]]@layers$data
-    rownames(data)=rownames(object)
-    colnames(data)=colnames(object)
-    value.pos = sum(data[gene, WhichCells] >
-                      0)/length(WhichCells)
+  if (class(object[[assay]]) == "Assay5") {
+    if (is.null(object[[assay]]@layers$data)){
+      data= object[[assay]]@layers$counts
+    }else{data = object[[assay]]@layers$data}
+    rownames(data) = rownames(object)
+    colnames(data) = colnames(object)
+    value.pos = sum(data[gene, WhichCells] > 0)/length(WhichCells)
     value.exp = mean(data[gene, WhichCells])
   }else{
     value.pos = sum(object[[assay]]@counts[gene, WhichCells] >

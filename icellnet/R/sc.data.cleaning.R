@@ -29,15 +29,21 @@ sc.data.cleaning <- function (object = object, assay = "RNA", db = db, filter.pe
 {
   if (!file.exists(paste0(path, "scRNAseq_statsInfo_for_ICELLNET.csv")) |
       force.file == T) {
-    if (class(object[[assay]])=="Assay5"){
-      data = object[[assay]]@layers$data
-      rownames(data)=rownames(object)
-    }else{
+    if (class(object[[assay]]) == "Assay5") {
+      if (is.null(object[[assay]]@layers$data)){
+        warning("Data layer not found. Counts used instead")
+        data= object[[assay]]@layers$counts
+      }else{
+        data = object[[assay]]@layers$data
+      }
+      rownames(data) = rownames(object)
+    }
+    else{
       data = object[[assay]]@data
     }
-
     int = dplyr::intersect(as.matrix(rownames(data)), as.matrix(db[,
                                                                    1:5]))
+
     data = data[which(rownames(data) %in% int), ]
     data.int = as.data.frame(expand.grid(rownames(data),
                                          unique(Idents(object))))
@@ -46,7 +52,7 @@ sc.data.cleaning <- function (object = object, assay = "RNA", db = db, filter.pe
     data.int$Mean_exp = NA
     print("Filling in intermediate table: percentage of expressing cell per cluster per gene, and mean of expression")
     for (i in seq(1, dim(data.int)[1])) {
-      data.int[i, 3:4] = Perc_exp_infos(object = seurat.tum,
+      data.int[i, 3:4] = Perc_exp_infos(object = seurat,
                                          assay = assay, gene = as.character(data.int[i, 1]),
                                         cell_id = as.character(data.int[i,2]))
     }
