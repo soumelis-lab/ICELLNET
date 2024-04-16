@@ -17,7 +17,9 @@ This repository hosts the source code corresponding to the method described in [
 
 Additional details on updates and previous versions can be found [here](https://github.com/soumelis-lab/ICELLNET/blob/master/UPDATES.md).
 
+
 *Remark: ICELLNET v2.0.0 requires R version < 4.1. For latest R versions (> 4.1.x), please use ICELLNET v2.2.x.*
+
 
 ## Information related to ICELLNET and tutorials
 
