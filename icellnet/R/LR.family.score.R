@@ -22,9 +22,9 @@
 #'
 #'
 
-LR.family.score <- function (lr = lr, family = NULL, db.couple = as.data.frame(db.couple),
-                              plot = NULL, title = NULL, ymax = NULL, family.col = NULL, cluster_rows = T,
-                              cluster_columns = T)
+LR.family.score <-function (lr = lr, family = NULL, db.couple = as.data.frame(db.couple),
+                            plot = NULL, title = NULL, ymax = NULL, family.col = NULL,
+                            cluster_rows = T, cluster_columns = T)
 {
   lr = na.omit(lr)
   row_names = rownames(lr)
@@ -54,14 +54,15 @@ LR.family.score <- function (lr = lr, family = NULL, db.couple = as.data.frame(d
   }
   contribution["other", ] = colSums(lr, na.rm = TRUE, dims = 1) -
     colSums(contribution, na.rm = TRUE, dims = 1)
-
   if (is.null(plot)) {
     return(contribution)
-  }else{
+  }
+  else {
+    contribution=contribution[which(rowSums(contribution)>0),]
     if (is.null(ymax)) {
       ymax = max(colSums(contribution)) + 1
     }
-    if (plot=="barplot"){
+    if (plot == "barplot") {
       melted <- reshape2::melt(contribution)
       melted$Var1 = as.factor(melted$Var1)
       melted$Var2 = as.factor(melted$Var2)
@@ -69,24 +70,27 @@ LR.family.score <- function (lr = lr, family = NULL, db.couple = as.data.frame(d
         print("Colors automatically assigned. If you want to assign particular colors for family of molecules, set it manually (family.col argument) or add colors as for ggplot objects.")
         plot <- ggplot2::ggplot(data = melted, ggplot2::aes(x = Var2,
                                                             y = value, fill = Var1)) + ggplot2::geom_bar(stat = "identity") +
-          ggplot2::labs(x = NULL, y = "score", fill = NULL, title = title) + ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
-          ggplot2::theme_classic() + ggplot2::ylim(0, ymax) +
-          ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5))
-      }else
-        plot <- ggplot2::ggplot(data = melted, ggplot2::aes(x = Var2, y = value, fill = Var1)) +
-        ggplot2::geom_bar(stat = "identity") +
+          ggplot2::labs(x = NULL, y = "score", fill = NULL,
+                        title = title) + ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
+          ggplot2::theme_classic() + ggplot2::ylim(0,
+                                                   ymax) + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+                                                                                                              hjust = 1, vjust = 0.5))
+      }
+      else plot <- ggplot2::ggplot(data = melted, ggplot2::aes(x = Var2,
+                                                               y = value, fill = Var1)) + ggplot2::geom_bar(stat = "identity") +
         ggplot2::scale_fill_manual(values = family.col) +
-        ggplot2::labs(x = NULL, y = "score", fill = NULL, title = title) +
-        ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
-        ggplot2::theme_classic() +
-        ggplot2::ylim(0, ymax) +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
-
-    }else if(plot=="heatmap"){
-      contribution_norm = scale(contribution, center = F, scale = colSums(contribution,
-                                                                          na.rm = TRUE, dims = 1)) %>% as.matrix()
-      column_ha = ComplexHeatmap::HeatmapAnnotation(score = ComplexHeatmap::anno_barplot(as.numeric(colSums(lr, na.rm = TRUE, dims = 1)),
-                                                                                         height = unit(2, "cm"), gap = unit(0.25, "points")))
+        ggplot2::labs(x = NULL, y = "score", fill = NULL,
+                      title = title) + ggplot2::guides(fill = guide_legend(reverse = TRUE)) +
+        ggplot2::theme_classic() + ggplot2::ylim(0, ymax) +
+        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust=0.5))
+    }
+    else if (plot == "heatmap") {
+      contribution_norm = scale(contribution, center = F,
+                                scale = colSums(contribution, na.rm = TRUE, dims = 1)) %>%
+        as.matrix()
+      column_ha = ComplexHeatmap::HeatmapAnnotation(score = ComplexHeatmap::anno_barplot(as.numeric(colSums(lr,
+                                                                                                            na.rm = TRUE, dims = 1)), height = unit(2, "cm"),
+                                                                                         gap = unit(0.25, "points")))
       plot <- ComplexHeatmap::Heatmap(as.matrix(contribution_norm),
                                       top_annotation = column_ha, cluster_rows = cluster_rows,
                                       cluster_columns = cluster_columns, name = "proportion",
