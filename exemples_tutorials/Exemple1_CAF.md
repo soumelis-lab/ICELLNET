@@ -132,7 +132,7 @@ network.plot1 = network.create(icn.score = Scores[1], scale = c(round(min(Scores
 network.plot2 = network.create(icn.score =Scores[2], scale = c(round(min(Scores)-1),round(max(Scores))+1), direction = "out",PC.col)
 gridExtra::grid.arrange(network.plot1, network.plot2, ncol=2, nrow=1)
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_networks2.png" width=100% height=100%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_networks2.png" width="2000" height="4000">
 
 To assess the differences between scores in a quantitative manner, a statistical test can be performed (see "Compute pvalue to compare communication scores" section)
 
@@ -158,7 +158,7 @@ contrib.family2= LR.family.score(lr=lr2, family=my.family, db.couple=db.name.cou
 
 gridExtra::grid.arrange(contrib.family1, contrib.family2, ncol=2, nrow=1)
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_barplots.png" width=100% height=100%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_barplots.png" width="2000" height="4000">
 
 #### Individual communication scores distribution - balloon plot representation
 Here we show how to plot specific interactions between CAF
@@ -168,7 +168,7 @@ colnames(lr_ind)=c("S1_Fblast", "S4_Fblast")
 balloon=icellnet::LR.balloon.plot(lr = lr_ind, sort.by="var", thresh = 25, topn=15, db.name.couple=db.name.couple, title="Fblast", family.col=family.col)
 balloon
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_balloon.png" width=50% height=50%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_balloon.png" width="600" height="600">
 
 #### Pvalue computation to compare communication scores
 
@@ -185,4 +185,4 @@ pvalue.plot1=pvalue.plot(pvalue1, PC=my.selection)
 pvalue.plot1
 ```
 
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_pvalueplot.png" width=50% height=50%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_CAF_pvalueplot.png" width="500" height="500">
