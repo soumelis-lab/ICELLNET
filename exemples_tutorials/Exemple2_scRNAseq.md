@@ -38,7 +38,7 @@ seurat <- RunPCA(seurat)
 seurat <- RunUMAP(seurat, dims = 1:50)
 DimPlot(seurat, reduction = 'umap', group.by = 'Cluster', label = T)
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_UMAP.png" width=50% height=50%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_UMAP.png" width="500" height="500">
 
 ### 2 - Retrieve gene expression matrix 
  
@@ -130,7 +130,7 @@ LR.family.score(lr=lr1, db.couple=db.name.couple, plot=NULL) # table of contribu
 LR.family.score(lr=lr1, db.couple=db.name.couple, plot="heatmap", title="DC-T comm") #display heatmap
 ```
 
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_barplot.png" width=50% height=50%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_barplot.png" width="500" height="800">
 
 **Visualization of highest and most different interactions between the two conditions (selection of topn=20 interactions):** 
 Can be displayed by `LR.heatmap()` and `LR.balloon.plot()` functions. 
@@ -146,7 +146,7 @@ LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="sum",  title="Most contribu
 colnames(lr1)=c("CM3_to_CT3b", "CM3_to_CT0a")
 LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  title="Most different interactions")
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_heatmap_spe.png" width=100% height=100%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_heatmap_spe.png" width="1000" height="1000">
 
 ### Remarks on biological interpretation: 
 
@@ -185,7 +185,7 @@ Similar to `LR.balloon.plot`, the goal is to easily visualize specific interacti
 LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="var",  title="Most different interactions")
 LR.heatmap(lr = lr1, thresh = 0 , topn=20 , sort.by="sum",  title="Most contributing interactions")
 ```
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_heatmap.png" width=100% height=100%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_heatmap.png" width="1000" height="1000">
 
 
 It is also possible to select the same interactions with the `LR.selection()` function and use other package for visualization such as *ComplexHeatmap package* that provides clustering of interaction and cell types. See exemple below.
@@ -201,7 +201,7 @@ ComplexHeatmap::Heatmap(as.matrix(pairs), cluster_rows = T, cluster_columns = T,
             column_title ="Communication from cDC to T cell clusters", col = col_fun)
 ```
 
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_CHeatmap.png" width=50% height=50%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_CHeatmap.png" width="600" height="600">
 
 ## Interaction specificity plot
 
@@ -221,7 +221,7 @@ LR.viz(data=data.icell, db = db, int=c("CD86 / CD28", "TNFSF15 / TNFRSF25"), plo
 LR.viz(data=data.icell, db = db, family = "Checkpoint", plot=T)
 ```
 
-<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_spe3.png" width=100% height=100%>
+<img src="https://github.com/soumelis-lab/ICELLNET/blob/master/exemples_tutorials/pictures/ICELLNET_scRNAseq_spe3.png" width="1500" height="1000">
 
 
 
